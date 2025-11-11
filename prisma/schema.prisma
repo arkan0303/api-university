@@ -1,0 +1,1512 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// MODEL INTI
+// ============================================
+
+// Model: Mahasiswa
+// Fungsi: Menyimpan data mahasiswa aktif dan tidak aktif
+// Digunakan di menu: 
+// - Kemahasiswaan dan Alumni (semua submenu)
+// - Arsip Kemahasiswaan (untuk surat-surat)
+// Relasi: Terhubung ke hampir semua tabel kemahasiswaan
+model Mahasiswa {
+  id                Int      @id @default(autoincrement())
+  nim               String   @unique
+  nama              String
+  email             String?
+  telepon           String?
+  foto              String?
+  programStudi      String   // "S1 Hukum"
+  semester          Int
+  ipk               Float?
+  angkatan          String   // "2021", "2022", dst.
+  status            String   @default("Aktif") // "Aktif", "Cuti", "Lulus"
+  alamat            String?  
+  tanggalLahir      DateTime?
+  tempatLahir       String?
+  jenisKelamin      String?  // "Laki-laki", "Perempuan"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relasi
+  prestasi          Prestasi[]
+  seminarPeserta    SeminarPeserta[]
+  magang            Magang[]
+  wirausaha         Wirausaha[]
+  beasiswa          PengajuanBeasiswa[]
+  suratKeterangan   SuratKeteranganAktif[]
+  izinPenelitian    IzinPenelitian[]
+  suratKelakuan     SuratKelakuan[]
+  anggotaOrganisasi AnggotaOrganisasi[]
+  anggotaDPM        AnggotaDPM[]
+  anggotaBEM        AnggotaBEM[]
+  alumni            Alumni?
+}
+
+// Model: Alumni
+// Fungsi: Menyimpan data alumni dan informasi pekerjaan mereka
+// Digunakan di menu: Kemahasiswaan dan Alumni > Alumni
+// Relasi: One-to-one dengan Mahasiswa (setiap mahasiswa yang lulus menjadi alumni)
+model Alumni {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int      @unique
+  tahunLulus        Int
+  ipk               Float
+  pekerjaanSaatIni  String?
+  posisi            String?
+  perusahaan        String?
+  gaji              String?
+  bidangKerja       String?  // "Sesuai", "Tidak Sesuai"
+  waktuTunggu       String?  // "< 3 bulan", "3-6 bulan", dst.
+  alamatKerja       String?
+  testimoni         String?  
+  linkedin          String?
+  instagram         String?
+  email             String?
+  telepon           String?
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KONTEN BERANDA (HOME PAGE ONLY)
+// ============================================
+
+// Model: HeroSection
+// Fungsi: Menyimpan konten hero section di halaman BERANDA saja
+// Digunakan di menu: BERANDA/HOME (halaman utama)
+// Berisi: Judul besar, deskripsi, tombol CTA, background image/color
+// Catatan: Hanya ada 1 record untuk halaman beranda
+model HeroSection {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  // subjudul          String?
+  deskripsi         String   
+  // tombolTeks        String?  // "Pelajari Lebih Lanjut", "Daftar Sekarang", dst.
+  // tombolLink        String?
+  // backgroundImage   String?
+  // backgroundColor   String?  // Hex color
+  // textColor         String?  // Hex color
+  // aktif             Boolean  @default(true)
+  image             String
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: StatistikBeranda
+// Fungsi: Menyimpan angka-angka statistik di halaman BERANDA
+// Digunakan di menu: BERANDA (bagian statistik)
+// Contoh: "1,234 Mahasiswa", "95% Tingkat Kelulusan"
+model StatistikBeranda {
+  id                Int      @id @default(autoincrement())
+  label             String   // "Total Mahasiswa", "Tingkat Kelulusan", dst.
+  nilai             String   // "1,234", "95%", dst.
+  ikon              String?  // Icon name atau URL
+  deskripsi         String?
+  urutan            Int      @default(0)
+  aktif             Boolean  @default(true)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KEPEGAWAIAN
+// ============================================
+
+// Model: Dosen
+// Fungsi: Menyimpan data dosen tetap dan tidak tetap
+// Digunakan di menu: Kepegawaian > Dosen
+// Berisi: Biodata, pendidikan, publikasi, keahlian
+model Dosen {
+  id                Int      @id @default(autoincrement())
+  nidn              String   @unique
+  nama              String
+  email             String
+  telepon           String
+  foto              String?
+  jabatan           String   // "Dosen Tetap", "Dosen Luar Biasa", dst.
+  pendidikan        String   // "S3 Hukum Pidana"
+  universitasAsal   String?
+  keahlian          Json // Array bidang keahlian
+  jumlahPublikasi   Int      @default(0)
+  biografi          String   
+  penghargaan       Json // Array penghargaan
+  minatPenelitian   Json // Array minat penelitian
+  mataKuliah        Json // Array mata kuliah yang diampu
+  scholar           String?  // Google Scholar URL
+  scopus            String?  // Scopus URL
+  sinta             String?  // SINTA URL
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: TenagaKependidikan
+// Fungsi: Menyimpan data tenaga kependidikan (staff non-dosen)
+// Digunakan di menu: Kepegawaian > Tenaga Kependidikan
+// Berisi: Biodata, jabatan, tugas, pengalaman
+model TenagaKependidikan {
+  id                Int      @id @default(autoincrement())
+  nip               String   @unique
+  nama              String
+  email             String
+  telepon           String
+  foto              String?
+  jabatan           String   // "Kepala Tata Usaha", "Staff Akademik", dst.
+  pendidikan        String
+  keahlian          Json // Array bidang keahlian
+  pengalaman        String   // "15 Tahun"
+  biografi          String   
+  tugasUtama        Json // Array tugas dan tanggung jawab
+  pencapaian        Json // Array pencapaian
+  pelatihan         Json // Array pelatihan yang diikuti
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KEMAHASISWAAN - ORGANISASI
+// ============================================
+
+// Model: BidangOrganisasi
+// Fungsi: Menyimpan data bidang-bidang dalam Himpunan Mahasiswa
+// Digunakan di menu: Kemahasiswaan dan Alumni > Organisasi Mahasiswa
+// Contoh: Bidang Pendidikan, Bidang Kewirausahaan, dll
+// Relasi: Memiliki banyak AnggotaOrganisasi
+model BidangOrganisasi {
+  id                Int      @id @default(autoincrement())
+  nama              String   // "Bidang Pendidikan", "Bidang Kewirausahaan", dst.
+  deskripsi         String   
+  visi              String   
+  foto              String?
+  programKerja      Json // Array program kerja
+  pencapaian        Json // Array pencapaian
+  
+  anggota           AnggotaOrganisasi[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: AnggotaOrganisasi
+// Fungsi: Menyimpan data anggota di setiap bidang organisasi mahasiswa
+// Digunakan di menu: Kemahasiswaan dan Alumni > Organisasi Mahasiswa
+// Relasi: Many-to-one dengan BidangOrganisasi dan Mahasiswa
+model AnggotaOrganisasi {
+  id                Int      @id @default(autoincrement())
+  bidangId          Int
+  mahasiswaId       Int
+  jabatan           String   // "Ketua Bidang", "Anggota", dst.
+  tanggalBergabung  DateTime
+  tanggalBerakhir   DateTime?
+  
+  bidang            BidangOrganisasi @relation(fields: [bidangId], references: [id], onDelete: Cascade)
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: AnggotaDPM
+// Fungsi: Menyimpan data anggota Dewan Perwakilan Mahasiswa
+// Digunakan di menu: Kemahasiswaan dan Alumni > Dewan Perwakilan Mahasiswa
+// Berisi: Jabatan, visi, program kerja, pencapaian
+// Relasi: Many-to-one dengan Mahasiswa
+model AnggotaDPM {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  jabatan           String   // "Ketua DPM", "Wakil Ketua", "Anggota", dst.
+  deskripsi         String   
+  visi              String   
+  foto              String?
+  programKerja      Json // Array program kerja
+  pencapaian        Json // Array pencapaian
+  periode           String   // "2023-2024"
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: AnggotaBEM
+// Fungsi: Menyimpan data anggota Badan Eksekutif Mahasiswa
+// Digunakan di menu: Kemahasiswaan dan Alumni > Badan Eksekutif Mahasiswa
+// Berisi: Jabatan, visi, program kerja, pencapaian
+// Relasi: Many-to-one dengan Mahasiswa
+model AnggotaBEM {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  jabatan           String   // "Ketua BEM", "Sekretaris", "Bendahara", dst.
+  deskripsi         String   
+  visi              String   
+  foto              String?
+  programKerja      Json // Array program kerja
+  pencapaian        Json // Array pencapaian
+  periode           String   // "2023-2024"
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KEMAHASISWAAN - PRESTASI & KEGIATAN
+// ============================================
+
+// Model: Prestasi
+// Fungsi: Menyimpan data prestasi mahasiswa (akademik & non-akademik)
+// Digunakan di menu: 
+// - Kemahasiswaan dan Alumni > Prestasi Mahasiswa
+// - Kemahasiswaan dan Alumni > Data Prestasi Mahasiswa Kegiatan Non-Dikti
+// Berisi: Judul prestasi, kategori, tingkat, posisi, penyelenggara
+// Relasi: Many-to-one dengan Mahasiswa
+model Prestasi {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  judul             String
+  kategori          String   // "Akademik", "Olahraga", "Seni", "Teknologi", dst.
+  tingkat           String   // "Internasional", "Nasional", "Regional", "Lokal"
+  posisi            String   // "Juara 1", "Juara 2", "Finalis", dst.
+  tanggal           DateTime
+  lokasi            String
+  penyelenggara     String
+  deskripsi         String   
+  dampak            String   
+  keterampilan      Json // Array keterampilan yang dikembangkan
+  penghargaan       Json // Array penghargaan yang diterima
+  foto              String?
+  sertifikat        String?
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: Rekognisi
+// Fungsi: Menyimpan data rekognisi/penghargaan institusi
+// Digunakan di menu: Kemahasiswaan dan Alumni > Data Rekognisi
+// Berisi: Akreditasi, sertifikasi, penghargaan institusi
+model Rekognisi {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  kategori          String   // "Akreditasi", "Sertifikasi", "Penghargaan", dst.
+  tingkat           String   // "Internasional", "Nasional", "Regional"
+  tahun             Int
+  pemberi           String
+  deskripsi         String   
+  dampak            String   
+  kriteriaPenilaian Json // Array kriteria penilaian
+  manfaat           Json // Array manfaat
+  berlakuHingga     DateTime?
+  foto              String?
+  sertifikat        String?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: Seminar
+// Fungsi: Menyimpan data seminar/workshop yang diadakan
+// Digunakan di menu: Kemahasiswaan dan Alumni > Data Seminar Mahasiswa
+// Berisi: Judul, narasumber, tanggal, lokasi, peserta
+// Relasi: Memiliki banyak SeminarPeserta
+model Seminar {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  narasumber        String
+  gelarNarasumber   String
+  bioNarasumber     String   
+  fotoNarasumber    String?
+  emailNarasumber   String?
+  teleponNarasumber String?
+  tanggal           DateTime
+  waktu             String
+  lokasi            String
+  kategori          String   // "Hukum Pidana", "Hukum Perdata", dst.
+  deskripsi         String   
+  tujuanPembelajaran Json // Array tujuan pembelajaran
+  materi            Json // Array materi yang dibahas
+  hasilDiharapkan   Json // Array hasil yang diharapkan
+  kapasitasMaksimal Int
+  biayaPendaftaran  Int      @default(0)
+  foto              String?
+  
+  peserta           SeminarPeserta[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: SeminarPeserta
+// Fungsi: Menyimpan data peserta yang mengikuti seminar
+// Digunakan di menu: Kemahasiswaan dan Alumni > Data Seminar Mahasiswa
+// Relasi: Many-to-many antara Seminar dan Mahasiswa
+model SeminarPeserta {
+  id                Int      @id @default(autoincrement())
+  seminarId         Int
+  mahasiswaId       Int
+  tanggalDaftar     DateTime @default(now())
+  statusKehadiran   String   @default("Terdaftar") // "Terdaftar", "Hadir", "Tidak Hadir"
+  sertifikat        String?
+  
+  seminar           Seminar @relation(fields: [seminarId], references: [id], onDelete: Cascade)
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@unique([seminarId, mahasiswaId])
+}
+
+// Model: Magang
+// Fungsi: Menyimpan data mahasiswa yang sedang/pernah magang
+// Digunakan di menu: Kemahasiswaan dan Alumni > Data Mahasiswa Magang
+// Berisi: Perusahaan, posisi, durasi, tugas, pembimbing
+// Relasi: Many-to-one dengan Mahasiswa
+model Magang {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  perusahaan        String
+  logoPerusahaan    String?
+  profilPerusahaan  String   
+  posisi            String
+  divisi            String
+  lokasi            String
+  tanggalMulai      DateTime
+  tanggalSelesai    DateTime
+  durasi            String   // "3 Bulan", "6 Bulan", dst.
+  deskripsi         String   
+  tugasTanggungJawab Json // Array tugas dan tanggung jawab
+  keterampilan      Json // Array keterampilan yang dikembangkan
+  pencapaian        Json // Array pencapaian
+  namaPembimbing    String
+  emailPembimbing   String
+  teleponPembimbing String
+  foto              String?
+  sertifikat        String?
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: Wirausaha
+// Fungsi: Menyimpan data mahasiswa yang berwirausaha
+// Digunakan di menu: Kemahasiswaan dan Alumni > Data Mahasiswa Berwirausaha
+// Berisi: Nama usaha, kategori, pendapatan, produk, pencapaian
+// Relasi: Many-to-one dengan Mahasiswa
+model Wirausaha {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  namaUsaha         String
+  kategori          String   // "Teknologi", "F&B", "Fashion", dst.
+  tahunBerdiri      Int
+  jumlahKaryawan    Int
+  pendapatan        String   // "Rp 50 juta/bulan"
+  lokasi            String
+  deskripsi         String   
+  produkLayanan     Json // Array produk/layanan
+  pencapaian        Json // Array pencapaian
+  tantangan         Json // Array tantangan yang dihadapi
+  rencanaMasaDepan  Json // Array rencana masa depan
+  website           String?
+  instagram         String?
+  email             String?
+  telepon           String?
+  foto              String?
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KEMAHASISWAAN - BEASISWA
+// ============================================
+
+// Model: Beasiswa
+// Fungsi: Menyimpan data program beasiswa yang tersedia
+// Digunakan di menu: 
+// - Kemahasiswaan dan Alumni > Beasiswa
+// - Kemahasiswaan dan Alumni > Beasiswa BRI
+// - Kemahasiswaan dan Alumni > Beasiswa KIP Kemendiksaintek
+// Berisi: Nama beasiswa, pemberi, nominal, persyaratan
+// Relasi: Memiliki banyak PengajuanBeasiswa
+model Beasiswa {
+  id                Int      @id @default(autoincrement())
+  nama              String
+  pemberi           String
+  jenis             String   // "Prestasi", "Ekonomi", "KIP", dst.
+  nominal           String   // "Rp 5 juta/semester"
+  durasi            String   // "4 Semester", "Hingga Lulus", dst.
+  kuota             Int
+  deskripsi         String   
+  persyaratan       Json // Array persyaratan
+  manfaat           Json // Array manfaat
+  batasPendaftaran  DateTime
+  kontakPerson      String
+  kontakEmail       String
+  kontakTelepon     String
+  foto              String?
+  aktif             Boolean  @default(true)
+  
+  pengajuan         PengajuanBeasiswa[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: PengajuanBeasiswa
+// Fungsi: Menyimpan data pengajuan beasiswa dari mahasiswa
+// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Pengajuan Beasiswa
+// Berisi: Status pengajuan, alasan, dokumen pendukung
+// Relasi: Many-to-one dengan Beasiswa dan Mahasiswa
+model PengajuanBeasiswa {
+  id                Int      @id @default(autoincrement())
+  beasiswaId        Int
+  mahasiswaId       Int
+  tanggalPengajuan  DateTime @default(now())
+  status            String   @default("Menunggu") // "Menunggu", "Disetujui", "Ditolak"
+  prioritas         String   // "Tinggi", "Sedang", "Rendah"
+  alasan            String   
+  prestasi          Json // Array prestasi
+  penghasilanOrtu   String
+  pekerjaanOrtu     String
+  dokumen           Json // Array URL dokumen
+  catatan           String?  
+  
+  beasiswa          Beasiswa @relation(fields: [beasiswaId], references: [id], onDelete: Cascade)
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KEMAHASISWAAN - TRACER STUDY
+// ============================================
+
+// Model: TracerStudy
+// Fungsi: Menyimpan data tracer study alumni per tahun
+// Digunakan di menu: 
+// - Kemahasiswaan dan Alumni > Tracer Study Kemendiksaintek
+// - Kemahasiswaan dan Alumni > Tracer Study Unigal
+// Berisi: Statistik keterserapan kerja, gaji, waktu tunggu
+// Relasi: Memiliki banyak JalurKarir
+model TracerStudy {
+  id                Int      @id @default(autoincrement())
+  sumber            String   // "Kemendiksaintek", "Unigal"
+  tahun             Int
+  totalLulusan      Int
+  totalResponden    Int
+  tingkatKeterserapan Float  // Persentase
+  rataRataGaji      String
+  rataRataWaktuTunggu String // "3.2 Bulan"
+  kesesuaianBidang  Float    // Persentase
+  
+  jalurKarir        JalurKarir[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: JalurKarir
+// Fungsi: Menyimpan detail jalur karir alumni per sektor
+// Digunakan di menu: 
+// - Kemahasiswaan dan Alumni > Tracer Study Kemendiksaintek
+// - Kemahasiswaan dan Alumni > Tracer Study Unigal
+// Berisi: Sektor pekerjaan, persentase, gaji, institusi
+// Relasi: Many-to-one dengan TracerStudy
+model JalurKarir {
+  id                Int      @id @default(autoincrement())
+  tracerStudyId     Int
+  sektor            String   // "Sektor Publik", "Sektor Swasta", dst.
+  persentase        Float
+  deskripsi         String   
+  rataRataGaji      String
+  contohInstitusi   Json // Array contoh institusi
+  keterampilan      Json // Array keterampilan yang dibutuhkan
+  
+  tracerStudy       TracerStudy @relation(fields: [tracerStudyId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: RekapitulasiSurvey
+// Fungsi: Menyimpan rekapitulasi pengisian survey tracer study
+// Digunakan di menu: Kemahasiswaan dan Alumni > Rekapitulasi Pengisian
+// Berisi: Tingkat partisipasi per angkatan
+// Relasi: Memiliki banyak KategoriRekapitulasi
+model RekapitulasiSurvey {
+  id                Int      @id @default(autoincrement())
+  programStudi      String   // "S1 Hukum"
+  angkatan          String   // "2021", "2022", dst.
+  totalMahasiswa    Int
+  totalResponden    Int
+  tingkatPartisipasi Float   // Persentase
+  
+  kategori          KategoriRekapitulasi[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: KategoriRekapitulasi
+// Fungsi: Menyimpan detail kelengkapan per kategori survey
+// Digunakan di menu: Kemahasiswaan dan Alumni > Rekapitulasi Pengisian
+// Berisi: Kategori data (pribadi, akademik, dll) dan kelengkapannya
+// Relasi: Many-to-one dengan RekapitulasiSurvey
+model KategoriRekapitulasi {
+  id                Int      @id @default(autoincrement())
+  rekapitulasiId    Int
+  nama              String   // "Data Pribadi", "Data Akademik", dst.
+  totalField        Int
+  fieldTerisi       Int
+  tingkatKelengkapan Float   // Persentase
+  
+  rekapitulasi      RekapitulasiSurvey @relation(fields: [rekapitulasiId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// ARSIP - SURAT FAKULTAS
+// ============================================
+
+// Model: SuratMasuk
+// Fungsi: Menyimpan arsip surat masuk ke fakultas
+// Digunakan di menu: Arsip > Arsip Fakultas > Surat Masuk
+// Berisi: Nomor surat, pengirim, perihal, isi, lampiran, disposisi
+model SuratMasuk {
+  id                Int      @id @default(autoincrement())
+  nomorSurat        String   @unique
+  perihal           String
+  pengirim          String
+  instansiPengirim  String
+  tanggalDiterima   DateTime
+  prioritas         String   // "Tinggi", "Sedang", "Rendah"
+  status            String   @default("Baru") // "Baru", "Diproses", "Selesai"
+  kategori          String   // "Undangan", "Pemberitahuan", "Permohonan", dst.
+  isiSurat          String   
+  lampiran          Json // Array URL lampiran
+  disposisi         String?  
+  catatan           String?  
+  foto              String?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: SuratKeluar
+// Fungsi: Menyimpan arsip surat keluar dari fakultas
+// Digunakan di menu: Arsip > Arsip Fakultas > Surat Keluar
+// Berisi: Nomor surat, penerima, perihal, isi, lampiran, penandatangan
+model SuratKeluar {
+  id                Int      @id @default(autoincrement())
+  nomorSurat        String   @unique
+  perihal           String
+  penerima          String
+  instansiPenerima  String
+  tanggalKirim      DateTime
+  prioritas         String   // "Tinggi", "Sedang", "Rendah"
+  status            String   @default("Draft") // "Draft", "Proses", "Terkirim"
+  kategori          String   // "Undangan", "Pemberitahuan", "Permohonan", dst.
+  isiSurat          String   
+  lampiran          Json // Array URL lampiran
+  namaPengirim      String
+  jabatanPengirim   String
+  catatan           String?  
+  foto              String?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// ARSIP - SURAT KEMAHASISWAAN
+// ============================================
+
+// Model: SuratKeteranganAktif
+// Fungsi: Menyimpan arsip surat keterangan aktif mahasiswa
+// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Keterangan Aktif Mahasiswa
+// Berisi: Data mahasiswa, keperluan, masa berlaku
+// Relasi: Many-to-one dengan Mahasiswa
+model SuratKeteranganAktif {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  nomorSurat        String   @unique
+  keperluan         String   // "Beasiswa", "Magang", "Keperluan Bank", dst.
+  tanggalTerbit     DateTime
+  berlakuHingga     DateTime?
+  status            String   @default("Aktif") // "Aktif", "Kadaluarsa"
+  isiSurat          String   
+  namaPenandatangan String
+  jabatanPenandatangan String
+  catatan           String?  
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: IzinPenelitian
+// Fungsi: Menyimpan arsip surat izin penelitian mahasiswa
+// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Izin Penelitian
+// Berisi: Judul penelitian, lokasi, durasi, tujuan, metode
+// Relasi: Many-to-one dengan Mahasiswa
+model IzinPenelitian {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  nomorSurat        String   @unique
+  judulPenelitian   String
+  lokasi            String
+  alamatLokasi      String
+  kontakLokasi      String
+  tanggalMulai      DateTime
+  tanggalSelesai    DateTime
+  durasi            String   // "2 Bulan"
+  tanggalTerbit     DateTime
+  prioritas         String   // "Tinggi", "Sedang", "Rendah"
+  status            String   @default("Aktif") // "Aktif", "Selesai", "Dibatalkan"
+  deskripsi         String   
+  tujuanPenelitian  Json // Array tujuan penelitian
+  metodePenelitian  Json // Array metode penelitian
+  hasilDiharapkan   Json // Array hasil yang diharapkan
+  namaPembimbing    String
+  nidnPembimbing    String
+  foto              String?
+  catatan           String?  
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: SuratKelakuan
+// Fungsi: Menyimpan arsip surat keterangan kelakuan baik mahasiswa
+// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Keterangan Kelakuan
+// Berisi: Penilaian kelakuan, catatan akademik, disiplin, organisasi
+// Relasi: Many-to-one dengan Mahasiswa
+model SuratKelakuan {
+  id                Int      @id @default(autoincrement())
+  mahasiswaId       Int
+  nomorSurat        String   @unique
+  kelakuan          String   // "Baik", "Sangat Baik"
+  keperluan         String   // "Beasiswa", "Magang", "Keperluan Lainnya"
+  tanggalTerbit     DateTime
+  isiSurat          String   
+  catatanAkademik   Json // Array catatan akademik
+  catatanDisiplin   Json // Array catatan disiplin
+  catatanOrganisasi Json // Array catatan organisasi
+  namaPenandatangan String
+  jabatanPenandatangan String
+  catatan           String?  
+  
+  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KEKHUSUSAN (SPECIALIZATIONS)
+// ============================================
+
+// Model: Kekhususan
+// Fungsi: Menyimpan data program kekhususan hukum
+// Digunakan di menu: Kekhususan (Hukum Pidana, Hukum Perdata, Hukum Tata Negara)
+// Berisi: Nama kekhususan, deskripsi, total SKS, statistik
+// Relasi: Memiliki banyak MataKuliahKekhususan dan ProspekKarir
+model Kekhususan {
+  id                Int      @id @default(autoincrement())
+  nama              String   @unique // "Hukum Pidana", "Hukum Perdata", "Hukum Tata Negara"
+  slug              String   @unique // "pidana", "perdata", "tata-negara"
+  deskripsi         String   
+  totalSKS          Int      // 24 SKS
+  totalMahasiswa    Int
+  tingkatKelulusan  Float    // Persentase
+  
+  mataKuliah        MataKuliahKekhususan[]
+  prospekKarir      ProspekKarir[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: MataKuliahKekhususan
+// Fungsi: Menyimpan data mata kuliah per kekhususan
+// Digunakan di menu: Kekhususan (detail mata kuliah di setiap kekhususan)
+// Berisi: Nama, kode, SKS, semester, topik bahasan
+// Relasi: Many-to-one dengan Kekhususan
+model MataKuliahKekhususan {
+  id                Int      @id @default(autoincrement())
+  kekhususanId      Int
+  nama              String
+  kode              String
+  semester          Int
+  sks               Int
+  deskripsi         String   
+  topikBahasan      Json // Array topik yang dibahas
+  foto              String?
+  
+  kekhususan        Kekhususan @relation(fields: [kekhususanId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: ProspekKarir
+// Fungsi: Menyimpan prospek karir lulusan per kekhususan
+// Digunakan di menu: Kekhususan (prospek karir di setiap kekhususan)
+// Berisi: Judul karir, deskripsi, persyaratan
+// Relasi: Many-to-one dengan Kekhususan
+model ProspekKarir {
+  id                Int      @id @default(autoincrement())
+  kekhususanId      Int
+  judul             String   // "Jaksa", "Hakim", "Advokat", dst.
+  deskripsi         String   
+  persyaratan       Json // Array persyaratan
+  
+  kekhususan        Kekhususan @relation(fields: [kekhususanId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// TENTANG (ABOUT)
+// ============================================
+
+// Model: Sejarah
+// Fungsi: Menyimpan timeline sejarah fakultas
+// Digunakan di menu: Tentang > Sejarah S1
+// Berisi: Tahun, judul, deskripsi peristiwa penting
+model Sejarah_S1 {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  tahun             String?
+  deskripsi         String   
+  foto              String?
+  // urutan            Int      @default(0)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+model SejarahS1 {
+  id                Int      @id @default(autoincrement())
+  banner            String?
+  konten            String? 
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikSejarahS1 {
+  id                Int      @id @default(autoincrement())
+  tahunPengalaman   String?
+  alumni            String?
+  akreditasi        String?
+  tingkatKelulusan  String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model Sejarah_S2 {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  tahun             String?
+  deskripsi         String   
+  foto              String?
+  // urutan            Int      @default(0)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+model SejarahS2 {
+  id                Int      @id @default(autoincrement())
+  banner            String?
+  konten            String? 
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikSejarahS2 {
+  id                Int      @id @default(autoincrement())
+  tahunPengalaman   String?
+  alumni            String?
+  akreditasi        String?
+  tingkatKelulusan  String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model SaranaPrasarana {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  katagori          String?
+  deskripsi         String   
+  foto              Json?
+}
+
+model SaranaPrasaranaBanner {
+  id                Int      @id @default(autoincrement())
+  banner            String?
+  konten            String? 
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikSaranaPrasarana {
+  id                Int      @id @default(autoincrement())
+  ruangKuliah       String?
+  koleksiBuku       String?
+  unitKomputer      String?
+  lantaiGedung      String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model RencanaStrategis {
+  id                Int      @id @default(autoincrement())
+  tahun             String?
+  judul             String
+  katagori          Json?
+  deskripsi         String   
+  foto              Json?
+}
+
+model StatistikRencanaStrategis{
+  id                Int      @id @default(autoincrement())
+  tahunRencana      String?
+  targetStrategis   String?
+  programAksi       String?
+  targetAkreditas   String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model SenatFakultas {
+  id                Int      @id @default(autoincrement())
+  nama              String
+  jabatan           String
+  foto              String?
+  keahlian          String?
+  periode           String?
+  tugas             String?
+  deskripsi         String?
+  galeri            Json?
+}
+
+model StatistikSenatFakultas{
+  id                Int      @id @default(autoincrement())
+  anggotaSenat      String?
+  tahunPeriode      String?
+  rapatPerTahun     String?
+  keputusan         String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+// Model: VisiMisi
+// Fungsi: Menyimpan visi, misi, dan nilai fakultas
+// Digunakan di menu: Tentang > Visi Misi
+// Berisi: Visi, array misi, array nilai
+model VisiMisi {
+  id          Int      @id @default(autoincrement())
+  type        String   // 'visi' atau 'misi'
+  title       String
+  deskripsi   String
+  gambar      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+model StatistikVisiMisi{
+  id                Int      @id @default(autoincrement())
+  tahunPengalaman   String?
+  alumni            String?
+  dosenBerkualitas  String?
+  ProgramUnggula    String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+// Model: StrukturOrganisasi
+// Fungsi: Menyimpan struktur organisasi fakultas
+// Digunakan di menu: Tentang > Struktur Organisasi
+// Berisi: Jabatan, nama, foto, hierarki
+model StrukturOrganisasi {
+  id                Int      @id @default(autoincrement())
+  jabatan           String
+  nama              String
+  foto              String?
+  note              String?
+  type              String?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+model StatistikStrukturOrganisasi{
+  id                Int      @id @default(autoincrement())
+  pimpinan          String?
+  bagianUtama       String?
+  tenagaPendidikan  String?
+  dosenTetap        String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model Pimpinan {
+  id                Int      @id @default(autoincrement())
+  nama              String
+  jabatan           String
+  foto              String?
+  pendidikan        Json?
+  keahlian          Json?
+  periode           String?
+  email             String?
+  kontak            String?
+}
+
+model StatistikPimpinan{
+  id                Int      @id @default(autoincrement())
+  pimpinan          String?
+  tahunPengalaman   String?
+  publikasiIlmiah   String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+model ProgramSarjanaHukum {
+  id                Int      @id @default(autoincrement())
+  image             Json?
+  semester          String?
+  judul             String?
+  deskripsi         String?
+  kategori          Json?
+}
+
+model StatistikProgramSarjanaHukum{
+  id                Int      @id @default(autoincrement())
+  semester          String?
+  sksTotal          String?
+  akreditasi        String?
+  alumni            String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model prospekKarirSarjanaHukum {
+  id                Int      @id @default(autoincrement())
+  judul             String?
+  deskripsi         String?
+}
+
+
+model ProgramMagisterHukum {
+  id                Int      @id @default(autoincrement())
+  image             Json?
+  semester          String?
+  judul             String?
+  deskripsi         String?
+  kategori          Json?
+}
+
+model StatistikProgramMagisterHukum{
+  id                Int      @id @default(autoincrement())
+  semester          String?
+  sksTotal          String?
+  akreditasi        String?
+  alumni            String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model prospekKarirMagisterHukum {
+  id                Int      @id @default(autoincrement())
+  judul             String?
+  deskripsi         String?
+  image             String?
+}
+
+
+model ArsipSuratMasuk {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  deskripsi         String?
+  pengirim          String?
+  penerima          String?
+  nomorSurat        String?
+  tanggalDiterima   String?
+  foto              String?
+  file              Json?
+  status            String? @default("Diterima")
+}
+
+model StatistikArsipSuratMasuk{
+  id                Int      @id @default(autoincrement())
+  totalSurat        String?
+  suratBaru         String?
+  suratDalamProses  String?
+  suratSelesai      String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model ArsipSuratKeluar {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  deskripsi         String?
+  pengirim          String?
+  penerima          String?
+  nomorSurat        String?
+  tanggalKirim      String?
+  foto              String?
+  file              Json?
+  note              String?
+  status            String? @default("Diterima")
+}
+
+model StatistikArsipSuratKeluar{
+  id                Int      @id @default(autoincrement())
+  totalSurat        String?
+  terkirim          String?
+  suratDalamProses  String?
+  draf              String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+model KeteranganAktifMahasiswa {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  nama              String?
+  nim               String?
+  jurusan           String?
+  semester          String?
+  status            String? @default("Aktif")
+  ipk               String?
+  keperluan         String? //keperluan beasiswa 
+  noSurat           String? //nomor surat
+  tanggalTerbit     String? //tanggal surat
+  tahunAkademik     String? //tahun akademik
+  diTerbitkan       String? //di terbitkan
+  note              String? //note
+  deskripsi         String?
+
+  
+}
+
+
+model StatistikKeteranganAktifMahasiswa{
+  id                Int      @id @default(autoincrement())
+  totalMahasiswa    String?
+  aktif             String?
+  tidakAktif        String?
+  selesai           String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model suratIjinPenelitian {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  file              Json?
+  title             String?
+  status            String? @default("Diterima")
+  noSurat           String?
+  tanggalTerbit     String?
+  periodePenelitian String?
+  idMahasiswa       String?
+  penelitian        String?
+  temaPenelitian    String?
+  deskripsi         String?
+  tujuanPenelitian  Json?
+  metodePenelitian  Json?
+  hasilDiharapkan   Json?
+}
+
+model StatistikSuratIjinPenelitian{
+  id                Int      @id @default(autoincrement())
+  totalSurat        String?
+  diterima          String?
+  ditolak           String?
+  selesai           String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model SuratKeteranganKelakuanBaik {
+  id                Int      @id @default(autoincrement())
+  idMahasiswa       Int
+  deskripsi         String?
+  catatanAkademik   String?
+  catatanDisiplin   String?
+  catatanOrganisasi String?
+  penandaTangan     String?
+  note              String?
+  noSurat           String?
+  tanggalTerbit     String?
+  berlakuHingga     String?
+  keperluan         String?
+  status            String? @default("Baik")
+  
+}
+
+model StatistikSuratKelakuanBaik{
+  id                Int      @id @default(autoincrement())
+  suratDiterbitkan  String?
+  tingkatPersetujuan      String?
+  waktuProses       String?
+  validasiTerjamin          String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model suratPengajuanBeasiswa {
+  id                Int      @id @default(autoincrement())
+  idMahasiswa       Int
+  beasiswa          String?
+  noSurat           String?
+  tanggalPengajuan  String?
+  provider          String? 
+  nominalPerSemester String?
+  alasanPengajuan   String?
+  prestasi          Json?
+  namaAyah          String?
+  namaIbu           String?
+  penghasilanOrangtua String?
+  dokumen           Json?
+  alamat            String?
+  email             String?
+  kontak            String?
+  note              String?
+  status            String? @default("Disetujui")
+  
+  
+}
+
+
+model StatistikSuratPengajuanBeasiswa{
+  id                Int      @id @default(autoincrement())
+  totalPengajuan    String?
+  disetujui         String?
+  menunggu          String?
+  ditolak           String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+model SeminarProposal {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  kategori          Json?
+  foto              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model ProsedurPelaksanaan {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  tahapan           String?
+  waktu             String? //minggu 1-2
+  deskripsi         String?
+  foto              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikSeminarProposal{
+  id                Int      @id @default(autoincrement())
+  seminarPerTahun   String?
+  tingkatKelulusan  String?
+  bulanPersiapan    String?
+  timPenguji        String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+// Model: Fasilitas
+// Fungsi: Menyimpan data fasilitas dan infrastruktur fakultas
+// Digunakan di menu: Tentang > Fasilitas atau halaman Fasilitas
+// Berisi: Nama, kategori, deskripsi, kapasitas, lokasi, foto
+model Fasilitas {
+  id                Int      @id @default(autoincrement())
+  nama              String
+  kategori          String   // "Ruang Kuliah", "Laboratorium", "Perpustakaan", "Ruang Seminar", dst.
+  deskripsi         String   
+  kapasitas         Int?     // Kapasitas orang (jika applicable)
+  lokasi            String   // "Gedung A Lantai 2", "Kampus Utama", dst.
+  luas              String?  // "100 m²", "50 m²", dst.
+  fasilitas         Json // Array fasilitas yang tersedia: ["AC", "Proyektor", "WiFi", dst.]
+  kondisi           String   @default("Baik") // "Baik", "Sedang", "Perlu Perbaikan"
+  jamOperasional    String?  // "Senin-Jumat 08:00-16:00"
+  penanggungJawab   String?  // Nama penanggung jawab
+  kontakPJ          String?  // Kontak penanggung jawab
+  foto              Json // Array URL foto fasilitas
+  thumbnail         String?  // Foto utama untuk preview
+  urutan            Int      @default(0)
+  featured          Boolean  @default(false)
+  aktif             Boolean  @default(true)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// BERITA & PENGUMUMAN
+// ============================================
+
+// Model: Berita
+// Fungsi: Menyimpan artikel berita fakultas
+// Digunakan di menu: Beranda (untuk menampilkan berita terbaru)
+// Berisi: Judul, konten, kategori, penulis, galeri foto
+model Berita {
+  id                Int      @id @default(autoincrement())
+  judul             String?  
+  konten            String ?  
+  kategori          String ?   // "Akademik", "Kemahasiswaan", "Penelitian", dst.
+  penulis           String ?
+  tanggalPublikasi  DateTime ?
+  foto              String ?
+  galeri            Json ? 
+  aktif             Boolean  @default(true)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: Pengumuman
+// Fungsi: Menyimpan pengumuman penting fakultas
+// Digunakan di menu: Beranda (untuk menampilkan pengumuman)
+// Berisi: Judul, konten, kategori, prioritas, masa berlaku
+model Pengumuman {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  konten            String   
+  kategori          String   // "Penting", "Akademik", "Kemahasiswaan", dst.
+  prioritas         String   // "Tinggi", "Sedang", "Rendah"
+  tanggalMulai      DateTime
+  tanggalBerakhir   DateTime?
+  lampiran          Json // Array URL lampiran
+  aktif             Boolean  @default(true)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// GALERI & MEDIA
+// ============================================
+
+// Model: Galeri
+// Fungsi: Menyimpan galeri foto kegiatan fakultas
+// Digunakan di menu: Beranda atau halaman Galeri
+// Berisi: Judul, deskripsi, kategori, kumpulan foto
+model Galeri {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  deskripsi         String?  
+  kategori          String   // "Kegiatan", "Fasilitas", "Wisuda", dst.
+  tanggal           DateTime
+  foto              Json // Array URL foto
+  featured          Boolean  @default(false)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: Video
+// Fungsi: Menyimpan video profil dan kegiatan fakultas
+// Digunakan di menu: Beranda atau halaman Video
+// Berisi: Judul, deskripsi, URL video, thumbnail
+model Video {
+  id                Int      @id @default(autoincrement())
+  judul             String
+  deskripsi         String?  
+  kategori          String   // "Profil", "Kegiatan", "Tutorial", dst.
+  urlVideo          String   // YouTube, Vimeo, atau URL lainnya
+  thumbnail         String?
+  durasi            String?  // "10:30"
+  tanggalUpload     DateTime
+  views             Int      @default(0)
+  featured          Boolean  @default(false)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// TESTIMONI & FAQ
+// ============================================
+
+// Model: Testimoni
+// Fungsi: Menyimpan testimoni dari mahasiswa/alumni
+// Digunakan di menu: Beranda (untuk menampilkan testimoni)
+// Berisi: Nama, jabatan, foto, konten testimoni, rating
+model Testimoni {
+  id                Int      @id @default(autoincrement())
+  judul             String?
+  nama              String?
+  jabatan           String?   // "Alumni 2020", "Mahasiswa Aktif", dst.
+  foto              String?
+  galeri            Json? // Array URL foto
+  konten            String?   
+  kategori          String?
+  note              String?   
+  tanggalPublikasi  String?   
+  aktif             Boolean  @default(true)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: FAQ
+// Fungsi: Menyimpan pertanyaan yang sering diajukan
+// Digunakan di menu: Halaman FAQ atau footer
+// Berisi: Pertanyaan, jawaban, kategori
+model FAQ {
+  id                Int      @id @default(autoincrement())
+  pertanyaan        String
+  jawaban           String   
+  kategori          String   // "Akademik", "Pendaftaran", "Beasiswa", dst.
+  urutan            Int      @default(0)
+  aktif             Boolean  @default(true)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// KONTAK & PENGATURAN
+// ============================================
+
+// Model: InformasiKontak
+// Fungsi: Menyimpan informasi kontak fakultas
+// Digunakan di menu: Footer dan halaman Kontak
+// Berisi: Alamat, telepon, email, jam operasional, maps
+model InformasiKontak {
+  id                Int      @id @default(autoincrement())
+  jenis             String   @unique // "utama", "akademik", "kemahasiswaan", dst.
+  alamat            String   
+  telepon           Json
+  email             Json
+  fax               String?
+  whatsapp          String?
+  jamOperasional    String?
+  maps              String?  // Google Maps embed URL
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: MediaSosial
+// Fungsi: Menyimpan link media sosial fakultas
+// Digunakan di menu: Footer dan header
+// Berisi: Platform, URL, username
+model MediaSosial {
+  id                Int      @id @default(autoincrement())
+  platform          String   @unique // "facebook", "instagram", "twitter", dst.
+  url               String
+  username          String?
+  aktif             Boolean  @default(true)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: PengaturanSitus
+// Fungsi: Menyimpan pengaturan umum website
+// Digunakan di menu: Seluruh website (logo, nama, favicon, dll)
+// Berisi: Key-value pair untuk berbagai pengaturan
+// Contoh: nama_fakultas, logo, favicon, warna_tema, dll
+model PengaturanSitus {
+  id                Int      @id @default(autoincrement())
+  kunci             String   @unique // "nama_fakultas", "logo", "favicon", dst.
+  nilai             String   
+  tipe              String   // "text", "image", "number", "boolean", dst.
+  deskripsi         String?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================
+// SISTEM/ADMIN
+// ============================================
+
+// Model: Pengguna
+// Fungsi: Menyimpan data pengguna sistem (admin, staff)
+// Digunakan di menu: Dashboard Admin (untuk login dan manajemen user)
+// Berisi: Email, password, nama, role, foto
+model Pengguna {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  password          String
+  nama              String
+  role              String   // "Admin", "Staff", "Dosen", dst.
+  foto              String?
+  aktif             Boolean  @default(true)
+  terakhirLogin     DateTime?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// Model: LogAktivitas
+// Fungsi: Menyimpan log aktivitas pengguna untuk audit trail
+// Digunakan di menu: Dashboard Admin (untuk monitoring aktivitas)
+// Berisi: Pengguna, aksi, entitas, deskripsi, IP, user agent
+model LogAktivitas {
+  id                Int      @id @default(autoincrement())
+  penggunaId        Int?
+  aksi              String   // "create", "update", "delete", "login", dst.
+  entitas           String   // "Mahasiswa", "Berita", "Surat", dst.
+  entitasId         Int?
+  deskripsi         String   
+  ipAddress         String?
+  userAgent         String?
+  
+  createdAt         DateTime @default(now())
+}
