@@ -21,6 +21,15 @@ import SuratIjinPenelitianController from "../controllers/surat-ijin-penelitian-
 import suratKelakuanBaikController from "../controllers/surat-kelakuan-baik-controller";
 import suratPengajuanBeasiswaController from "../controllers/surat-pengajuan-beasiswa-controller";
 import seminarProposalController from "../controllers/seminar-proposal-controller";
+import sidangSkripsiController from "../controllers/sidang-skripsi-controller";
+import keteranganPendampingController from "../controllers/keterangan-pendamping-controller";
+import ujianKomprehensifController from "../controllers/ujian-komprehensif-controller";
+import matrikulasiController from "../controllers/matrikulasi-controller";
+import kelompokRisetController from "../controllers/kelompok-riset-controller";
+import sejarahLbkhController from "../controllers/sejarah-lbkh-controller";
+import visiMisiLbkhController from "../controllers/visi-misi-lbkh-controller";
+import pengurusLbkhController from "../controllers/pengurus-lbkh-controller";
+import AdvokatParalegalController from "../controllers/advokat-paralegal-controller";
 
 type MulterRequest = Request & {
   file?: Express.Multer.File;
@@ -2123,6 +2132,1012 @@ router.delete(
   "/prosedur-pelaksanaan/:id",
   seminarProposalController.deleteProsedurPelaksanaan.bind(
     seminarProposalController
+  )
+);
+
+router.post(
+  "/seminar-proposal/statistik",
+  seminarProposalController.createStatistikSeminarProposal.bind(
+    seminarProposalController
+  )
+);
+
+router.get(
+  "/seminar-proposal/statistik",
+  seminarProposalController.getAllStatistikSeminarProposal.bind(
+    seminarProposalController
+  )
+);
+
+router.put(
+  "/seminar-proposal/statistik/:id",
+  seminarProposalController.updateStatistikSeminarProposal.bind(
+    seminarProposalController
+  )
+);
+
+router.delete(
+  "/seminar-proposal/statistik/:id",
+  seminarProposalController.deleteStatistikSeminarProposal.bind(
+    seminarProposalController
+  )
+);
+
+router.post(
+  "/sidang-skripsi",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return sidangSkripsiController.createSidangSkripsi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/sidang-skripsi",
+  sidangSkripsiController.getAllSidangSkripsi.bind(sidangSkripsiController)
+);
+
+router.put(
+  "/sidang-skripsi/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return sidangSkripsiController.updateSidangSkripsi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/sidang-skripsi/:id",
+  sidangSkripsiController.deleteSidangSkripsi.bind(sidangSkripsiController)
+);
+
+router.get(
+  "/prosedur-sidang-skripsi",
+  sidangSkripsiController.getAllProsedurSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.post(
+  "/prosedur-sidang-skripsi",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return sidangSkripsiController.createProsedurSidangSkripsi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.put(
+  "/prosedur-sidang-skripsi/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return sidangSkripsiController.updateProsedurSidangSkripsi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/prosedur-sidang-skripsi/:id",
+  sidangSkripsiController.deleteProsedurSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.post(
+  "/sidang-skripsi/statistik",
+  sidangSkripsiController.createStatistikSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.get(
+  "/sidang-skripsi/statistik",
+  sidangSkripsiController.getAllStatistikSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.put(
+  "/sidang-skripsi/statistik/:id",
+  sidangSkripsiController.updateStatistikSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.delete(
+  "/sidang-skripsi/statistik/:id",
+  sidangSkripsiController.deleteStatistikSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.post(
+  "/sidang-skripsi/kriteria",
+  sidangSkripsiController.createKriteriaSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.get(
+  "/sidang-skripsi/kriteria",
+  sidangSkripsiController.getAllKriteriaSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.put(
+  "/sidang-skripsi/kriteria/:id",
+  sidangSkripsiController.updateKriteriaSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.delete(
+  "/sidang-skripsi/kriteria/:id",
+  sidangSkripsiController.deleteKriteriaSidangSkripsi.bind(
+    sidangSkripsiController
+  )
+);
+
+router.post(
+  "/keterangan-pendamping-ijazah",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return keteranganPendampingController.createKeteranganPendampingIjazah(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/keterangan-pendamping-ijazah",
+  keteranganPendampingController.getAllKeteranganPendampingIjazah.bind(
+    keteranganPendampingController
+  )
+);
+
+router.put(
+  "/keterangan-pendamping-ijazah/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return keteranganPendampingController.updateKeteranganPendampingIjazah(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/keterangan-pendamping-ijazah/:id",
+  keteranganPendampingController.deleteKeteranganPendampingIjazah.bind(
+    keteranganPendampingController
+  )
+);
+
+router.post(
+  "/keterangan-pendamping-ijazah/statistik",
+  keteranganPendampingController.createStatistikKeteranganPendampingIjazah.bind(
+    keteranganPendampingController
+  )
+);
+
+router.get(
+  "/keterangan-pendamping-ijazah/statistik",
+  keteranganPendampingController.getStatistikKeteranganPendampingIjazah.bind(
+    keteranganPendampingController
+  )
+);
+
+router.put(
+  "/keterangan-pendamping-ijazah/statistik/:id",
+  keteranganPendampingController.updateStatistikKeteranganPendampingIjazah.bind(
+    keteranganPendampingController
+  )
+);
+
+router.delete(
+  "/keterangan-pendamping-ijazah/statistik/:id",
+  keteranganPendampingController.deleteStatistikKeteranganPendampingIjazah.bind(
+    keteranganPendampingController
+  )
+);
+
+router.post(
+  "/ujian-komprehensif",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return ujianKomprehensifController.createUjianKomprehensif(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/ujian-komprehensif",
+  ujianKomprehensifController.getAllUjianKomprehensif.bind(
+    ujianKomprehensifController
+  )
+);
+
+router.put(
+  "/ujian-komprehensif/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return ujianKomprehensifController.updateUjianKomprehensif(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/ujian-komprehensif/:id",
+  ujianKomprehensifController.deleteUjianKomprehensif.bind(
+    ujianKomprehensifController
+  )
+);
+
+router.post(
+  "/ujian-komprehensif/statistik",
+  ujianKomprehensifController.createStatistikUjianKomprehensif.bind(
+    ujianKomprehensifController
+  )
+);
+
+router.get(
+  "/ujian-komprehensif/statistik",
+  ujianKomprehensifController.getAllStatistikUjianKomprehensif.bind(
+    ujianKomprehensifController
+  )
+);
+
+router.put(
+  "/ujian-komprehensif/statistik/:id",
+  ujianKomprehensifController.updateStatistikUjianKomprehensif.bind(
+    ujianKomprehensifController
+  )
+);
+
+router.delete(
+  "/ujian-komprehensif/statistik/:id",
+  ujianKomprehensifController.deleteStatistikUjianKomprehensif.bind(
+    ujianKomprehensifController
+  )
+);
+
+router.post(
+  "/matrikulasi",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return matrikulasiController.createMatrikulasi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/matrikulasi",
+  matrikulasiController.getAllMatrikulasi.bind(matrikulasiController)
+);
+
+router.put(
+  "/matrikulasi/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return matrikulasiController.updateMatrikulasi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/matrikulasi/:id",
+  matrikulasiController.deleteMatrikulasi.bind(matrikulasiController)
+);
+
+router.post(
+  "/matrikulasi/statistik",
+  matrikulasiController.createStatistikMatrikulasi.bind(matrikulasiController)
+);
+
+router.get(
+  "/matrikulasi/statistik",
+  matrikulasiController.getAllStatistikMatrikulasi.bind(matrikulasiController)
+);
+
+router.put(
+  "/matrikulasi/statistik/:id",
+  matrikulasiController.updateStatistikMatrikulasi.bind(matrikulasiController)
+);
+
+router.delete(
+  "/matrikulasi/statistik/:id",
+  matrikulasiController.deleteStatistikMatrikulasi.bind(matrikulasiController)
+);
+
+router.post(
+  "/kelompok-riset",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return kelompokRisetController.createKelompokRiset(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/kelompok-riset",
+  kelompokRisetController.getAllKelompokRiset.bind(kelompokRisetController)
+);
+router.put(
+  "/kelompok-riset/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return kelompokRisetController.updateKelompokRiset(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+router.delete(
+  "/kelompok-riset/:id",
+  kelompokRisetController.deleteKelompokRiset.bind(kelompokRisetController)
+);
+
+router.post(
+  "/kelompok-riset/statistik",
+  kelompokRisetController.createStatistikKelompokRiset.bind(
+    kelompokRisetController
+  )
+);
+
+router.get(
+  "/kelompok-riset/statistik",
+  kelompokRisetController.getAllStatistikKelompokRiset.bind(
+    kelompokRisetController
+  )
+);
+
+router.put(
+  "/kelompok-riset/statistik/:id",
+  kelompokRisetController.updateStatistikKelompokRiset.bind(
+    kelompokRisetController
+  )
+);
+
+router.delete(
+  "/kelompok-riset/statistik/:id",
+  kelompokRisetController.deleteStatistikKelompokRiset.bind(
+    kelompokRisetController
+  )
+);
+
+router.post(
+  "/sejarah-lbkh",
+  upload.fields([{ name: "foto", maxCount: 5 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return sejarahLbkhController.createSejarahLBKH(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.put(
+  "/sejarah-lbkh/:id",
+  upload.fields([{ name: "foto", maxCount: 5 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return sejarahLbkhController.updateSejarahLBKH(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/sejarah-lbkh/:id",
+  sejarahLbkhController.deleteSejarahLBKH.bind(sejarahLbkhController)
+);
+
+router.get(
+  "/sejarah-lbkh",
+  sejarahLbkhController.getAllSejarahLBKH.bind(sejarahLbkhController)
+);
+
+router.post(
+  "/sejarah-lbkh/statistik",
+  sejarahLbkhController.createStatistik.bind(sejarahLbkhController)
+);
+
+router.get(
+  "/sejarah-lbkh/statistik",
+  sejarahLbkhController.getAllStatistik.bind(sejarahLbkhController)
+);
+
+router.put(
+  "/sejarah-lbkh/statistik/:id",
+  sejarahLbkhController.updateStatistik.bind(sejarahLbkhController)
+);
+
+router.delete(
+  "/sejarah-lbkh/statistik/:id",
+  sejarahLbkhController.deleteStatistik.bind(sejarahLbkhController)
+);
+
+router.post(
+  "/visi-misi-lbkh",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return visiMisiLbkhController.createVisiMisiLBKH(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/visi-misi-lbkh",
+  visiMisiLbkhController.getAllVisiMisiLBKH.bind(visiMisiLbkhController)
+);
+
+router.put(
+  "/visi-misi-lbkh/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return visiMisiLbkhController.updateVisiMisiLBKH(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/visi-misi-lbkh/:id",
+  visiMisiLbkhController.deleteVisiMisiLBKH.bind(visiMisiLbkhController)
+);
+
+router.post(
+  "/visi-misi-lbkh/statistik",
+  visiMisiLbkhController.createStatistikVisiMisiLBKH.bind(
+    visiMisiLbkhController
+  )
+);
+
+router.get(
+  "/visi-misi-lbkh/statistik",
+  visiMisiLbkhController.getAllStatistikVisiMisiLBKH.bind(
+    visiMisiLbkhController
+  )
+);
+
+router.put(
+  "/visi-misi-lbkh/statistik/:id",
+  visiMisiLbkhController.updateStatistikVisiMisiLBKH.bind(
+    visiMisiLbkhController
+  )
+);
+
+router.delete(
+  "/visi-misi-lbkh/statistik/:id",
+  visiMisiLbkhController.deleteStatistikVisiMisiLBKH.bind(
+    visiMisiLbkhController
+  )
+);
+
+router.post(
+  "/pengurus-lbkh",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return pengurusLbkhController.createPengurusLbkh(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/pengurus-lbkh",
+  pengurusLbkhController.getAllPengurusLbkh.bind(pengurusLbkhController)
+);
+
+router.put(
+  "/pengurus-lbkh/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return pengurusLbkhController.updatePengurusLbkh(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/pengurus-lbkh/:id",
+  pengurusLbkhController.deletePengurusLbkh.bind(pengurusLbkhController)
+);
+
+router.post(
+  "/pengurus-lbkh/statistik",
+  pengurusLbkhController.createStatistikPengurusLBKH.bind(
+    pengurusLbkhController
+  )
+);
+
+router.get(
+  "/pengurus-lbkh/statistik",
+  pengurusLbkhController.getAllStatistikPengurusLBKH.bind(
+    pengurusLbkhController
+  )
+);
+
+router.put(
+  "/pengurus-lbkh/statistik/:id",
+  pengurusLbkhController.updateStatistikPengurusLBKH.bind(
+    pengurusLbkhController
+  )
+);
+
+router.delete(
+  "/pengurus-lbkh/statistik/:id",
+  pengurusLbkhController.deleteStatistikPengurusLBKH.bind(
+    pengurusLbkhController
+  )
+);
+
+router.post(
+  "/advokat-paralegal",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return AdvokatParalegalController.createAdvokatParalegal(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/advokat-paralegal",
+  AdvokatParalegalController.getAllAdvokatParalegal.bind(
+    AdvokatParalegalController
+  )
+);
+
+router.put(
+  "/advokat-paralegal/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return AdvokatParalegalController.updateAdvokatParalegal(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/advokat-paralegal/:id",
+  AdvokatParalegalController.deleteAdvokatParalegal.bind(
+    AdvokatParalegalController
+  )
+);
+
+router.post(
+  "/advokat-paralegal/statistik",
+  AdvokatParalegalController.createStatistikAdvokatParalegal.bind(
+    AdvokatParalegalController
+  )
+);
+
+router.get(
+  "/advokat-paralegal/statistik",
+  AdvokatParalegalController.getAllStatistikAdvokatParalegal.bind(
+    AdvokatParalegalController
+  )
+);
+
+router.put(
+  "/advokat-paralegal/statistik/:id",
+  AdvokatParalegalController.updateStatistikAdvokatParalegal.bind(
+    AdvokatParalegalController
+  )
+);
+
+router.delete(
+  "/advokat-paralegal/statistik/:id",
+  AdvokatParalegalController.deleteStatistikAdvokatParalegal.bind(
+    AdvokatParalegalController
   )
 );
 

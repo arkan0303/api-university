@@ -207,6 +207,113 @@ class SeminarProposalController {
       });
     }
   }
+
+  async createStatistikSeminarProposal(req: Request, res: Response) {
+    try {
+      const {
+        seminarPerTahun,
+        tingkatKelulusan,
+        bulanPersiapan,
+        timPenguji,
+        slogan,
+        deskripsi,
+      } = req.body;
+      const statistikSeminarProposal =
+        await seminarProposalService.createStatistikSeminarProposal({
+          seminarPerTahun,
+          tingkatKelulusan,
+          bulanPersiapan,
+          timPenguji,
+          slogan,
+          deskripsi,
+        });
+      return res.status(201).json({
+        success: true,
+        message: "Statistik seminar proposal berhasil dibuat",
+        data: statistikSeminarProposal,
+      });
+    } catch (error) {
+      console.error("Error in createStatistikSeminarProposal:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Gagal membuat statistik seminar proposal",
+      });
+    }
+  }
+
+  async getAllStatistikSeminarProposal(req: Request, res: Response) {
+    try {
+      const statistikSeminarProposal =
+        await seminarProposalService.getAllStatistikSeminarProposal();
+      return res.status(200).json({
+        success: true,
+        message: "Statistik seminar proposal berhasil diambil",
+        data: statistikSeminarProposal,
+      });
+    } catch (error) {
+      console.error("Error in getAllStatistikSeminarProposal:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Gagal mengambil statistik seminar proposal",
+      });
+    }
+  }
+
+  async updateStatistikSeminarProposal(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const {
+        seminarPerTahun,
+        tingkatKelulusan,
+        bulanPersiapan,
+        timPenguji,
+        slogan,
+        deskripsi,
+      } = req.body;
+      const statistikSeminarProposal =
+        await seminarProposalService.updateStatistikSeminarProposal(
+          Number(id),
+          {
+            seminarPerTahun,
+            tingkatKelulusan,
+            bulanPersiapan,
+            timPenguji,
+            slogan,
+            deskripsi,
+          }
+        );
+      return res.status(200).json({
+        success: true,
+        message: "Statistik seminar proposal berhasil diupdate",
+        data: statistikSeminarProposal,
+      });
+    } catch (error) {
+      console.error("Error in updateStatistikSeminarProposal:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Gagal mengupdate statistik seminar proposal",
+      });
+    }
+  }
+
+  async deleteStatistikSeminarProposal(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const deletedData =
+        await seminarProposalService.deleteStatistikSeminarProposal(Number(id));
+      return res.status(200).json({
+        success: true,
+        message: "Statistik seminar proposal berhasil dihapus",
+        data: deletedData,
+      });
+    } catch (error) {
+      console.error("Error in deleteStatistikSeminarProposal:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Gagal menghapus statistik seminar proposal",
+      });
+    }
+  }
 }
 
 export default new SeminarProposalController();

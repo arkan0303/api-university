@@ -1267,6 +1267,237 @@ model StatistikSeminarProposal{
 }
 
 
+model SidangSkripsi {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  kategori          Json?
+  foto              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ProsedurSidangSkripsi {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  tahapan           String? //1 , 2, 3, 4
+  deskripsi         String?
+  foto              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+model KriteriaSidangSkripsi {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  kriteria          Json? 
+  skor              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model StatistikSidangSkripsi{
+  id                Int      @id @default(autoincrement())
+  sidangPerTahun    String?
+  tingkatKelulusan  String?
+  durasiSidang      String?
+  timPenguji        String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model KeteranganPendampingIjazah {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  deskripsi         String?
+  type              String? // "komponen", "prosedur"
+  waktu             String? //minggu 1
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikKeteranganPendampingIjazah{
+  id                Int      @id @default(autoincrement())
+  totalData        Int       // jumlah total data KeteranganPendampingIjazah
+  totalKomponen    Int       // jumlah data dengan type = "komponen"
+  totalProsedur    Int       // jumlah data dengan type = "prosedur"
+  mingguAktif      String?   // minggu paling aktif (misal: "minggu 3")
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model UjianKomprehensif {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  kategori          Json?
+  foto              String?
+  type              String? // "persyaratan", "prosedur" atau "Ruang Lingkup Materi"
+  waktu             String? // 2 Bulan Sebelum Ujian
+  deskripsi         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model StatistikUjianKomprehensif {
+  id                Int      @id @default(autoincrement())
+  perTahun          String?
+  tingkatKelulusan  String?
+  penguji           String?
+  menitUjian        String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model Matrikulasi {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  kategori          Json?
+  foto              String?
+  type              String? // "mata kuliah", "persyaratan"
+  waktu             String? // 4 minggu
+  sks               String? // 24 SKS
+  deskripsi         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikMatrikulasi {
+  id                Int      @id @default(autoincrement())
+  durasi            String?
+  sks               String?
+  totalMataKuliah   String?
+  kelulusan         String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model KelompokRiset {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  fokusPenelitian   Json?
+  foto              String?
+  namaMahasiswa     String?
+  anggota           String?
+  publikasi         String? // 2b publikasi
+  deskripsi         String?
+  status            String? // "Aktif", "Tidak Aktif"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikKelompokRiset {
+  id                Int      @id @default(autoincrement())
+  total            String?
+  penelitianAktif            String?
+  publikasiPerTahun   String?
+  jurnalTerAkreditasi         String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+model sejarahLBKH {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  foto              Json?
+  deskripsi         String?
+  tahun             String? //1999
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikSejarahLBKH {
+  id                Int      @id @default(autoincrement())
+  tahun            String?
+  kasus            String?
+  advokat          String?
+  hukumTerakreditasi String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+
+model VisiMisiLBKH {
+  id                Int      @id @default(autoincrement())
+  type              String? // "Visi", "Misi"
+  foto              String?
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikVisiMisiLBKH {
+  id                Int      @id @default(autoincrement())
+  paralegaf            String?
+  kasusDitangani            String?
+  advokatAktif          String?
+  tingkatKepuasan   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+
+model PengurusLBKH {
+  id                Int      @id @default(autoincrement())
+  nama              String
+  foto              String?
+  deskripsi         String?
+  jabatan           String?
+  kategori          Json?
+  email             String?
+  noTelp            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikPengurusLBKH {
+  id                Int      @id @default(autoincrement())
+  total            String?
+  kasusDitangani            String?
+  advokatAktif          String?
+  tahunPengalaman   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+model AdvokatParalegal {
+  id                Int      @id @default(autoincrement())
+  type              String? // "Advokat", "Paralegal"
+  nama              String?
+  foto              String?
+  jabatan           String?
+  deskripsi         String?
+  kategori          Json?
+  email             String?
+  noTelp            String?
+  note              String? //250+ Kasus Ditangani , 150+ Kasus Ditangani
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model StatistikAdvokatParalegal {
+  id                Int      @id @default(autoincrement())
+  paralegal            String?
+  kasusDitangani            String?
+  advokatAktif          String?
+  tingkatKepuasan   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+
+
 // Model: Fasilitas
 // Fungsi: Menyimpan data fasilitas dan infrastruktur fakultas
 // Digunakan di menu: Tentang > Fasilitas atau halaman Fasilitas

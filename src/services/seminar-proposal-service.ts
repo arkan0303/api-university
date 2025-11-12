@@ -17,6 +17,15 @@ interface ProsedurPelaksanaan {
   foto: Express.Multer.File;
 }
 
+interface StatistikSeminarProposal {
+  seminarPerTahun: string;
+  tingkatKelulusan: string;
+  bulanPersiapan: string;
+  timPenguji: string;
+  slogan: string;
+  deskripsi: string;
+}
+
 class SeminarProposalService {
   async createSeminarProposal(seminarProposal: SeminarProposal) {
     try {
@@ -143,6 +152,77 @@ class SeminarProposalService {
       return deletedProsedurPelaksanaan;
     } catch (error) {
       console.error("Error in deleteProsedurPelaksanaan:", error);
+      throw error;
+    }
+  }
+
+  async createStatistikSeminarProposal(
+    statistikSeminarProposal: StatistikSeminarProposal
+  ) {
+    try {
+      const createdStatistikSeminarProposal =
+        await prisma.statistikSeminarProposal.create({
+          data: {
+            seminarPerTahun: statistikSeminarProposal.seminarPerTahun,
+            tingkatKelulusan: statistikSeminarProposal.tingkatKelulusan,
+            bulanPersiapan: statistikSeminarProposal.bulanPersiapan,
+            timPenguji: statistikSeminarProposal.timPenguji,
+            slogan: statistikSeminarProposal.slogan,
+            deskripsi: statistikSeminarProposal.deskripsi,
+          },
+        });
+      return createdStatistikSeminarProposal;
+    } catch (error) {
+      console.error("Error in createStatistikSeminarProposal:", error);
+      throw error;
+    }
+  }
+
+  async getAllStatistikSeminarProposal() {
+    try {
+      const statistikSeminarProposal =
+        await prisma.statistikSeminarProposal.findMany();
+      return statistikSeminarProposal;
+    } catch (error) {
+      console.error("Error in getAllStatistikSeminarProposal:", error);
+      throw error;
+    }
+  }
+
+  async updateStatistikSeminarProposal(
+    id: number,
+    data: StatistikSeminarProposal
+  ) {
+    try {
+      const updateData: any = {
+        seminarPerTahun: data.seminarPerTahun,
+        tingkatKelulusan: data.tingkatKelulusan,
+        bulanPersiapan: data.bulanPersiapan,
+        timPenguji: data.timPenguji,
+        slogan: data.slogan,
+        deskripsi: data.deskripsi,
+      };
+      const updatedStatistikSeminarProposal =
+        await prisma.statistikSeminarProposal.update({
+          where: { id },
+          data: updateData,
+        });
+      return updatedStatistikSeminarProposal;
+    } catch (error) {
+      console.error("Error in updateStatistikSeminarProposal:", error);
+      throw error;
+    }
+  }
+
+  async deleteStatistikSeminarProposal(id: number) {
+    try {
+      const deletedStatistikSeminarProposal =
+        await prisma.statistikSeminarProposal.delete({
+          where: { id },
+        });
+      return deletedStatistikSeminarProposal;
+    } catch (error) {
+      console.error("Error in deleteStatistikSeminarProposal:", error);
       throw error;
     }
   }
