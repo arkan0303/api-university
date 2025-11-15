@@ -753,7 +753,6 @@ model Kekhususan {
   tingkatKelulusan  Float    // Persentase
   
   mataKuliah        MataKuliahKekhususan[]
-  prospekKarir      ProspekKarir[]
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -781,23 +780,6 @@ model MataKuliahKekhususan {
   updatedAt         DateTime @updatedAt
 }
 
-// Model: ProspekKarir
-// Fungsi: Menyimpan prospek karir lulusan per kekhususan
-// Digunakan di menu: Kekhususan (prospek karir di setiap kekhususan)
-// Berisi: Judul karir, deskripsi, persyaratan
-// Relasi: Many-to-one dengan Kekhususan
-model ProspekKarir {
-  id                Int      @id @default(autoincrement())
-  kekhususanId      Int
-  judul             String   // "Jaksa", "Hakim", "Advokat", dst.
-  deskripsi         String   
-  persyaratan       Json // Array persyaratan
-  
-  kekhususan        Kekhususan @relation(fields: [kekhususanId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
 
 // ============================================
 // TENTANG (ABOUT)
@@ -1495,6 +1477,379 @@ model StatistikAdvokatParalegal {
   deskripsi         String?
 
 }
+
+
+model KonsultasiHukum {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  waktu             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model ProsedurKonsultasi {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  deskripsi         String?
+  waktu             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikProsedurKonsultasi {
+  id                Int      @id @default(autoincrement())
+  konsultasiPerBulan  String?
+  tingkatKepuasan   String?
+  konsultasiAktif   String?
+  totalKonsultasi   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+
+model PendampinganHukum {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  waktu             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ProsedurPendampinganHukum {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  deskripsi         String?
+  waktu             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikPendampinganHukum {
+  id                Int      @id @default(autoincrement())
+  kasusDidampingi  String?
+  tingkatKeberhasilan   String?
+  advokatBerpengalaman   String?
+  totalPendampingan   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+model PembuatanLegal {
+  id                Int      @id @default(autoincrement())
+   foto              String?
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  waktu             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ProsedurPembuatanLegal {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  deskripsi         String?
+  waktu             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model StatistikPembuatanLegal {
+  id                Int      @id @default(autoincrement())
+  legalOpinianPerTahun  String?
+  tingkatKepuasan   String?
+  ahliHukum   String?
+  totalPembuatan   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+
+
+model SaksiAhli {
+  id                Int      @id @default(autoincrement())
+  nama              String
+  foto              String?
+  deskripsi         String?
+  keahlian          Json?
+  bidangKeahlian    String? //Hukum Pidana, Hukum Perdata, Hukum Kommerial, Hukum Perdata
+  kasusDitangani    String?
+  email             String?
+  noTelp            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model ProsedurSaksiAhli {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  deskripsi         String?
+  waktu             String?//Fase 1 • Hari 1-2
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model StatistikSaksiAhli {
+  id                Int      @id @default(autoincrement())
+  keteranganAhli  String?
+  tingkatPenerimaan   String?
+  ahliBerpengalaman   String?
+  profesional   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+
+model LayananMediasi {
+    id                Int      @id @default(autoincrement())
+    foto              String?
+    title             String?
+    waktu             String?
+    deskripsi         String?
+    kategori          Json?
+    type              String? // "Layanan", "Prosedur"
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+}
+
+model StatistikLayananMediasi {
+  id                Int      @id @default(autoincrement())
+  mediasiBerhasil  String?
+  tingkatKesepakatan   String?
+  mediatorBersetifikat   String?
+  totalMediasi   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+model TimMediator {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  nama              String?
+  deskripsi         String?
+  kategori          Json?
+  kasusDitangani    String?
+  email             String?
+  noTelp            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model LayananProBono {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  waktu             String?
+  deskripsi         String? 
+  kategori          Json?
+  type              String? // "Jenis Layanan", "Prosedur Pengajuan"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt  
+}
+
+model StatistikLayananProbono {
+  id                Int      @id @default(autoincrement())
+  kasusProbono  String?
+  tingkatKesepakatan   String?
+  mediatorBersetifikat   String?
+  totalMediasi   String?
+  slogan            String?
+  deskripsi         String?
+
+}
+
+model KriteriaPenerima {
+  id                Int      @id @default(autoincrement()) 
+  foto              String?
+  title             String?
+  kategori          Json?
+}
+
+model PenyuluhanHukum {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  waktu             String?
+  deskripsi         String?
+  kategori          Json?
+  type              String? // "Program Penyuluhan", "Prosedur Penyuluhan"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikPenyuluhanHukum {
+  id                Int      @id @default(autoincrement())
+  kegiatanPenyuluhan  String?
+  pesertaTeredukasi   String?
+  institusiMitra   String?
+  totalPenyuluhan   String?
+  slogan            String?
+  deskripsi         String?
+}
+model SosialisasiPraturanUUD {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  waktu             String?
+  deskripsi         String?
+  kategori          Json?
+  type              String? // "Program Sosialisasi", "Prosedur Sosialisasi"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikSosialisasiPraturanUUD {
+  id                Int      @id @default(autoincrement())
+  kegiatanOrginsasi  String?
+  pesertaTeredukasi   String?
+  institusiMitra   String?
+  totalSosialisasi   String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model KekhususanHukumPidana {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  semester          String?
+  sks               String?
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ProspekKarir {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikKekhususanHukumPidana {
+  id                Int      @id @default(autoincrement())
+  sks               String?
+  mahasiswaAktif    String?
+  tingkatKelulusan  String?
+  alumniProfesional String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model KekhususanHukumTataUsahaNegara {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  semester          String?
+  sks               String?
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt    
+}
+
+model ProspekKarirTataUsahaNegara {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikKekhususanHukumTataUsahaNegara {
+  id                Int      @id @default(autoincrement())
+  sks               String?
+  mahasiswaAktif    String?
+  tingkatKelulusan  String?
+  alumniProfesional String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model KekhususanHukumPerdata {
+    id                Int      @id @default(autoincrement())
+  foto              String?
+  semester          String?
+  sks               String?
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt    
+}
+
+model ProspekKarirPerdata {
+  id                Int      @id @default(autoincrement())
+  title             String?
+  deskripsi         String?
+  kategori          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikKekhususanHukumPerdata {
+  id                Int      @id @default(autoincrement())
+  sks               String?
+  mahasiswaAktif    String?
+  tingkatKelulusan  String?
+  alumniProfesional String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model DaftarDosen{
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  nama              String?
+  jabatan           String?
+  nidn              String?
+  deskripsi         String?
+  riwayatPendidikan Json?
+  keahlian           Json?
+  prestasi          Json?
+  publikasi         Json?
+  email             String?
+  noTelp            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikDaftarDosen {
+  id                Int      @id @default(autoincrement())
+  totalDosen        String?
+  profesor    String?
+  doktor  String?
+  publiikasiPerTahun String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
 
 
 
