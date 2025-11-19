@@ -42,6 +42,20 @@ import kekhususanHukumPidanaController from "../controllers/kekhususan-hukum-pid
 import KekhususanHukumTatausahaController from "../controllers/kekhususa-hukum-tatausaha-controller";
 import kekhususanHukumPerdataController from "../controllers/kekhususan-hukum-perdata-controller";
 import daftarDosenController from "../controllers/daftar-dosen-controller";
+import daftarKependidikanController from "../controllers/daftar-kependidikan-controller";
+import himpunanMahasiswaProdiHukumController from "../controllers/himpunan-mahasiswa-prodi-hukum";
+import dewanPerwakilanMahasiswaController from "../controllers/dewan-perwakilan-mahasiswa-controller";
+import badanEksikutifMahasiswaController from "../controllers/badan-eksekutif-mahasiswa-controller";
+import trackerStudyController from "../controllers/tracker-studi-controller";
+import trackerStudyUnigalController from "../controllers/tracker-study-unigal-controller";
+import rekapitulasiPengisianController from "../controllers/rekapitulasi-pengisian-controller";
+import beasiswaIndonesiaController from "../controllers/beasiswa-indonesia-controller";
+import beasiswaBriController from "../controllers/beasiswa-bri-controller";
+import beasiswaKpiController from "../controllers/beasiswa-kpi-controller";
+import prestasiMahasiswaNondiktiController from "../controllers/prestasi-mahasiswa-nondikti-controller";
+import dataRekognisiController from "../controllers/data-rekognisi-controller";
+import dataSeminarMahasiswaController from "../controllers/data-seminar-mahasiswa-controller";
+import dataMagangMahasiswaController from "../controllers/data-magang-mahasiswa-controller";
 
 type MulterRequest = Request & {
   file?: Express.Multer.File;
@@ -4852,6 +4866,1348 @@ router.put(
 router.delete(
   "/daftar-dosen/statistik/:id",
   daftarDosenController.deleteStatistikDaftarDosen.bind(daftarDosenController)
+);
+
+router.post(
+  "/daftar-kependidikan",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return daftarKependidikanController.createDaftarKependidikan(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/daftar-kependidikan",
+  daftarKependidikanController.getAllDaftarKependidikan.bind(
+    daftarKependidikanController
+  )
+);
+
+router.put(
+  "/daftar-kependidikan/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return daftarKependidikanController.updateDaftarKependidikan(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/daftar-kependidikan/:id",
+  daftarKependidikanController.deleteDaftarKependidikan.bind(
+    daftarKependidikanController
+  )
+);
+
+router.post(
+  "/daftar-kependidikan/statistik",
+  daftarKependidikanController.createStatistikTenagaKependidikan.bind(
+    daftarKependidikanController
+  )
+);
+
+router.get(
+  "/daftar-kependidikan/statistik",
+  daftarKependidikanController.getStatistikDaftarKependidikan.bind(
+    daftarKependidikanController
+  )
+);
+
+router.put(
+  "/daftar-kependidikan/statistik/:id",
+  daftarKependidikanController.updateStatistikTenagaKependidikan.bind(
+    daftarKependidikanController
+  )
+);
+
+router.delete(
+  "/daftar-kependidikan/statistik/:id",
+  daftarKependidikanController.deleteStatistikTenagaKependidikan.bind(
+    daftarKependidikanController
+  )
+);
+
+router.post(
+  "/himpunan-mahasiswa-prodi-hukum",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return himpunanMahasiswaProdiHukumController.CreateHimpunanMahasiswaProdiHukum(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/himpunan-mahasiswa-prodi-hukum",
+  himpunanMahasiswaProdiHukumController.getAllHimpunanMahasiswaProdiHukum.bind(
+    himpunanMahasiswaProdiHukumController
+  )
+);
+
+router.put(
+  "/himpunan-mahasiswa-prodi-hukum/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return himpunanMahasiswaProdiHukumController.updateHimpunan(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/himpunan-mahasiswa-prodi-hukum/:id",
+  himpunanMahasiswaProdiHukumController.deleteHimpunan.bind(
+    himpunanMahasiswaProdiHukumController
+  )
+);
+
+router.post(
+  "/himpunan-mahasiswa-prodi-hukum/statistik",
+  himpunanMahasiswaProdiHukumController.createStatistik.bind(
+    himpunanMahasiswaProdiHukumController
+  )
+);
+
+router.get(
+  "/himpunan-mahasiswa-prodi-hukum/statistik",
+  himpunanMahasiswaProdiHukumController.getAllStatistik.bind(
+    himpunanMahasiswaProdiHukumController
+  )
+);
+
+router.put(
+  "/himpunan-mahasiswa-prodi-hukum/statistik/:id",
+  himpunanMahasiswaProdiHukumController.updateStatistik.bind(
+    himpunanMahasiswaProdiHukumController
+  )
+);
+
+router.delete(
+  "/himpunan-mahasiswa-prodi-hukum/statistik/:id",
+  himpunanMahasiswaProdiHukumController.deleteStatistik.bind(
+    himpunanMahasiswaProdiHukumController
+  )
+);
+
+router.post(
+  "/dewan-perwakilan-mahasiswa",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dewanPerwakilanMahasiswaController.createDewanPerwakilan(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/dewan-perwakilan-mahasiswa",
+  dewanPerwakilanMahasiswaController.getAllDewanPerwakilanMahasiswa.bind(
+    dewanPerwakilanMahasiswaController
+  )
+);
+
+router.put(
+  "/dewan-perwakilan-mahasiswa/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dewanPerwakilanMahasiswaController.updateDewanPerwakilan(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/dewan-perwakilan-mahasiswa/:id",
+  dewanPerwakilanMahasiswaController.deleteDewanPerwakilan.bind(
+    dewanPerwakilanMahasiswaController
+  )
+);
+
+router.post(
+  "/dewan-perwakilan-mahasiswa/statistik",
+  dewanPerwakilanMahasiswaController.createStatistik.bind(
+    dewanPerwakilanMahasiswaController
+  )
+);
+
+router.get(
+  "/dewan-perwakilan-mahasiswa/statistik",
+  dewanPerwakilanMahasiswaController.getAllStatistik.bind(
+    dewanPerwakilanMahasiswaController
+  )
+);
+
+router.put(
+  "/dewan-perwakilan-mahasiswa/statistik/:id",
+  dewanPerwakilanMahasiswaController.updateStatistik.bind(
+    dewanPerwakilanMahasiswaController
+  )
+);
+
+router.delete(
+  "/dewan-perwakilan-mahasiswa/statistik/:id",
+  dewanPerwakilanMahasiswaController.deleteStatistik.bind(
+    dewanPerwakilanMahasiswaController
+  )
+);
+
+router.post(
+  "/badan-eksekutif-mahasiswa",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return badanEksikutifMahasiswaController.createBEM(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/badan-eksekutif-mahasiswa",
+  badanEksikutifMahasiswaController.getAllBEM.bind(
+    badanEksikutifMahasiswaController
+  )
+);
+
+router.put(
+  "/badan-eksekutif-mahasiswa/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return badanEksikutifMahasiswaController.updateBEM(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/badan-eksekutif-mahasiswa/:id",
+  badanEksikutifMahasiswaController.deleteBEM.bind(
+    badanEksikutifMahasiswaController
+  )
+);
+
+router.post(
+  "/badan-eksekutif-mahasiswa/statistik",
+  badanEksikutifMahasiswaController.createStatistik.bind(
+    badanEksikutifMahasiswaController
+  )
+);
+
+router.get(
+  "/badan-eksekutif-mahasiswa/statistik",
+  badanEksikutifMahasiswaController.getAllStatistik.bind(
+    badanEksikutifMahasiswaController
+  )
+);
+
+router.put(
+  "/badan-eksekutif-mahasiswa/statistik/:id",
+  badanEksikutifMahasiswaController.updateStatistik.bind(
+    badanEksikutifMahasiswaController
+  )
+);
+
+router.delete(
+  "/badan-eksekutif-mahasiswa/statistik/:id",
+  badanEksikutifMahasiswaController.deleteStatistik.bind(
+    badanEksikutifMahasiswaController
+  )
+);
+
+router.post(
+  "/tracker-study",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return trackerStudyController.createTrackerStudy(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/tracker-study",
+  trackerStudyController.getAllTrackerStudy.bind(trackerStudyController)
+);
+
+router.put(
+  "/tracker-study/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return trackerStudyController.updateTrackerStudy(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/tracker-study/:id",
+  trackerStudyController.deleteTrackerStudy.bind(trackerStudyController)
+);
+
+router.post(
+  "/waktu-tunggu-kerja",
+  trackerStudyController.createWaktuTungguKerja.bind(trackerStudyController)
+);
+
+router.get(
+  "/waktu-tunggu-kerja",
+  trackerStudyController.getAllWaktuTungguKerja.bind(trackerStudyController)
+);
+
+router.put(
+  "/waktu-tunggu-kerja/:id",
+  trackerStudyController.updateWaktuTungguKerja.bind(trackerStudyController)
+);
+
+router.delete(
+  "/waktu-tunggu-kerja/:id",
+  trackerStudyController.deleteWaktuTungguKerja.bind(trackerStudyController)
+);
+
+router.post(
+  "/statistik-tracker-study",
+  trackerStudyController.createStatistikTrackerStudy.bind(
+    trackerStudyController
+  )
+);
+
+router.get(
+  "/statistik-tracker-study",
+  trackerStudyController.getAllStatistikTrackerStudy.bind(
+    trackerStudyController
+  )
+);
+
+router.put(
+  "/statistik-tracker-study/:id",
+  trackerStudyController.updateStatistikTrackerStudy.bind(
+    trackerStudyController
+  )
+);
+
+router.delete(
+  "/statistik-tracker-study/:id",
+  trackerStudyController.deleteStatistikTrackerStudy.bind(
+    trackerStudyController
+  )
+);
+
+router.post(
+  "/tracker-study-unigal",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return trackerStudyUnigalController.createTrackerStudyUnigal(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/tracker-study-unigal",
+  trackerStudyUnigalController.getAllTrackerStudyUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.put(
+  "/tracker-study-unigal/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return trackerStudyUnigalController.updateTrackerStudyUnigal(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/tracker-study-unigal/:id",
+  trackerStudyUnigalController.deleteTrackerStudyUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.post(
+  "/waktu-tunggu-kerja-unigal",
+  trackerStudyUnigalController.createWaktuTungguKerja.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.get(
+  "/waktu-tunggu-kerja-unigal",
+  trackerStudyUnigalController.getAllWaktuTungguKerja.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.put(
+  "/waktu-tunggu-kerja-unigal/:id",
+  trackerStudyUnigalController.updateWaktuTungguKerjaUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.delete(
+  "/waktu-tunggu-kerja-unigal/:id",
+  trackerStudyUnigalController.deleteWaktuTungguKerjaUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.post(
+  "/statistik-tracker-study-unigal",
+  trackerStudyUnigalController.createStatistikTrackerStudyUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.get(
+  "/statistik-tracker-study-unigal",
+  trackerStudyUnigalController.getAllStatistikTrackerStudyUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.put(
+  "/statistik-tracker-study-unigal/:id",
+  trackerStudyUnigalController.updateStatistikTrackerStudyUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.delete(
+  "/statistik-tracker-study-unigal/:id",
+  trackerStudyUnigalController.deleteStatistikTrackerStudyUnigal.bind(
+    trackerStudyUnigalController
+  )
+);
+
+router.post(
+  "/rekapitulasi-pengisian",
+  rekapitulasiPengisianController.createRekapitulasiPengisian.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.get(
+  "/rekapitulasi-pengisian",
+  rekapitulasiPengisianController.getAllRekapitulasiPengisian.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.put(
+  "/rekapitulasi-pengisian/:id",
+  rekapitulasiPengisianController.updateRekapitulasiPengisian.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.delete(
+  "/rekapitulasi-pengisian/:id",
+  rekapitulasiPengisianController.deleteRekapitulasiPengisian.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.post(
+  "/rekapitulasi-pengisian-per-kategori",
+  rekapitulasiPengisianController.createRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.get(
+  "/rekapitulasi-pengisian-per-kategori",
+  rekapitulasiPengisianController.getAllRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.put(
+  "/rekapitulasi-pengisian-per-kategori/:id",
+  rekapitulasiPengisianController.updateRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.delete(
+  "/rekapitulasi-pengisian-per-kategori/:id",
+  rekapitulasiPengisianController.deleteRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.post(
+  "/statistik-rekapitulasi-per-kategori",
+  rekapitulasiPengisianController.createStatistikRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.get(
+  "/statistik-rekapitulasi-per-kategori",
+  rekapitulasiPengisianController.getAllStatistikRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.put(
+  "/statistik-rekapitulasi-per-kategori/:id",
+  rekapitulasiPengisianController.updateStatistikRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.delete(
+  "/statistik-rekapitulasi-per-kategori/:id",
+  rekapitulasiPengisianController.deleteStatistikRekapitulasiPerKategori.bind(
+    rekapitulasiPengisianController
+  )
+);
+
+router.post(
+  "/beasiswa-indonesia",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return beasiswaIndonesiaController.createBeasiswaIndonesia(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/beasiswa-indonesia",
+  beasiswaIndonesiaController.getAllBeasiswaIndonesia.bind(
+    beasiswaIndonesiaController
+  )
+);
+
+router.put(
+  "/beasiswa-indonesia/:id",
+  beasiswaIndonesiaController.updateBeasiswaIndonesia.bind(
+    beasiswaIndonesiaController
+  )
+);
+
+router.delete(
+  "/beasiswa-indonesia/:id",
+  beasiswaIndonesiaController.deleteBeasiswaIndonesia.bind(
+    beasiswaIndonesiaController
+  )
+);
+
+router.post(
+  "/statistik-beasiswa-indonesia",
+  beasiswaIndonesiaController.createStatistikBeasiswaIndonesia.bind(
+    beasiswaIndonesiaController
+  )
+);
+
+router.get(
+  "/statistik-beasiswa-indonesia",
+  beasiswaIndonesiaController.getAllStatistikBeasiswaIndonesia.bind(
+    beasiswaIndonesiaController
+  )
+);
+
+router.put(
+  "/statistik-beasiswa-indonesia/:id",
+  beasiswaIndonesiaController.updateStatistikBeasiswaIndonesia.bind(
+    beasiswaIndonesiaController
+  )
+);
+
+router.delete(
+  "/statistik-beasiswa-indonesia/:id",
+  beasiswaIndonesiaController.deleteStatistikBeasiswaIndonesia.bind(
+    beasiswaIndonesiaController
+  )
+);
+
+router.post(
+  "/beasiswa-bri",
+  beasiswaBriController.createBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.get(
+  "/beasiswa-bri",
+  beasiswaBriController.getAllBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.put(
+  "/beasiswa-bri/:id",
+  beasiswaBriController.updateBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.delete(
+  "/beasiswa-bri/:id",
+  beasiswaBriController.deleteBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.post(
+  "/timeline-beasiswa-bri",
+  beasiswaBriController.createTimelineBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.get(
+  "/timeline-beasiswa-bri",
+  beasiswaBriController.getAllTimelineBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.put(
+  "/timeline-beasiswa-bri/:id",
+  beasiswaBriController.updateTimelineBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.delete(
+  "/timeline-beasiswa-bri/:id",
+  beasiswaBriController.deleteTimelineBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.post(
+  "/statistik-beasiswa-bri",
+  beasiswaBriController.createStatistikBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.get(
+  "/statistik-beasiswa-bri",
+  beasiswaBriController.getAllStatistikBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.put(
+  "/statistik-beasiswa-bri/:id",
+  beasiswaBriController.updateStatistikBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.delete(
+  "/statistik-beasiswa-bri/:id",
+  beasiswaBriController.deleteStatistikBeasiswaBri.bind(beasiswaBriController)
+);
+
+router.post(
+  "/beasiswa-kpi",
+  beasiswaKpiController.createBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.get(
+  "/beasiswa-kpi",
+  beasiswaKpiController.getAllBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.put(
+  "/beasiswa-kpi/:id",
+  beasiswaKpiController.updateBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.delete(
+  "/beasiswa-kpi/:id",
+  beasiswaKpiController.deleteBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.post(
+  "/timeline-beasiswa-kpi",
+  beasiswaKpiController.createTimelineBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.get(
+  "/timeline-beasiswa-kpi",
+  beasiswaKpiController.getAllTimelineBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.put(
+  "/timeline-beasiswa-kpi/:id",
+  beasiswaKpiController.updateTimelineBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.delete(
+  "/timeline-beasiswa-kpi/:id",
+  beasiswaKpiController.deleteTimelineBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.post(
+  "/statistik-beasiswa-kpi",
+  beasiswaKpiController.createStatistikBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.get(
+  "/statistik-beasiswa-kpi",
+  beasiswaKpiController.getAllStatistikBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.put(
+  "/statistik-beasiswa-kpi/:id",
+  beasiswaKpiController.updateStatistikBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.delete(
+  "/statistik-beasiswa-kpi/:id",
+  beasiswaKpiController.deleteStatistikBeasiswaKip.bind(beasiswaKpiController)
+);
+
+router.post(
+  "/prestasi-mahasiswa-nondikti",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return prestasiMahasiswaNondiktiController.createPrestasiMahasiswaNonDikti(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/prestasi-mahasiswa-nondikti",
+  prestasiMahasiswaNondiktiController.getAllPrestasiMahasiswaNonDikti.bind(
+    prestasiMahasiswaNondiktiController
+  )
+);
+
+router.put(
+  "/prestasi-mahasiswa-nondikti/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return prestasiMahasiswaNondiktiController.updatePrestasiMahasiswaNonDikti(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/prestasi-mahasiswa-nondikti/:id",
+  prestasiMahasiswaNondiktiController.deletePrestasiMahasiswaNonDikti.bind(
+    prestasiMahasiswaNondiktiController
+  )
+);
+
+router.post(
+  "/statistik-prestasi-mahasiswa-nondikti",
+  prestasiMahasiswaNondiktiController.createStatistikPrestasiMahasiswaNonDikti.bind(
+    prestasiMahasiswaNondiktiController
+  )
+);
+
+router.get(
+  "/statistik-prestasi-mahasiswa-nondikti",
+  prestasiMahasiswaNondiktiController.getAllStatistikPrestasiMahasiswaNonDikti.bind(
+    prestasiMahasiswaNondiktiController
+  )
+);
+
+router.put(
+  "/statistik-prestasi-mahasiswa-nondikti/:id",
+  prestasiMahasiswaNondiktiController.updateStatistikPrestasiMahasiswaNonDikti.bind(
+    prestasiMahasiswaNondiktiController
+  )
+);
+
+router.delete(
+  "/statistik-prestasi-mahasiswa-nondikti/:id",
+  prestasiMahasiswaNondiktiController.deleteStatistikPrestasiMahasiswaNonDikti.bind(
+    prestasiMahasiswaNondiktiController
+  )
+);
+
+router.post(
+  "/data-rekognisi",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dataRekognisiController.createDataRekognisi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/data-rekognisi",
+  dataRekognisiController.getAllDataRekognisi.bind(dataRekognisiController)
+);
+
+router.put(
+  "/data-rekognisi/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dataRekognisiController.updateDataRekognisi(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/data-rekognisi/:id",
+  dataRekognisiController.deleteDataRekognisi.bind(dataRekognisiController)
+);
+
+router.post(
+  "/statistik-data-rekognisi",
+  dataRekognisiController.createStatistikDataRekognisi.bind(
+    dataRekognisiController
+  )
+);
+
+router.get(
+  "/statistik-data-rekognisi",
+  dataRekognisiController.getAllStatistikDataRekognisi.bind(
+    dataRekognisiController
+  )
+);
+
+router.put(
+  "/statistik-data-rekognisi/:id",
+  dataRekognisiController.updateStatistikDataRekognisi.bind(
+    dataRekognisiController
+  )
+);
+
+router.delete(
+  "/statistik-data-rekognisi/:id",
+  dataRekognisiController.deleteStatistikDataRekognisi.bind(
+    dataRekognisiController
+  )
+);
+
+router.post(
+  "/data-seminar-mahasiswa",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dataSeminarMahasiswaController.createDataSeminarMahasiswa(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/data-seminar-mahasiswa",
+  dataSeminarMahasiswaController.getAllDataSeminarMahasiswa.bind(
+    dataSeminarMahasiswaController
+  )
+);
+
+router.put(
+  "/data-seminar-mahasiswa/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dataSeminarMahasiswaController.updateDataSeminarMahasiswa(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/data-seminar-mahasiswa/:id",
+  dataSeminarMahasiswaController.deleteDataSeminarMahasiswa.bind(
+    dataSeminarMahasiswaController
+  )
+);
+
+router.post(
+  "/statistik-data-seminar-mahasiswa",
+  dataSeminarMahasiswaController.createStatistikDataSeminarMahasiswa.bind(
+    dataSeminarMahasiswaController
+  )
+);
+
+router.get(
+  "/statistik-data-seminar-mahasiswa",
+  dataSeminarMahasiswaController.getAllStatistikDataSeminarMahasiswa.bind(
+    dataSeminarMahasiswaController
+  )
+);
+
+router.put(
+  "/statistik-data-seminar-mahasiswa/:id",
+  dataSeminarMahasiswaController.updateStatistikDataSeminarMahasiswa.bind(
+    dataSeminarMahasiswaController
+  )
+);
+
+router.delete(
+  "/statistik-data-seminar-mahasiswa/:id",
+  dataSeminarMahasiswaController.deleteStatistikDataSeminarMahasiswa.bind(
+    dataSeminarMahasiswaController
+  )
+);
+
+router.post(
+  "/data-magang-mahasiswa",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dataMagangMahasiswaController.createDataMagangMahasiswa(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.get(
+  "/data-magang-mahasiswa",
+  dataMagangMahasiswaController.getAllDataMagangMahasiswa.bind(
+    dataMagangMahasiswaController
+  )
+);
+router.put(
+  "/data-magang-mahasiswa/:id",
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return dataMagangMahasiswaController.updateDataMagangMahasiswa(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
+);
+
+router.delete(
+  "/data-magang-mahasiswa/:id",
+  dataMagangMahasiswaController.deleteDataMagangMahasiswa.bind(
+    dataMagangMahasiswaController
+  )
+);
+
+router.post(
+  "/statistik-data-magang-mahasiswa",
+  dataMagangMahasiswaController.createStatistikDataMagangMahasiswa.bind(
+    dataMagangMahasiswaController
+  )
+);
+
+router.get(
+  "/statistik-data-magang-mahasiswa",
+  dataMagangMahasiswaController.getAllStatistikDataMagangMahasiswa.bind(
+    dataMagangMahasiswaController
+  )
+);
+
+router.put(
+  "/statistik-data-magang-mahasiswa/:id",
+  dataMagangMahasiswaController.updateStatistikDataMagangMahasiswa.bind(
+    dataMagangMahasiswaController
+  )
+);
+
+router.delete(
+  "/statistik-data-magang-mahasiswa/:id",
+  dataMagangMahasiswaController.deleteStatistikDataMagangMahasiswa.bind(
+    dataMagangMahasiswaController
+  )
 );
 
 export default router;

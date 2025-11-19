@@ -157,29 +157,7 @@ model Dosen {
   updatedAt         DateTime @updatedAt
 }
 
-// Model: TenagaKependidikan
-// Fungsi: Menyimpan data tenaga kependidikan (staff non-dosen)
-// Digunakan di menu: Kepegawaian > Tenaga Kependidikan
-// Berisi: Biodata, jabatan, tugas, pengalaman
-model TenagaKependidikan {
-  id                Int      @id @default(autoincrement())
-  nip               String   @unique
-  nama              String
-  email             String
-  telepon           String
-  foto              String?
-  jabatan           String   // "Kepala Tata Usaha", "Staff Akademik", dst.
-  pendidikan        String
-  keahlian          Json // Array bidang keahlian
-  pengalaman        String   // "15 Tahun"
-  biografi          String   
-  tugasUtama        Json // Array tugas dan tanggung jawab
-  pencapaian        Json // Array pencapaian
-  pelatihan         Json // Array pelatihan yang diikuti
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
+
 
 // ============================================
 // KEMAHASISWAAN - ORGANISASI
@@ -1847,6 +1825,412 @@ model StatistikDaftarDosen {
   slogan            String?
   deskripsi         String?
 }
+
+model TenagaKependidikan{
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  nama              String?
+  jabatan           String?
+  nip              String?
+  deskripsi         String?
+  riwayatPendidikan Json?
+  keahlian           Json?
+  tanggungJawab     Json?
+  prestasi          Json?
+  pelatihan         Json?
+  email             String?
+  noTelp            String?
+  pengalaman         Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikTenagaKependidikan {
+  id                Int      @id @default(autoincrement())
+  totalTenagaKependidikan        String?
+  administrasi    String?
+  teknis  String?
+  pustakawan String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+model HimpunanMahasiswaProdiHukum {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  bidang            String?
+  jabatan           String? //ketua bidang
+  anggota           String? // 15 anggota aktif
+  tentang           String?
+  note              String?
+  namaKetua         String?
+  email             String?
+  noTelp            String?
+  programKerja      Json?
+  prestasi          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+
+model StatistikHimpunanMahasiswaProdiHukum {
+  id                Int      @id @default(autoincrement())
+  bidangOrganisasi        String?
+  anggotaAktif    String?
+  programKerja  String?
+  prestasi String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model DewanPerwakilanMahasiswa {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  nama              String?
+  jabatan           String?
+  tugas             String?
+  visi              String?
+  misi              String?
+  programKerja      Json?
+  pencapaian        Json?
+  email             String?
+  noTelp            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikDewanPerwakilanMahasiswa {
+  id                Int      @id @default(autoincrement())
+  anggotaAktif        String?
+  aspirasiDitampung    String?
+  praturanDisusun  String?
+  akuntabel String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model BadanEksikutifMahasiswa {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  nama              String?
+  jabatan           String?
+  tugas             String?
+  visi              String?
+  misi              String?
+  programKerja      Json?
+  pencapaian        Json?
+  email             String?
+  noTelp            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikBadanEksikutifMahasiswa {
+  id                Int      @id @default(autoincrement())
+  pengurusInti        String?
+  programKerja    String?
+  mahasiswaTerlayani  String?
+  komitmen String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model TrackerStudy {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  tugas             Json?
+  gajihRata         String?
+  persentasi        String?//25%
+  institusi         Json?
+  keahlian          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+}
+
+model waktuTungguKerja {
+  id                Int      @id @default(autoincrement())
+  kategoriWaktu     String? // < 3 bulan
+  persentasi        String? // 25%
+  deskripsi         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikTrackerStudy {
+  id                Int      @id @default(autoincrement())
+  tingkatKeterserapan        String?
+  rataGaji    String?
+  waktuTungguKerja  String?
+  kesesuaianBidang String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model TrackerStudyUnigal {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  tugas             Json?
+  gajihRata         String?
+  persentasi        String?//25%
+  institusi         Json?
+  keahlian          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+}
+
+model waktuTungguKerjaUnigal {
+  id                Int      @id @default(autoincrement())
+  kategoriWaktu     String? // < 3 bulan
+  persentasi        String? // 25%
+  deskripsi         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikTrackerStudyUnigal {
+  id                Int      @id @default(autoincrement())
+  tingkatKeterserapan        String?
+  rataGaji    String?
+  waktuTungguKerja  String?
+  kesesuaianBidang String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model RekapitulasiPengisian {
+  id                Int      @id @default(autoincrement())
+  programNama       String?
+  angkatan          String?
+  totalMahasiswa    String?
+  jumlahResponden   String?
+  kategori          Json?
+  persentasi        String?  //(otomatis: jumlah_responden / total_mahasiswa * 100)
+}
+model RekapitulasiPerKategori {
+  id                Int      @id @default(autoincrement())
+  programNama       String?
+  totalMahasiswa    String?
+  jumlahResponden   String?
+  persentasi        String?  //(otomatis: jumlah_responden / total_mahasiswa * 100)
+}
+
+model StatistikRekapitulasiPerKategori {
+  id                Int      @id @default(autoincrement())
+  totalResponden        String?
+  tingkatPartisipasi    String?
+  formulirLengkap  String?
+  dalamProses String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model BeasiswaIndonesia {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  oleh              Json? //Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi
+  nominal           String?
+  waktu             String? // 4 tahun
+  sebanyak          String?  // 100
+  tentang           String?
+  persyaratan       Json?
+  manfaat           Json?
+  batasWaktu        String? // 30 Juni 2025
+  email             String?
+  noTelp            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StatistikBeasiswaIndonesia {
+  id                Int      @id @default(autoincrement())
+  totalPenerima     String?        // Total penerima beasiswa (misal: 1200 orang sejak 2020)
+  durasiBeasiswa    String?     // Durasi program beasiswa secara ringkas (misal: "4 tahun" atau "2 semester")
+  tingkatKompetitif String?     // Tingkat kesulitan beasiswa (misal: "Sangat Kompetitif", "Mudah Diakses")
+  pendaftarTahunan  String?        // Jumlah rata-rata pendaftar setiap tahun (misal: 5000 pendaftar)
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+model BeasiswaBri{
+  id                Int      @id @default(autoincrement())
+  tentangProgram    String?
+  manfaat           Json?
+  judulPersyaratan  String?
+  persyaratan       Json?
+}
+
+
+model TimelineBeasiswaBri{
+  id                Int      @id @default(autoincrement())
+  title             String?
+  waktu             String? // 1 Mei - 30 Juni 2025
+  deskripsi         String?
+}
+
+
+model StatistikBeasiswaBri {
+  id                Int      @id @default(autoincrement())
+  nilaiBeasiswa        String?
+  durasi    String?
+  kuota  String?
+  deadline String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model BeasiswaKIPKemendiksaintek{
+  id                Int      @id @default(autoincrement())
+  manfaat           Json?
+  judulPersyaratan  String?
+  persyaratan       Json?
+}
+model TimelineBeasiswaKIPKemendiksaintek{
+  id                Int      @id @default(autoincrement())
+  title             String?
+  waktu             String? // 1 Mei - 30 Juni 2025
+  deskripsi         String?
+}
+
+model StatistikBeasiswaKIPKemendiksaintek {
+  id                Int      @id @default(autoincrement())
+  nilaiBeasiswa        String?
+  durasi    String?
+  kuota  String?
+  deadline String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model PrestasiMahasiswaNonDikti {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  juara             String? //Juara 1, Juara 2, Juara 3
+  namaMahasiswa     String?
+  kategori          Json? //Debat Hukum , Nasional
+  deskripsi         String?
+  dampak            String?
+  keahlian          Json?
+  penghargaan       Json?
+  waktuKompetisi    String?
+  alamat            String?
+  penyelenggara     String?
+}
+
+
+model StatistikPrestasiMahasiswaNonDikti {
+  id                Int      @id @default(autoincrement())
+  totalPrestasi        String?
+  tingkatInternasional    String?
+  tingkatNasional  String?
+  tingkatRegional String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model DataRekognisi {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  tema              String? // Akreditasi , Pascakelulusan, 
+  tingkat           String? // Nasional, Internasional
+  tahun             String?
+  deskripsi         String?
+  dampak            String?
+  kriteriaPenelitian Json?
+  manfaat           Json?
+  provider          String?
+  masaBerlaku       String?
+
+}
+
+
+model StatistikDataRekognisi {
+  id                Int      @id @default(autoincrement())
+  penghargaan        String?
+  sertifikasi    String?
+  akreditasi  String?
+  rekognasiInternasional String?
+  slogan            String?
+  deskripsi         String?
+}
+  
+
+model DataSeminarMahasiswa {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  terkait           String? // hukun perdata , hukum pidana
+  deskripsiSeminar  String?
+  tujuanPembelajaran Json?
+  materiDibahas     Json?
+  hasilDIharapkan   Json?
+  tanggalSeminar    String?
+  waktuSeminar      String? //09:00 - 12:00 WIB
+  lokasi            String?
+  peserta           String? //150
+  namaNarasumber    String?
+  tentangNarasumber String?
+  emailNarasumber   String?
+  noTelpNarasumber  String?
+}
+
+model StatistikDataSeminarMahasiswa {
+  id                Int      @id @default(autoincrement())
+  totalSeminar       String?
+  totalPeserta       String?
+  totalNarasumber    String?
+  tingkatKepuasan    String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model dataMahasiswaMagang {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  terkait           String? // Legal & Compliance , Legal Division
+  tentangMagang     String?
+  tanggungJawab     Json?
+  keahlian          Json?
+  pencapaian        Json?
+  perusahaanMagang  String?
+  posisiMagang      String?
+  periodeMagang     String?
+  lokasiMagang      String?
+  superVisorMagang  String?
+  emailSuperVisorMagang String?
+}
+
+model StatistikDataMahasiswaMagang {
+  id                Int      @id @default(autoincrement())
+  totalMagang       String?
+  mitraInstitusi    String?
+  rataDurasiMagang  String?
+  tingkatKepuasan   String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+
+
+
 
 
 

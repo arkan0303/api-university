@@ -1,76 +1,82 @@
 import prisma from "../db/prisma";
 import { uploadToCloudinary } from "../utils/cloudinary";
-import { Prisma } from "@prisma/client";
+import { Prisma, StatistikTenagaKependidikan } from "@prisma/client";
 
-interface DaftarDosen {
+interface DaftarKependidikan {
   foto: Express.Multer.File;
   nama: string;
   jabatan: string;
-  nidn: string;
+  nip: string;
   deskripsi: string;
   riwayatPendidikan: Prisma.JsonValue[];
+  tanggungJawab: Prisma.JsonValue[];
   keahlian: Prisma.JsonValue[];
   prestasi: Prisma.JsonValue[];
-  publikasi: Prisma.JsonValue[];
+  pelatihan: Prisma.JsonValue[];
   email: string;
   noTelp: string;
+  pengalaman: Prisma.JsonValue[];
 }
 interface StatistikDaftarDosen {
-  totalDosen: string;
-  profesor: string;
-  doktor: string;
-  publiikasiPerTahun: string;
+  totalTenagaKependidikan: string;
+  administrasi: string;
+  teknis: string;
+  pustakawan: string;
   slogan: string;
   deskripsi: string;
 }
 
-class DaftarDosenService {
-  async createDaftarDosen(data: DaftarDosen) {
+class DaftarKependidikanService {
+  async createDaftarKependidikan(data: DaftarKependidikan) {
     try {
       const fotoUrl = await uploadToCloudinary(data.foto.buffer);
-      const createDosen = await prisma.daftarDosen.create({
+      const createKependidikan = await prisma.tenagaKependidikan.create({
         data: {
           foto: fotoUrl,
           nama: data.nama,
           jabatan: data.jabatan,
-          nidn: data.nidn,
+          nip: data.nip,
           deskripsi: data.deskripsi,
           riwayatPendidikan: data.riwayatPendidikan,
           keahlian: data.keahlian,
+          tanggungJawab: data.tanggungJawab,
           prestasi: data.prestasi,
-          publikasi: data.publikasi,
+          pelatihan: data.pelatihan,
           email: data.email,
           noTelp: data.noTelp,
+          pengalaman: data.pengalaman,
         },
       });
-      return createDosen;
+      return createKependidikan;
     } catch (error) {
       throw error;
     }
   }
 
-  async getAllDaftarDosen() {
+  async getAllDaftarKependidikan() {
     try {
-      const getAllDosen = await prisma.daftarDosen.findMany();
-      return getAllDosen;
+      const getAllKependidikan = await prisma.tenagaKependidikan.findMany();
+      return getAllKependidikan;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateDaftarDosen(id: number, data: DaftarDosen) {
+  async updateDaftarKependidikan(id: number, data: DaftarKependidikan) {
     try {
       const updateData: any = {
         nama: data.nama,
         jabatan: data.jabatan,
-        nidn: data.nidn,
+        nip: data.nip,
         deskripsi: data.deskripsi,
         riwayatPendidikan: data.riwayatPendidikan,
         keahlian: data.keahlian,
         prestasi: data.prestasi,
-        publikasi: data.publikasi,
+        pelatihan: data.pelatihan,
         email: data.email,
         noTelp: data.noTelp,
+        pengalaman: data.pengalaman,
+        tanggungJawab: data.tanggungJawab,
       };
 
       // Hanya upload foto baru jika ada file yang diunggah
@@ -79,45 +85,45 @@ class DaftarDosenService {
         updateData.foto = fotoUrl;
       }
 
-      const updatedDaftarDosen = await prisma.daftarDosen.update({
+      const updatedDaftarKependidikan = await prisma.tenagaKependidikan.update({
         where: { id },
         data: updateData,
       });
 
-      return updatedDaftarDosen;
+      return updatedDaftarKependidikan;
     } catch (error) {
       throw error;
     }
   }
 
-  async deleteDaftarDosenById(id: number) {
+  async deleteDaftarKependidikanById(id: number) {
     try {
-      const deletedDaftarDosen = await prisma.daftarDosen.delete({
+      const deletedDaftarKependidikan = await prisma.tenagaKependidikan.delete({
         where: { id },
       });
-      return deletedDaftarDosen;
+      return deletedDaftarKependidikan;
     } catch (error) {
       throw error;
     }
   }
 
-  async getStatistikDaftarDosen() {
+  async getStatistikDaftarKependidikan() {
     try {
-      const getAllDosen = await prisma.statistikDaftarDosen.findMany();
+      const getAllDosen = await prisma.statistikTenagaKependidikan.findMany();
       return getAllDosen;
     } catch (error) {
       throw error;
     }
   }
 
-  async createStatistikDaftarDosen(data: StatistikDaftarDosen) {
+  async createStatistikTenagaKependidikan(data: StatistikDaftarDosen) {
     try {
-      const createStatistik = await prisma.statistikDaftarDosen.create({
+      const createStatistik = await prisma.statistikTenagaKependidikan.create({
         data: {
-          totalDosen: data.totalDosen,
-          profesor: data.profesor,
-          doktor: data.doktor,
-          publiikasiPerTahun: data.publiikasiPerTahun,
+          totalTenagaKependidikan: data.totalTenagaKependidikan,
+          administrasi: data.administrasi,
+          teknis: data.teknis,
+          pustakawan: data.pustakawan,
           slogan: data.slogan,
           deskripsi: data.deskripsi,
         },
@@ -128,21 +134,22 @@ class DaftarDosenService {
     }
   }
 
-  async updateStatistikDaftarDosen(id: number, data: any) {
+  async updateStatistikTenagaKependidikan(
+    id: number,
+    data: StatistikDaftarDosen
+  ) {
     // Gunakan any untuk sementara
     try {
       const updateData: any = {
-        totalDosen: data.totalDosen,
-        profesor: data.profesor,
-        doktor: data.doktor,
-        // Perbaiki ejaan disini
-        publiikasiPerTahun: data.publiikasiPerTahun, // Sesuaikan dengan ejaan di frontend
-        // Atau ubah di frontend untuk menggunakan 'publikasiPerTahun' (dengan satu 'i')
+        totalTenagaKependidikan: data.totalTenagaKependidikan,
+        administrasi: data.administrasi,
+        teknis: data.teknis,
+        pustakawan: data.pustakawan,
         slogan: data.slogan,
         deskripsi: data.deskripsi,
       };
 
-      const updatedStatistik = await prisma.statistikDaftarDosen.update({
+      const updatedStatistik = await prisma.statistikTenagaKependidikan.update({
         where: { id },
         data: updateData,
       });
@@ -154,9 +161,9 @@ class DaftarDosenService {
     }
   }
 
-  async deleteStatistikDaftarDosenById(id: number) {
+  async deleteStatistikTenagaKependidikanById(id: number) {
     try {
-      const deletedStatistik = await prisma.statistikDaftarDosen.delete({
+      const deletedStatistik = await prisma.statistikTenagaKependidikan.delete({
         where: { id },
       });
       return deletedStatistik;
@@ -166,4 +173,4 @@ class DaftarDosenService {
   }
 }
 
-export default new DaftarDosenService();
+export default new DaftarKependidikanService();
