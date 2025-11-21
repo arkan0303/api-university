@@ -2227,6 +2227,241 @@ model StatistikDataMahasiswaMagang {
   deskripsi         String?
 }
 
+model DataMahasiswaBerwirausaha {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String?
+  namaMahasiswa     String?
+  nimMahasiswa      String?
+  tentangBisnis     String?
+  produkLayanan     Json?
+  pencapaian        Json?
+  tantangan         String?
+  rencanaMasaDeoan  String?
+  kategori          String?
+  tahunBerdiri      String?
+  jumlahKaryawan    String?
+  pendapatan        String?
+  lokasi            String?
+  noTelp            String?
+  email             String?
+  lokasiMahasiswa   String?
+}
+
+
+model StatistikDataMahasiswaBerwirausaha {
+  id                Int      @id @default(autoincrement())
+  totalMahasiswaBerwirausaha       String?
+  lapanganKerja     String?
+  tingkatKeberhasilan  String?
+  bisnisAktif       String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model LowonganKerja {
+  id                Int      @id @default(autoincrement())
+  foto              String?
+  title             String? //Legal Officer
+  perusahaan        String?
+  lokasi            String?
+  tipePekerjaan     String? // Full Time, Part Time
+  gaji              String?
+  pengalaman        String?
+  pendidikan        String?
+  batasLama         String?
+  tentangPerusahaan String?
+  deskripsi         String?
+  tanggungJawab     Json?
+  persyaratan       Json?
+  keahlian          Json?
+  benefit           Json?
+  email             String?
+  link              String?
+}
+
+model StatistikLowonganKerja {
+  id                Int      @id @default(autoincrement())
+  lowonganAktif       String?
+  partner     String?
+  tingkatPenempatan       String?
+  gajihRata       String?
+  slogan            String?
+  deskripsi         String?
+}
+
+model AlumniBerPrestasi {
+    id                Int      @id @default(autoincrement())
+    foto              String?
+    nama              String?
+    nim               String?
+    lulusan           String? //2023
+    posisi            String?
+    perusahaan        String?
+    ipk               String?
+    gaji              String?
+    waktuTunggu       String?
+    email             String?
+    noTelp            String?
+    linkedin          String?
+    instagram         String?
+    testimonial       String?
+    perjalananKarir   Json?
+    keahlian          Json?
+    pencapaian        Json?
+    bidang            String? //korporat, pemerintahan, swasta
+  
+}
+
+model StatistikAlumniBerprestasi {
+  id                Int      @id @default(autoincrement())
+  totalAlumni       String?
+  tingkatPenempatan String?
+  rataGajih         String?
+  WaktuTunggu   String?
+  slogan            String?
+  deskripsi         String?
+}
+
+
+model DataMahasiswaAktif {
+   id                Int      @id @default(autoincrement())
+   foto              String?
+   title             String?
+   deskripsi         String?
+   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+}
+
+model statistikMahasiswaAktif {
+  id                Int      @id @default(autoincrement())
+  mahasiswaAktif      String?
+  tingkatKehadiran    String?
+  ipkRataRata       String?
+  mahasiswaBerprestasi String?
+}
+
+
+model DataMahasiswaNonAktif {
+   id                Int      @id @default(autoincrement())
+   foto              String?
+   title             String?
+   deskripsi         String?
+   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+}
+
+model statistikMahasiswaNonAktif {
+  id                Int      @id @default(autoincrement())
+  mahasiswaNonAktif      String?
+  tingkatKehadiran    String?
+  ipkRataRata       String?
+  mahasiswaBerprestasi String?
+}
+
+model DataLulusanPertahun {
+   id                Int      @id @default(autoincrement())
+   foto              String?
+   title             String?
+   deskripsi         String?
+   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+}
+
+model statistikLulusanPertahun {
+  id                Int      @id @default(autoincrement())
+  totalLulusan      String?
+  tahun1    String?
+  tahun2       String?
+  tingkatKelulusan String?
+}
+
+model MoU{
+ id                Int      @id @default(autoincrement())
+ title             String?
+ partnerInstitution String?
+ partnerType       String?
+ signingDate       String?
+ expiryDate        String?
+ mouNumber         String?
+ scope             String?
+ status            String?
+ duration          String?
+ objectives        String?
+ contactPerson     String?
+ description       String?
+ implementation    String?
+ benefits          String?
+ 
+      
+}
+
+model statistikMoU {
+  id                Int      @id @default(autoincrement())
+  totalMoU      String?
+  aktif         String?
+  dalamProses   String?
+  tidakAktif    String?
+  }
+  model MoA{
+  id                Int      @id @default(autoincrement())
+  title             String?
+  agreementNumber   String?
+  parties           String?
+  signingDate       String?
+  effectiveDate     String?
+  agreementType     String?
+  scope             String?
+  status            String?
+  duration          String?
+  objectives        String?
+  responsibilities  String?
+  financialTerms    String?
+  terminationClause String?
+  description       String?
+  implementation    String?
+  benefits          String?
+  
+        
+  }
+  model statistikMoA {
+    id                Int      @id @default(autoincrement())
+    totalMoA      String?
+    aktif         String?
+    dalamProses   String?
+    tidakAktif    String?
+  }
+model DataPKPA {
+   id                Int      @id @default(autoincrement())
+   foto              String?
+   title             String?
+   deskripsi         String?
+   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+}
+
+model statistikPKPA {
+  id                Int      @id @default(autoincrement())
+  pesertaPKPA      String?
+  angkatan         String?
+  tingkatKelulusan   String?
+  mitraHukum    String?
+}
+
+
+model DataPeradilanSemu {
+   id                Int      @id @default(autoincrement())
+   foto              String?
+   title             String?
+   deskripsi         String?
+   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+}
+
+model statistikPeradilanSemu {
+  id                Int      @id @default(autoincrement())
+  sidangSemu      String?
+  peserta         String?
+  tingkatKepuasan   String?
+  kasusSimulasi    String?
+}
+
+
 
 
 
