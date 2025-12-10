@@ -206,7 +206,7 @@ class HimpunanMahasiswaProdiHukumController {
     }
   }
 
-  async updateStatistik(req: MulterRequest, res: Response) {
+  async updateStatistik(req: Request, res: Response) {
     try {
       const {
         bidangOrganisasi,

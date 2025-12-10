@@ -1,0 +1,216 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const daftar_kependidikan_service_1 = __importDefault(require("../services/daftar-kependidikan-service"));
+class DaftarKependidikanController {
+    async createDaftarKependidikan(req, res) {
+        try {
+            const { nama, jabatan, nip, deskripsi, riwayatPendidikan, keahlian, tanggungJawab, prestasi, pelatihan, email, noTelp, pengalaman, } = req.body;
+            if (!req.files?.["foto"] || req.files["foto"].length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Foto harus diupload",
+                });
+            }
+            const keahlianJson = JSON.parse(keahlian);
+            const prestasiJson = JSON.parse(prestasi);
+            const pelatihanJson = JSON.parse(pelatihan);
+            const pengalamanJson = JSON.parse(pengalaman);
+            const tanggungJawabJson = JSON.parse(tanggungJawab);
+            const riwayatPendidikanJson = JSON.parse(riwayatPendidikan);
+            console.log(req.body);
+            const daftarKependidikan = await daftar_kependidikan_service_1.default.createDaftarKependidikan({
+                nama,
+                jabatan,
+                nip,
+                deskripsi,
+                riwayatPendidikan: riwayatPendidikanJson,
+                keahlian: keahlianJson,
+                tanggungJawab: tanggungJawabJson,
+                prestasi: prestasiJson,
+                pelatihan: pelatihanJson,
+                email,
+                noTelp,
+                pengalaman: pengalamanJson,
+                foto: req.files["foto"][0],
+            });
+            console.log(daftarKependidikan);
+            return res.status(201).json({
+                success: true,
+                data: daftarKependidikan,
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Gagal membuat daftar kependidikan",
+            });
+        }
+    }
+    async getAllDaftarKependidikan(req, res) {
+        try {
+            const daftarKependidikan = await daftar_kependidikan_service_1.default.getAllDaftarKependidikan();
+            return res.status(200).json({
+                success: true,
+                data: daftarKependidikan,
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Gagal mendapatkan daftar dosen",
+            });
+        }
+    }
+    async updateDaftarKependidikan(req, res) {
+        try {
+            const { nama, jabatan, nip, deskripsi, riwayatPendidikan, keahlian, prestasi, pelatihan, pengalaman, tanggungJawab, email, noTelp, } = req.body;
+            const id = req.params.id;
+            const keahlianJson = JSON.parse(keahlian);
+            const prestasiJson = JSON.parse(prestasi);
+            const pelatihanJson = JSON.parse(pelatihan);
+            const pengalamanJson = JSON.parse(pengalaman);
+            const tanggungJawabJson = JSON.parse(tanggungJawab);
+            const riwayatPendidikanJson = JSON.parse(riwayatPendidikan);
+            const updateData = {
+                nama,
+                jabatan,
+                nip,
+                deskripsi,
+                riwayatPendidikan: riwayatPendidikanJson,
+                keahlian: keahlianJson,
+                prestasi: prestasiJson,
+                pelatihan: pelatihanJson,
+                pengalaman: pengalamanJson,
+                tanggungJawab: tanggungJawabJson,
+                email,
+                noTelp,
+            };
+            // Hanya tambahkan foto jika ada file yang diunggah
+            if (req.files?.["foto"]?.[0]) {
+                updateData.foto = req.files["foto"][0];
+            }
+            const updatedDaftarKependidikan = await daftar_kependidikan_service_1.default.updateDaftarKependidikan(Number(id), // Konversi id ke number
+            updateData);
+            return res.status(200).json({
+                success: true,
+                message: "Daftar Kependidikan berhasil diupdate",
+                data: updatedDaftarKependidikan,
+            });
+        }
+        catch (error) {
+            console.error("Error in updateDaftarKependidikan:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Gagal memperbarui kekhususan hukum pidana",
+            });
+        }
+    }
+    async deleteDaftarKependidikan(req, res) {
+        try {
+            const result = await daftar_kependidikan_service_1.default.deleteDaftarKependidikanById(Number(req.params.id));
+            return res.status(200).json({
+                success: true,
+                message: "Daftar Kependidikan berhasil dihapus",
+                data: result,
+            });
+        }
+        catch (error) {
+            console.error("Error in deleteDaftarKependidikan:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Gagal menghapus daftar dosen",
+            });
+        }
+    }
+    async getStatistikDaftarKependidikan(req, res) {
+        try {
+            const statistikDaftarKependidikan = await daftar_kependidikan_service_1.default.getStatistikDaftarKependidikan();
+            return res.status(200).json({
+                success: true,
+                data: statistikDaftarKependidikan,
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Gagal mendapatkan statistik daftar dosen",
+            });
+        }
+    }
+    async createStatistikTenagaKependidikan(req, res) {
+        try {
+            const { totalTenagaKependidikan, administrasi, teknis, pustakawan, slogan, deskripsi, } = req.body;
+            console.log(req.body);
+            const statistikDaftarKependidikan = await daftar_kependidikan_service_1.default.createStatistikTenagaKependidikan({
+                totalTenagaKependidikan,
+                administrasi,
+                teknis,
+                pustakawan,
+                slogan,
+                deskripsi,
+            });
+            console.log(statistikDaftarKependidikan);
+            return res.status(201).json({
+                success: true,
+                data: statistikDaftarKependidikan,
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Gagal membuat statistik daftar dosen",
+            });
+        }
+    }
+    async updateStatistikTenagaKependidikan(req, res) {
+        try {
+            const { totalTenagaKependidikan, administrasi, teknis, pustakawan, slogan, deskripsi, } = req.body;
+            const id = req.params.id;
+            console.log(req.body);
+            console.log(req.params.id);
+            const updateData = {
+                totalTenagaKependidikan,
+                administrasi,
+                teknis,
+                pustakawan,
+                slogan,
+                deskripsi,
+            };
+            const updatedStatistikDaftarDosen = await daftar_kependidikan_service_1.default.updateStatistikTenagaKependidikan(Number(id), // Konversi id ke number
+            updateData);
+            console.log(updatedStatistikDaftarDosen);
+            return res.status(200).json({
+                success: true,
+                message: "Statistik daftar dosen berhasil diupdate",
+                data: updatedStatistikDaftarDosen,
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Gagal memperbarui statistik daftar dosen",
+            });
+        }
+    }
+    async deleteStatistikTenagaKependidikan(req, res) {
+        try {
+            const result = await daftar_kependidikan_service_1.default.deleteStatistikTenagaKependidikanById(Number(req.params.id));
+            return res.status(200).json({
+                success: true,
+                message: "Statistik daftar dosen berhasil dihapus",
+                data: result,
+            });
+        }
+        catch (error) {
+            console.error("Error in deleteStatistikDaftarDosen:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Gagal menghapus statistik daftar dosen",
+            });
+        }
+    }
+}
+exports.default = new DaftarKependidikanController();

@@ -122,6 +122,41 @@ router.post(
 
 router.get("/berita", BeritaController.getAllBerita.bind(BeritaController));
 
+router.put(
+  "/berita/:id",
+  upload.fields([
+    { name: "fotoUtama", maxCount: 1 },
+    { name: "galeri", maxCount: 10 },
+  ]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return BeritaController.updateBerita(req as unknown as MulterRequest, res);
+  }
+);
+
+router.delete(
+  "/berita/:id",
+  BeritaController.deleteDataBerita.bind(BeritaController)
+);
+
 router.post(
   "/testimoni",
   upload.fields([
@@ -158,6 +193,11 @@ router.post(
 router.get(
   "/testimoni",
   TestimoniController.getAllTestimoni.bind(TestimoniController)
+);
+
+router.delete(
+  "/testimoni/:id",
+  TestimoniController.deleteTestimoni.bind(TestimoniController)
 );
 
 router.post(
@@ -5657,9 +5697,32 @@ router.get(
 
 router.put(
   "/beasiswa-indonesia/:id",
-  beasiswaIndonesiaController.updateBeasiswaIndonesia.bind(
-    beasiswaIndonesiaController
-  )
+  upload.fields([{ name: "foto", maxCount: 1 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return beasiswaIndonesiaController.updateBeasiswaIndonesia(
+      req as unknown as MulterRequest,
+      res
+    );
+  }
 );
 
 router.delete(

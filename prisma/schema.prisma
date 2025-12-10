@@ -10,77 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================
-// MODEL INTI
-// ============================================
-
-// Model: Mahasiswa
-// Fungsi: Menyimpan data mahasiswa aktif dan tidak aktif
-// Digunakan di menu: 
-// - Kemahasiswaan dan Alumni (semua submenu)
-// - Arsip Kemahasiswaan (untuk surat-surat)
-// Relasi: Terhubung ke hampir semua tabel kemahasiswaan
-model Mahasiswa {
-  id                Int      @id @default(autoincrement())
-  nim               String   @unique
-  nama              String
-  email             String?
-  telepon           String?
-  foto              String?
-  programStudi      String   // "S1 Hukum"
-  semester          Int
-  ipk               Float?
-  angkatan          String   // "2021", "2022", dst.
-  status            String   @default("Aktif") // "Aktif", "Cuti", "Lulus"
-  alamat            String?  
-  tanggalLahir      DateTime?
-  tempatLahir       String?
-  jenisKelamin      String?  // "Laki-laki", "Perempuan"
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  // Relasi
-  prestasi          Prestasi[]
-  seminarPeserta    SeminarPeserta[]
-  magang            Magang[]
-  wirausaha         Wirausaha[]
-  beasiswa          PengajuanBeasiswa[]
-  suratKeterangan   SuratKeteranganAktif[]
-  izinPenelitian    IzinPenelitian[]
-  suratKelakuan     SuratKelakuan[]
-  anggotaOrganisasi AnggotaOrganisasi[]
-  anggotaDPM        AnggotaDPM[]
-  anggotaBEM        AnggotaBEM[]
-  alumni            Alumni?
-}
-
-// Model: Alumni
-// Fungsi: Menyimpan data alumni dan informasi pekerjaan mereka
-// Digunakan di menu: Kemahasiswaan dan Alumni > Alumni
-// Relasi: One-to-one dengan Mahasiswa (setiap mahasiswa yang lulus menjadi alumni)
-model Alumni {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int      @unique
-  tahunLulus        Int
-  ipk               Float
-  pekerjaanSaatIni  String?
-  posisi            String?
-  perusahaan        String?
-  gaji              String?
-  bidangKerja       String?  // "Sesuai", "Tidak Sesuai"
-  waktuTunggu       String?  // "< 3 bulan", "3-6 bulan", dst.
-  alamatKerja       String?
-  testimoni         String?  
-  linkedin          String?
-  instagram         String?
-  email             String?
-  telepon           String?
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
 
 // ============================================
 // KONTEN BERANDA (HOME PAGE ONLY)
@@ -106,6 +35,8 @@ model HeroSection {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("herosection")
 }
 
 // Model: StatistikBeranda
@@ -123,6 +54,8 @@ model StatistikBeranda {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("statistikberanda")
 }
 
 // ============================================
@@ -155,130 +88,12 @@ model Dosen {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("dosen")
 }
 
 
 
-// ============================================
-// KEMAHASISWAAN - ORGANISASI
-// ============================================
-
-// Model: BidangOrganisasi
-// Fungsi: Menyimpan data bidang-bidang dalam Himpunan Mahasiswa
-// Digunakan di menu: Kemahasiswaan dan Alumni > Organisasi Mahasiswa
-// Contoh: Bidang Pendidikan, Bidang Kewirausahaan, dll
-// Relasi: Memiliki banyak AnggotaOrganisasi
-model BidangOrganisasi {
-  id                Int      @id @default(autoincrement())
-  nama              String   // "Bidang Pendidikan", "Bidang Kewirausahaan", dst.
-  deskripsi         String   
-  visi              String   
-  foto              String?
-  programKerja      Json // Array program kerja
-  pencapaian        Json // Array pencapaian
-  
-  anggota           AnggotaOrganisasi[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: AnggotaOrganisasi
-// Fungsi: Menyimpan data anggota di setiap bidang organisasi mahasiswa
-// Digunakan di menu: Kemahasiswaan dan Alumni > Organisasi Mahasiswa
-// Relasi: Many-to-one dengan BidangOrganisasi dan Mahasiswa
-model AnggotaOrganisasi {
-  id                Int      @id @default(autoincrement())
-  bidangId          Int
-  mahasiswaId       Int
-  jabatan           String   // "Ketua Bidang", "Anggota", dst.
-  tanggalBergabung  DateTime
-  tanggalBerakhir   DateTime?
-  
-  bidang            BidangOrganisasi @relation(fields: [bidangId], references: [id], onDelete: Cascade)
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: AnggotaDPM
-// Fungsi: Menyimpan data anggota Dewan Perwakilan Mahasiswa
-// Digunakan di menu: Kemahasiswaan dan Alumni > Dewan Perwakilan Mahasiswa
-// Berisi: Jabatan, visi, program kerja, pencapaian
-// Relasi: Many-to-one dengan Mahasiswa
-model AnggotaDPM {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  jabatan           String   // "Ketua DPM", "Wakil Ketua", "Anggota", dst.
-  deskripsi         String   
-  visi              String   
-  foto              String?
-  programKerja      Json // Array program kerja
-  pencapaian        Json // Array pencapaian
-  periode           String   // "2023-2024"
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: AnggotaBEM
-// Fungsi: Menyimpan data anggota Badan Eksekutif Mahasiswa
-// Digunakan di menu: Kemahasiswaan dan Alumni > Badan Eksekutif Mahasiswa
-// Berisi: Jabatan, visi, program kerja, pencapaian
-// Relasi: Many-to-one dengan Mahasiswa
-model AnggotaBEM {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  jabatan           String   // "Ketua BEM", "Sekretaris", "Bendahara", dst.
-  deskripsi         String   
-  visi              String   
-  foto              String?
-  programKerja      Json // Array program kerja
-  pencapaian        Json // Array pencapaian
-  periode           String   // "2023-2024"
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// ============================================
-// KEMAHASISWAAN - PRESTASI & KEGIATAN
-// ============================================
-
-// Model: Prestasi
-// Fungsi: Menyimpan data prestasi mahasiswa (akademik & non-akademik)
-// Digunakan di menu: 
-// - Kemahasiswaan dan Alumni > Prestasi Mahasiswa
-// - Kemahasiswaan dan Alumni > Data Prestasi Mahasiswa Kegiatan Non-Dikti
-// Berisi: Judul prestasi, kategori, tingkat, posisi, penyelenggara
-// Relasi: Many-to-one dengan Mahasiswa
-model Prestasi {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  judul             String
-  kategori          String   // "Akademik", "Olahraga", "Seni", "Teknologi", dst.
-  tingkat           String   // "Internasional", "Nasional", "Regional", "Lokal"
-  posisi            String   // "Juara 1", "Juara 2", "Finalis", dst.
-  tanggal           DateTime
-  lokasi            String
-  penyelenggara     String
-  deskripsi         String   
-  dampak            String   
-  keterampilan      Json // Array keterampilan yang dikembangkan
-  penghargaan       Json // Array penghargaan yang diterima
-  foto              String?
-  sertifikat        String?
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
 
 // Model: Rekognisi
 // Fungsi: Menyimpan data rekognisi/penghargaan institusi
@@ -301,237 +116,12 @@ model Rekognisi {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("rekognisi")
 }
 
-// Model: Seminar
-// Fungsi: Menyimpan data seminar/workshop yang diadakan
-// Digunakan di menu: Kemahasiswaan dan Alumni > Data Seminar Mahasiswa
-// Berisi: Judul, narasumber, tanggal, lokasi, peserta
-// Relasi: Memiliki banyak SeminarPeserta
-model Seminar {
-  id                Int      @id @default(autoincrement())
-  judul             String
-  narasumber        String
-  gelarNarasumber   String
-  bioNarasumber     String   
-  fotoNarasumber    String?
-  emailNarasumber   String?
-  teleponNarasumber String?
-  tanggal           DateTime
-  waktu             String
-  lokasi            String
-  kategori          String   // "Hukum Pidana", "Hukum Perdata", dst.
-  deskripsi         String   
-  tujuanPembelajaran Json // Array tujuan pembelajaran
-  materi            Json // Array materi yang dibahas
-  hasilDiharapkan   Json // Array hasil yang diharapkan
-  kapasitasMaksimal Int
-  biayaPendaftaran  Int      @default(0)
-  foto              String?
-  
-  peserta           SeminarPeserta[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
 
-// Model: SeminarPeserta
-// Fungsi: Menyimpan data peserta yang mengikuti seminar
-// Digunakan di menu: Kemahasiswaan dan Alumni > Data Seminar Mahasiswa
-// Relasi: Many-to-many antara Seminar dan Mahasiswa
-model SeminarPeserta {
-  id                Int      @id @default(autoincrement())
-  seminarId         Int
-  mahasiswaId       Int
-  tanggalDaftar     DateTime @default(now())
-  statusKehadiran   String   @default("Terdaftar") // "Terdaftar", "Hadir", "Tidak Hadir"
-  sertifikat        String?
-  
-  seminar           Seminar @relation(fields: [seminarId], references: [id], onDelete: Cascade)
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  
-  @@unique([seminarId, mahasiswaId])
-}
 
-// Model: Magang
-// Fungsi: Menyimpan data mahasiswa yang sedang/pernah magang
-// Digunakan di menu: Kemahasiswaan dan Alumni > Data Mahasiswa Magang
-// Berisi: Perusahaan, posisi, durasi, tugas, pembimbing
-// Relasi: Many-to-one dengan Mahasiswa
-model Magang {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  perusahaan        String
-  logoPerusahaan    String?
-  profilPerusahaan  String   
-  posisi            String
-  divisi            String
-  lokasi            String
-  tanggalMulai      DateTime
-  tanggalSelesai    DateTime
-  durasi            String   // "3 Bulan", "6 Bulan", dst.
-  deskripsi         String   
-  tugasTanggungJawab Json // Array tugas dan tanggung jawab
-  keterampilan      Json // Array keterampilan yang dikembangkan
-  pencapaian        Json // Array pencapaian
-  namaPembimbing    String
-  emailPembimbing   String
-  teleponPembimbing String
-  foto              String?
-  sertifikat        String?
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: Wirausaha
-// Fungsi: Menyimpan data mahasiswa yang berwirausaha
-// Digunakan di menu: Kemahasiswaan dan Alumni > Data Mahasiswa Berwirausaha
-// Berisi: Nama usaha, kategori, pendapatan, produk, pencapaian
-// Relasi: Many-to-one dengan Mahasiswa
-model Wirausaha {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  namaUsaha         String
-  kategori          String   // "Teknologi", "F&B", "Fashion", dst.
-  tahunBerdiri      Int
-  jumlahKaryawan    Int
-  pendapatan        String   // "Rp 50 juta/bulan"
-  lokasi            String
-  deskripsi         String   
-  produkLayanan     Json // Array produk/layanan
-  pencapaian        Json // Array pencapaian
-  tantangan         Json // Array tantangan yang dihadapi
-  rencanaMasaDepan  Json // Array rencana masa depan
-  website           String?
-  instagram         String?
-  email             String?
-  telepon           String?
-  foto              String?
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// ============================================
-// KEMAHASISWAAN - BEASISWA
-// ============================================
-
-// Model: Beasiswa
-// Fungsi: Menyimpan data program beasiswa yang tersedia
-// Digunakan di menu: 
-// - Kemahasiswaan dan Alumni > Beasiswa
-// - Kemahasiswaan dan Alumni > Beasiswa BRI
-// - Kemahasiswaan dan Alumni > Beasiswa KIP Kemendiksaintek
-// Berisi: Nama beasiswa, pemberi, nominal, persyaratan
-// Relasi: Memiliki banyak PengajuanBeasiswa
-model Beasiswa {
-  id                Int      @id @default(autoincrement())
-  nama              String
-  pemberi           String
-  jenis             String   // "Prestasi", "Ekonomi", "KIP", dst.
-  nominal           String   // "Rp 5 juta/semester"
-  durasi            String   // "4 Semester", "Hingga Lulus", dst.
-  kuota             Int
-  deskripsi         String   
-  persyaratan       Json // Array persyaratan
-  manfaat           Json // Array manfaat
-  batasPendaftaran  DateTime
-  kontakPerson      String
-  kontakEmail       String
-  kontakTelepon     String
-  foto              String?
-  aktif             Boolean  @default(true)
-  
-  pengajuan         PengajuanBeasiswa[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: PengajuanBeasiswa
-// Fungsi: Menyimpan data pengajuan beasiswa dari mahasiswa
-// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Pengajuan Beasiswa
-// Berisi: Status pengajuan, alasan, dokumen pendukung
-// Relasi: Many-to-one dengan Beasiswa dan Mahasiswa
-model PengajuanBeasiswa {
-  id                Int      @id @default(autoincrement())
-  beasiswaId        Int
-  mahasiswaId       Int
-  tanggalPengajuan  DateTime @default(now())
-  status            String   @default("Menunggu") // "Menunggu", "Disetujui", "Ditolak"
-  prioritas         String   // "Tinggi", "Sedang", "Rendah"
-  alasan            String   
-  prestasi          Json // Array prestasi
-  penghasilanOrtu   String
-  pekerjaanOrtu     String
-  dokumen           Json // Array URL dokumen
-  catatan           String?  
-  
-  beasiswa          Beasiswa @relation(fields: [beasiswaId], references: [id], onDelete: Cascade)
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// ============================================
-// KEMAHASISWAAN - TRACER STUDY
-// ============================================
-
-// Model: TracerStudy
-// Fungsi: Menyimpan data tracer study alumni per tahun
-// Digunakan di menu: 
-// - Kemahasiswaan dan Alumni > Tracer Study Kemendiksaintek
-// - Kemahasiswaan dan Alumni > Tracer Study Unigal
-// Berisi: Statistik keterserapan kerja, gaji, waktu tunggu
-// Relasi: Memiliki banyak JalurKarir
-model TracerStudy {
-  id                Int      @id @default(autoincrement())
-  sumber            String   // "Kemendiksaintek", "Unigal"
-  tahun             Int
-  totalLulusan      Int
-  totalResponden    Int
-  tingkatKeterserapan Float  // Persentase
-  rataRataGaji      String
-  rataRataWaktuTunggu String // "3.2 Bulan"
-  kesesuaianBidang  Float    // Persentase
-  
-  jalurKarir        JalurKarir[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: JalurKarir
-// Fungsi: Menyimpan detail jalur karir alumni per sektor
-// Digunakan di menu: 
-// - Kemahasiswaan dan Alumni > Tracer Study Kemendiksaintek
-// - Kemahasiswaan dan Alumni > Tracer Study Unigal
-// Berisi: Sektor pekerjaan, persentase, gaji, institusi
-// Relasi: Many-to-one dengan TracerStudy
-model JalurKarir {
-  id                Int      @id @default(autoincrement())
-  tracerStudyId     Int
-  sektor            String   // "Sektor Publik", "Sektor Swasta", dst.
-  persentase        Float
-  deskripsi         String   
-  rataRataGaji      String
-  contohInstitusi   Json // Array contoh institusi
-  keterampilan      Json // Array keterampilan yang dibutuhkan
-  
-  tracerStudy       TracerStudy @relation(fields: [tracerStudyId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
 
 // Model: RekapitulasiSurvey
 // Fungsi: Menyimpan rekapitulasi pengisian survey tracer study
@@ -550,6 +140,8 @@ model RekapitulasiSurvey {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("rekapitulasisurvey")
 }
 
 // Model: KategoriRekapitulasi
@@ -569,6 +161,8 @@ model KategoriRekapitulasi {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("kategorirekapitulasi")
 }
 
 // ============================================
@@ -597,6 +191,8 @@ model SuratMasuk {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("suratmasuk")
 }
 
 // Model: SuratKeluar
@@ -622,94 +218,8 @@ model SuratKeluar {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-}
 
-// ============================================
-// ARSIP - SURAT KEMAHASISWAAN
-// ============================================
-
-// Model: SuratKeteranganAktif
-// Fungsi: Menyimpan arsip surat keterangan aktif mahasiswa
-// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Keterangan Aktif Mahasiswa
-// Berisi: Data mahasiswa, keperluan, masa berlaku
-// Relasi: Many-to-one dengan Mahasiswa
-model SuratKeteranganAktif {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  nomorSurat        String   @unique
-  keperluan         String   // "Beasiswa", "Magang", "Keperluan Bank", dst.
-  tanggalTerbit     DateTime
-  berlakuHingga     DateTime?
-  status            String   @default("Aktif") // "Aktif", "Kadaluarsa"
-  isiSurat          String   
-  namaPenandatangan String
-  jabatanPenandatangan String
-  catatan           String?  
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: IzinPenelitian
-// Fungsi: Menyimpan arsip surat izin penelitian mahasiswa
-// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Izin Penelitian
-// Berisi: Judul penelitian, lokasi, durasi, tujuan, metode
-// Relasi: Many-to-one dengan Mahasiswa
-model IzinPenelitian {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  nomorSurat        String   @unique
-  judulPenelitian   String
-  lokasi            String
-  alamatLokasi      String
-  kontakLokasi      String
-  tanggalMulai      DateTime
-  tanggalSelesai    DateTime
-  durasi            String   // "2 Bulan"
-  tanggalTerbit     DateTime
-  prioritas         String   // "Tinggi", "Sedang", "Rendah"
-  status            String   @default("Aktif") // "Aktif", "Selesai", "Dibatalkan"
-  deskripsi         String   
-  tujuanPenelitian  Json // Array tujuan penelitian
-  metodePenelitian  Json // Array metode penelitian
-  hasilDiharapkan   Json // Array hasil yang diharapkan
-  namaPembimbing    String
-  nidnPembimbing    String
-  foto              String?
-  catatan           String?  
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: SuratKelakuan
-// Fungsi: Menyimpan arsip surat keterangan kelakuan baik mahasiswa
-// Digunakan di menu: Arsip > Arsip Kemahasiswaan > Surat Keterangan Kelakuan
-// Berisi: Penilaian kelakuan, catatan akademik, disiplin, organisasi
-// Relasi: Many-to-one dengan Mahasiswa
-model SuratKelakuan {
-  id                Int      @id @default(autoincrement())
-  mahasiswaId       Int
-  nomorSurat        String   @unique
-  kelakuan          String   // "Baik", "Sangat Baik"
-  keperluan         String   // "Beasiswa", "Magang", "Keperluan Lainnya"
-  tanggalTerbit     DateTime
-  isiSurat          String   
-  catatanAkademik   Json // Array catatan akademik
-  catatanDisiplin   Json // Array catatan disiplin
-  catatanOrganisasi Json // Array catatan organisasi
-  namaPenandatangan String
-  jabatanPenandatangan String
-  catatan           String?  
-  
-  mahasiswa         Mahasiswa @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  @@map("suratkeluar")
 }
 
 // ============================================
@@ -734,6 +244,8 @@ model Kekhususan {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("kekhususan")
 }
 
 // Model: MataKuliahKekhususan
@@ -756,6 +268,8 @@ model MataKuliahKekhususan {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("matakuliahkekhususan")
 }
 
 
@@ -777,6 +291,8 @@ model Sejarah_S1 {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("sejarah_s1")
 }
 model SejarahS1 {
   id                Int      @id @default(autoincrement())
@@ -784,6 +300,8 @@ model SejarahS1 {
   konten            String? 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("sejarahs1")
 }
 
 model StatistikSejarahS1 {
@@ -794,6 +312,8 @@ model StatistikSejarahS1 {
   tingkatKelulusan  String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksejarahs1")
 }
 
 model Sejarah_S2 {
@@ -806,6 +326,8 @@ model Sejarah_S2 {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("sejarah_s2")
 }
 model SejarahS2 {
   id                Int      @id @default(autoincrement())
@@ -813,6 +335,8 @@ model SejarahS2 {
   konten            String? 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("sejarahs2")
 }
 
 model StatistikSejarahS2 {
@@ -823,6 +347,8 @@ model StatistikSejarahS2 {
   tingkatKelulusan  String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksejarahs2")
 }
 
 model SaranaPrasarana {
@@ -831,6 +357,8 @@ model SaranaPrasarana {
   katagori          String?
   deskripsi         String   
   foto              Json?
+
+  @@map("saranaprasarana")
 }
 
 model SaranaPrasaranaBanner {
@@ -839,6 +367,8 @@ model SaranaPrasaranaBanner {
   konten            String? 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("saranaprasaranabanner")
 }
 
 model StatistikSaranaPrasarana {
@@ -849,6 +379,8 @@ model StatistikSaranaPrasarana {
   lantaiGedung      String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksaranaprasarana")
 }
 
 
@@ -859,6 +391,8 @@ model RencanaStrategis {
   katagori          Json?
   deskripsi         String   
   foto              Json?
+
+  @@map("rencanastrategis")
 }
 
 model StatistikRencanaStrategis{
@@ -869,6 +403,8 @@ model StatistikRencanaStrategis{
   targetAkreditas   String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikrencanastrategis")
 }
 
 model SenatFakultas {
@@ -881,6 +417,8 @@ model SenatFakultas {
   tugas             String?
   deskripsi         String?
   galeri            Json?
+
+  @@map("senatfakultas")
 }
 
 model StatistikSenatFakultas{
@@ -891,6 +429,8 @@ model StatistikSenatFakultas{
   keputusan         String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksenatfakultas")
 }
 
 
@@ -907,6 +447,8 @@ model VisiMisi {
   gambar      String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("visimisi")
 }
 model StatistikVisiMisi{
   id                Int      @id @default(autoincrement())
@@ -916,6 +458,8 @@ model StatistikVisiMisi{
   ProgramUnggula    String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikvisimisi")
 }
 
 
@@ -934,6 +478,8 @@ model StrukturOrganisasi {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("strukturorganisasi")
 }
 model StatistikStrukturOrganisasi{
   id                Int      @id @default(autoincrement())
@@ -943,6 +489,8 @@ model StatistikStrukturOrganisasi{
   dosenTetap        String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikstrukturorganisasi")
 }
 
 model Pimpinan {
@@ -955,6 +503,8 @@ model Pimpinan {
   periode           String?
   email             String?
   kontak            String?
+
+  @@map("pimpinan")
 }
 
 model StatistikPimpinan{
@@ -964,6 +514,8 @@ model StatistikPimpinan{
   publikasiIlmiah   String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikpimpinan")
 }
 
 
@@ -975,6 +527,8 @@ model ProgramSarjanaHukum {
   judul             String?
   deskripsi         String?
   kategori          Json?
+
+  @@map("programsarjanahukum")
 }
 
 model StatistikProgramSarjanaHukum{
@@ -985,12 +539,16 @@ model StatistikProgramSarjanaHukum{
   alumni            String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikprogramsarjanahukum")
 }
 
 model prospekKarirSarjanaHukum {
   id                Int      @id @default(autoincrement())
   judul             String?
   deskripsi         String?
+
+  @@map("prospekkarirsarjanahukum")
 }
 
 
@@ -1001,6 +559,8 @@ model ProgramMagisterHukum {
   judul             String?
   deskripsi         String?
   kategori          Json?
+
+  @@map("programmagisterhukum")
 }
 
 model StatistikProgramMagisterHukum{
@@ -1011,6 +571,8 @@ model StatistikProgramMagisterHukum{
   alumni            String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikprogrammagisterhukum")
 }
 
 model prospekKarirMagisterHukum {
@@ -1018,6 +580,8 @@ model prospekKarirMagisterHukum {
   judul             String?
   deskripsi         String?
   image             String?
+
+  @@map("prospekkarirmagisterhukum")
 }
 
 
@@ -1032,6 +596,8 @@ model ArsipSuratMasuk {
   foto              String?
   file              Json?
   status            String? @default("Diterima")
+
+  @@map("arsipsuratmasuk")
 }
 
 model StatistikArsipSuratMasuk{
@@ -1042,6 +608,8 @@ model StatistikArsipSuratMasuk{
   suratSelesai      String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikarsipsuratmasuk")
 }
 
 model ArsipSuratKeluar {
@@ -1056,6 +624,8 @@ model ArsipSuratKeluar {
   file              Json?
   note              String?
   status            String? @default("Diterima")
+
+  @@map("arsipsuratkeluar")
 }
 
 model StatistikArsipSuratKeluar{
@@ -1066,6 +636,8 @@ model StatistikArsipSuratKeluar{
   draf              String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikarsipsuratkeluar")
 }
 
 
@@ -1087,7 +659,7 @@ model KeteranganAktifMahasiswa {
   note              String? //note
   deskripsi         String?
 
-  
+  @@map("keteranganaktifmahasiswa")
 }
 
 
@@ -1099,6 +671,8 @@ model StatistikKeteranganAktifMahasiswa{
   selesai           String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikketeranganaktifmahasiswa")
 }
 
 
@@ -1118,6 +692,8 @@ model suratIjinPenelitian {
   tujuanPenelitian  Json?
   metodePenelitian  Json?
   hasilDiharapkan   Json?
+
+  @@map("suratijinpenelitian")
 }
 
 model StatistikSuratIjinPenelitian{
@@ -1128,6 +704,8 @@ model StatistikSuratIjinPenelitian{
   selesai           String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksuratijinpenelitian")
 }
 
 
@@ -1145,7 +723,8 @@ model SuratKeteranganKelakuanBaik {
   berlakuHingga     String?
   keperluan         String?
   status            String? @default("Baik")
-  
+
+  @@map("suratketerangankelakuanbaik")
 }
 
 model StatistikSuratKelakuanBaik{
@@ -1156,6 +735,8 @@ model StatistikSuratKelakuanBaik{
   validasiTerjamin          String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksuratkelakuanbaik")
 }
 
 
@@ -1178,8 +759,8 @@ model suratPengajuanBeasiswa {
   kontak            String?
   note              String?
   status            String? @default("Disetujui")
-  
-  
+
+  @@map("suratpengajuanbeasiswa")
 }
 
 
@@ -1191,6 +772,8 @@ model StatistikSuratPengajuanBeasiswa{
   ditolak           String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksuratpengajuanbeasiswa")
 }
 
 
@@ -1202,6 +785,8 @@ model SeminarProposal {
   foto              String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("seminarproposal")
 }
 
 
@@ -1214,6 +799,8 @@ model ProsedurPelaksanaan {
   foto              String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prosedurpelaksanaan")
 }
 
 model StatistikSeminarProposal{
@@ -1224,6 +811,8 @@ model StatistikSeminarProposal{
   timPenguji        String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikseminarproposal")
 }
 
 
@@ -1234,6 +823,8 @@ model SidangSkripsi {
   foto              String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("sidangskripsi")
 }
 
 model ProsedurSidangSkripsi {
@@ -1244,6 +835,8 @@ model ProsedurSidangSkripsi {
   foto              String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prosedursidangskripsi")
 }
 model KriteriaSidangSkripsi {
   id                Int      @id @default(autoincrement())
@@ -1252,6 +845,8 @@ model KriteriaSidangSkripsi {
   skor              String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("kriteriasidangskripsi")
 }
 
 
@@ -1263,6 +858,8 @@ model StatistikSidangSkripsi{
   timPenguji        String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksidangskripsi")
 }
 
 model KeteranganPendampingIjazah {
@@ -1274,6 +871,8 @@ model KeteranganPendampingIjazah {
   waktu             String? //minggu 1
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("keteranganpendampingijazah")
 }
 
 model StatistikKeteranganPendampingIjazah{
@@ -1284,6 +883,8 @@ model StatistikKeteranganPendampingIjazah{
   mingguAktif      String?   // minggu paling aktif (misal: "minggu 3")
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikketeranganpendampingijazah")
 }
 
 
@@ -1297,6 +898,8 @@ model UjianKomprehensif {
   deskripsi         String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("ujiankomprehensif")
 }
 
 
@@ -1308,6 +911,8 @@ model StatistikUjianKomprehensif {
   menitUjian        String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikujiankomprehensif")
 }
 
 
@@ -1322,6 +927,8 @@ model Matrikulasi {
   deskripsi         String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("matrikulasi")
 }
 
 model StatistikMatrikulasi {
@@ -1332,6 +939,8 @@ model StatistikMatrikulasi {
   kelulusan         String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikmatrikulasi")
 }
 
 
@@ -1347,6 +956,8 @@ model KelompokRiset {
   status            String? // "Aktif", "Tidak Aktif"
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("kelomporiset")
 }
 
 model StatistikKelompokRiset {
@@ -1358,6 +969,7 @@ model StatistikKelompokRiset {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistikkelomporiset")
 }
 
 model sejarahLBKH {
@@ -1368,6 +980,8 @@ model sejarahLBKH {
   tahun             String? //1999
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("sejarahlbkh")
 }
 
 model StatistikSejarahLBKH {
@@ -1379,6 +993,7 @@ model StatistikSejarahLBKH {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistiksejarahlbkh")
 }
 
 
@@ -1391,6 +1006,8 @@ model VisiMisiLBKH {
   kategori          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("visimisalbkh")
 }
 
 model StatistikVisiMisiLBKH {
@@ -1402,6 +1019,7 @@ model StatistikVisiMisiLBKH {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistikvisimisalbkh")
 }
 
 
@@ -1416,6 +1034,8 @@ model PengurusLBKH {
   noTelp            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("penguruslbkh")
 }
 
 model StatistikPengurusLBKH {
@@ -1427,6 +1047,7 @@ model StatistikPengurusLBKH {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistikpenguruslbkh")
 }
 
 model AdvokatParalegal {
@@ -1442,6 +1063,8 @@ model AdvokatParalegal {
   note              String? //250+ Kasus Ditangani , 150+ Kasus Ditangani
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("advokatparalegal")
 }
 
 
@@ -1454,6 +1077,7 @@ model StatistikAdvokatParalegal {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistikadvokatparalegal")
 }
 
 
@@ -1466,6 +1090,8 @@ model KonsultasiHukum {
   waktu             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("konsultasihukum")
 }
 
 
@@ -1477,6 +1103,8 @@ model ProsedurKonsultasi {
   waktu             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prosedurkonsultasi")
 }
 
 model StatistikProsedurKonsultasi {
@@ -1488,6 +1116,7 @@ model StatistikProsedurKonsultasi {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistikprosedurkonsultasi")
 }
 
 
@@ -1500,6 +1129,8 @@ model PendampinganHukum {
   waktu             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("pendampinganhukum")
 }
 
 model ProsedurPendampinganHukum {
@@ -1510,6 +1141,8 @@ model ProsedurPendampinganHukum {
   waktu             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prosedurpendampinganhukum")
 }
 
 model StatistikPendampinganHukum {
@@ -1521,6 +1154,7 @@ model StatistikPendampinganHukum {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistikpendampinganhukum")
 }
 
 model PembuatanLegal {
@@ -1532,6 +1166,8 @@ model PembuatanLegal {
   waktu             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("pembuatanlegal")
 }
 
 model ProsedurPembuatanLegal {
@@ -1542,6 +1178,8 @@ model ProsedurPembuatanLegal {
   waktu             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prosedurpembuatanlegal")
 }
 
 
@@ -1554,6 +1192,7 @@ model StatistikPembuatanLegal {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistikpembuatanlegal")
 }
 
 
@@ -1570,6 +1209,8 @@ model SaksiAhli {
   noTelp            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("saksiahli")
 }
 
 
@@ -1581,6 +1222,8 @@ model ProsedurSaksiAhli {
   waktu             String?//Fase 1 • Hari 1-2
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prosedursaksiahli")
 }
 
 
@@ -1593,6 +1236,7 @@ model StatistikSaksiAhli {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistiksaksiahli")
 }
 
 
@@ -1606,6 +1250,8 @@ model LayananMediasi {
     type              String? // "Layanan", "Prosedur"
     createdAt         DateTime @default(now())
     updatedAt         DateTime @updatedAt
+
+    @@map("layananmediasi")
 }
 
 model StatistikLayananMediasi {
@@ -1617,6 +1263,7 @@ model StatistikLayananMediasi {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistiklayananmediasi")
 }
 
 model TimMediator {
@@ -1630,6 +1277,8 @@ model TimMediator {
   noTelp            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("timmediator")
 }
 
 model LayananProBono {
@@ -1641,7 +1290,9 @@ model LayananProBono {
   kategori          Json?
   type              String? // "Jenis Layanan", "Prosedur Pengajuan"
   createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt  
+  updatedAt         DateTime @updatedAt
+
+  @@map("layananprobono")
 }
 
 model StatistikLayananProbono {
@@ -1653,6 +1304,7 @@ model StatistikLayananProbono {
   slogan            String?
   deskripsi         String?
 
+  @@map("statistiklayananprobono")
 }
 
 model KriteriaPenerima {
@@ -1660,6 +1312,8 @@ model KriteriaPenerima {
   foto              String?
   title             String?
   kategori          Json?
+
+  @@map("kriteriapenerima")
 }
 
 model PenyuluhanHukum {
@@ -1672,6 +1326,8 @@ model PenyuluhanHukum {
   type              String? // "Program Penyuluhan", "Prosedur Penyuluhan"
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("penyuluhanhukum")
 }
 
 model StatistikPenyuluhanHukum {
@@ -1682,6 +1338,8 @@ model StatistikPenyuluhanHukum {
   totalPenyuluhan   String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikpenyuluhanhukum")
 }
 model SosialisasiPraturanUUD {
   id                Int      @id @default(autoincrement())
@@ -1693,6 +1351,8 @@ model SosialisasiPraturanUUD {
   type              String? // "Program Sosialisasi", "Prosedur Sosialisasi"
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("sosialisasipraturanuud")
 }
 
 model StatistikSosialisasiPraturanUUD {
@@ -1703,6 +1363,8 @@ model StatistikSosialisasiPraturanUUD {
   totalSosialisasi   String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiksosialisasipraturanuud")
 }
 
 model KekhususanHukumPidana {
@@ -1715,6 +1377,8 @@ model KekhususanHukumPidana {
   kategori          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("kekhususanhukumpidana")
 }
 
 model ProspekKarir {
@@ -1724,6 +1388,8 @@ model ProspekKarir {
   kategori          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prospekkarir")
 }
 
 model StatistikKekhususanHukumPidana {
@@ -1734,6 +1400,8 @@ model StatistikKekhususanHukumPidana {
   alumniProfesional String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikkekhususanhukumpidana")
 }
 
 
@@ -1746,7 +1414,9 @@ model KekhususanHukumTataUsahaNegara {
   deskripsi         String?
   kategori          Json?
   createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt    
+  updatedAt         DateTime @updatedAt
+
+  @@map("kekhususanhukumtatausahanegara")
 }
 
 model ProspekKarirTataUsahaNegara {
@@ -1756,6 +1426,8 @@ model ProspekKarirTataUsahaNegara {
   kategori          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prospekkarirtatausahanegara")
 }
 
 model StatistikKekhususanHukumTataUsahaNegara {
@@ -1766,6 +1438,8 @@ model StatistikKekhususanHukumTataUsahaNegara {
   alumniProfesional String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikkekhususanhukumtatausahanegara")
 }
 
 model KekhususanHukumPerdata {
@@ -1777,7 +1451,9 @@ model KekhususanHukumPerdata {
   deskripsi         String?
   kategori          Json?
   createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt    
+  updatedAt         DateTime @updatedAt
+
+  @@map("kekhususanhukumperdata")
 }
 
 model ProspekKarirPerdata {
@@ -1787,6 +1463,8 @@ model ProspekKarirPerdata {
   kategori          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("prospekkarirperdata")
 }
 
 model StatistikKekhususanHukumPerdata {
@@ -1797,6 +1475,8 @@ model StatistikKekhususanHukumPerdata {
   alumniProfesional String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikkekhususanhukumperdata")
 }
 
 model DaftarDosen{
@@ -1814,6 +1494,8 @@ model DaftarDosen{
   noTelp            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("daftardosen")
 }
 
 model StatistikDaftarDosen {
@@ -1824,6 +1506,8 @@ model StatistikDaftarDosen {
   publiikasiPerTahun String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikdaftardosen")
 }
 
 model TenagaKependidikan{
@@ -1843,6 +1527,8 @@ model TenagaKependidikan{
   pengalaman         Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("tenagakependidikan")
 }
 
 model StatistikTenagaKependidikan {
@@ -1853,6 +1539,8 @@ model StatistikTenagaKependidikan {
   pustakawan String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiktenagakependidikan")
 }
 
 
@@ -1872,6 +1560,8 @@ model HimpunanMahasiswaProdiHukum {
   prestasi          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("himpunanmahasiswaprodihukum")
 }
 
 
@@ -1883,6 +1573,8 @@ model StatistikHimpunanMahasiswaProdiHukum {
   prestasi String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikhimpunanmahasiswaprodihukum")
 }
 
 model DewanPerwakilanMahasiswa {
@@ -1899,6 +1591,8 @@ model DewanPerwakilanMahasiswa {
   noTelp            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("dewanperwakilanmahasiswa")
 }
 
 model StatistikDewanPerwakilanMahasiswa {
@@ -1909,6 +1603,8 @@ model StatistikDewanPerwakilanMahasiswa {
   akuntabel String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikdewanperwakilanmahasiswa")
 }
 
 
@@ -1926,6 +1622,8 @@ model BadanEksikutifMahasiswa {
   noTelp            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("badaneksikutifmahasiswa")
 }
 
 model StatistikBadanEksikutifMahasiswa {
@@ -1936,6 +1634,8 @@ model StatistikBadanEksikutifMahasiswa {
   komitmen String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikbadaneksikutifmahasiswa")
 }
 
 
@@ -1950,7 +1650,8 @@ model TrackerStudy {
   keahlian          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  
+
+  @@map("trackerstudy")
 }
 
 model waktuTungguKerja {
@@ -1960,6 +1661,8 @@ model waktuTungguKerja {
   deskripsi         String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("waktutunggukerja")
 }
 
 model StatistikTrackerStudy {
@@ -1970,6 +1673,8 @@ model StatistikTrackerStudy {
   kesesuaianBidang String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiktrackerstudy")
 }
 
 model TrackerStudyUnigal {
@@ -1983,7 +1688,8 @@ model TrackerStudyUnigal {
   keahlian          Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  
+
+  @@map("trackerstudyunigal")
 }
 
 model waktuTungguKerjaUnigal {
@@ -1993,6 +1699,8 @@ model waktuTungguKerjaUnigal {
   deskripsi         String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("waktutunggukerjaunigal")
 }
 
 model StatistikTrackerStudyUnigal {
@@ -2003,6 +1711,8 @@ model StatistikTrackerStudyUnigal {
   kesesuaianBidang String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiktrackerstudyunigal")
 }
 
 
@@ -2014,6 +1724,8 @@ model RekapitulasiPengisian {
   jumlahResponden   String?
   kategori          Json?
   persentasi        String?  //(otomatis: jumlah_responden / total_mahasiswa * 100)
+
+  @@map("rekapitulasipengisian")
 }
 model RekapitulasiPerKategori {
   id                Int      @id @default(autoincrement())
@@ -2021,6 +1733,8 @@ model RekapitulasiPerKategori {
   totalMahasiswa    String?
   jumlahResponden   String?
   persentasi        String?  //(otomatis: jumlah_responden / total_mahasiswa * 100)
+
+  @@map("rekapitulasiperkategori")
 }
 
 model StatistikRekapitulasiPerKategori {
@@ -2031,6 +1745,8 @@ model StatistikRekapitulasiPerKategori {
   dalamProses String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikrekapitulasiperkategori")
 }
 
 model BeasiswaIndonesia {
@@ -2049,6 +1765,8 @@ model BeasiswaIndonesia {
   noTelp            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("beasiswaindonesia")
 }
 
 model StatistikBeasiswaIndonesia {
@@ -2059,6 +1777,8 @@ model StatistikBeasiswaIndonesia {
   pendaftarTahunan  String?        // Jumlah rata-rata pendaftar setiap tahun (misal: 5000 pendaftar)
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikbeasiswaindonesia")
 }
 
 
@@ -2069,6 +1789,8 @@ model BeasiswaBri{
   manfaat           Json?
   judulPersyaratan  String?
   persyaratan       Json?
+
+  @@map("beasiswabri")
 }
 
 
@@ -2077,6 +1799,8 @@ model TimelineBeasiswaBri{
   title             String?
   waktu             String? // 1 Mei - 30 Juni 2025
   deskripsi         String?
+
+  @@map("timelinebeasiswabri")
 }
 
 
@@ -2088,6 +1812,8 @@ model StatistikBeasiswaBri {
   deadline String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikbeasiswabri")
 }
 
 
@@ -2096,12 +1822,16 @@ model BeasiswaKIPKemendiksaintek{
   manfaat           Json?
   judulPersyaratan  String?
   persyaratan       Json?
+
+  @@map("beasiswakipkemendiksaintek")
 }
 model TimelineBeasiswaKIPKemendiksaintek{
   id                Int      @id @default(autoincrement())
   title             String?
   waktu             String? // 1 Mei - 30 Juni 2025
   deskripsi         String?
+
+  @@map("timelinebeasiswakipkemendiksaintek")
 }
 
 model StatistikBeasiswaKIPKemendiksaintek {
@@ -2112,6 +1842,8 @@ model StatistikBeasiswaKIPKemendiksaintek {
   deadline String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikbeasiswakipkemendiksaintek")
 }
 
 
@@ -2129,6 +1861,8 @@ model PrestasiMahasiswaNonDikti {
   waktuKompetisi    String?
   alamat            String?
   penyelenggara     String?
+
+  @@map("prestasimahasiswanondikti")
 }
 
 
@@ -2140,6 +1874,8 @@ model StatistikPrestasiMahasiswaNonDikti {
   tingkatRegional String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikprestasimahasiswanondikti")
 }
 
 
@@ -2157,6 +1893,7 @@ model DataRekognisi {
   provider          String?
   masaBerlaku       String?
 
+  @@map("datarekognisi")
 }
 
 
@@ -2168,6 +1905,8 @@ model StatistikDataRekognisi {
   rekognasiInternasional String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikdatarekognisi")
 }
   
 
@@ -2188,6 +1927,8 @@ model DataSeminarMahasiswa {
   tentangNarasumber String?
   emailNarasumber   String?
   noTelpNarasumber  String?
+
+  @@map("dataseminarmahasiswa")
 }
 
 model StatistikDataSeminarMahasiswa {
@@ -2198,6 +1939,8 @@ model StatistikDataSeminarMahasiswa {
   tingkatKepuasan    String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikdataseminarmahasiswa")
 }
 
 model dataMahasiswaMagang {
@@ -2215,6 +1958,8 @@ model dataMahasiswaMagang {
   lokasiMagang      String?
   superVisorMagang  String?
   emailSuperVisorMagang String?
+
+  @@map("datamahasiswamagang")
 }
 
 model StatistikDataMahasiswaMagang {
@@ -2225,6 +1970,8 @@ model StatistikDataMahasiswaMagang {
   tingkatKepuasan   String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikdatamahasiswamagang")
 }
 
 model DataMahasiswaBerwirausaha {
@@ -2246,6 +1993,8 @@ model DataMahasiswaBerwirausaha {
   noTelp            String?
   email             String?
   lokasiMahasiswa   String?
+
+  @@map("datamahasiswaberwirausaha")
 }
 
 
@@ -2257,6 +2006,8 @@ model StatistikDataMahasiswaBerwirausaha {
   bisnisAktif       String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikdatamahasiswaberwirausaha")
 }
 
 model LowonganKerja {
@@ -2278,6 +2029,8 @@ model LowonganKerja {
   benefit           Json?
   email             String?
   link              String?
+
+  @@map("lowongankerja")
 }
 
 model StatistikLowonganKerja {
@@ -2288,6 +2041,8 @@ model StatistikLowonganKerja {
   gajihRata       String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistiklowongankerja")
 }
 
 model AlumniBerPrestasi {
@@ -2310,7 +2065,8 @@ model AlumniBerPrestasi {
     keahlian          Json?
     pencapaian        Json?
     bidang            String? //korporat, pemerintahan, swasta
-  
+
+    @@map("alumniberprestasi")
 }
 
 model StatistikAlumniBerprestasi {
@@ -2321,6 +2077,8 @@ model StatistikAlumniBerprestasi {
   WaktuTunggu   String?
   slogan            String?
   deskripsi         String?
+
+  @@map("statistikalumniberprestasi")
 }
 
 
@@ -2330,6 +2088,8 @@ model DataMahasiswaAktif {
    title             String?
    deskripsi         String?
    jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+
+   @@map("datamahasiswaaktif")
 }
 
 model statistikMahasiswaAktif {
@@ -2338,6 +2098,8 @@ model statistikMahasiswaAktif {
   tingkatKehadiran    String?
   ipkRataRata       String?
   mahasiswaBerprestasi String?
+
+  @@map("statistikmahasiswaaktif")
 }
 
 
@@ -2347,6 +2109,8 @@ model DataMahasiswaNonAktif {
    title             String?
    deskripsi         String?
    jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+
+   @@map("datamahasiswanonaktif")
 }
 
 model statistikMahasiswaNonAktif {
@@ -2355,6 +2119,8 @@ model statistikMahasiswaNonAktif {
   tingkatKehadiran    String?
   ipkRataRata       String?
   mahasiswaBerprestasi String?
+
+  @@map("statistikmahasiswanonaktif")
 }
 
 model DataLulusanPertahun {
@@ -2363,6 +2129,8 @@ model DataLulusanPertahun {
    title             String?
    deskripsi         String?
    jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+
+   @@map("datalulusanpertahun")
 }
 
 model statistikLulusanPertahun {
@@ -2371,6 +2139,8 @@ model statistikLulusanPertahun {
   tahun1    String?
   tahun2       String?
   tingkatKelulusan String?
+
+  @@map("statistiklulusanpertahun")
 }
 
 model MoU{
@@ -2389,8 +2159,8 @@ model MoU{
  description       String?
  implementation    String?
  benefits          String?
- 
-      
+
+ @@map("mou")
 }
 
 model statistikMoU {
@@ -2399,8 +2169,10 @@ model statistikMoU {
   aktif         String?
   dalamProses   String?
   tidakAktif    String?
-  }
-  model MoA{
+
+  @@map("statistikmou")
+}
+model MoA{
   id                Int      @id @default(autoincrement())
   title             String?
   agreementNumber   String?
@@ -2418,22 +2190,26 @@ model statistikMoU {
   description       String?
   implementation    String?
   benefits          String?
-  
-        
-  }
-  model statistikMoA {
+
+  @@map("moa")
+}
+model statistikMoA {
     id                Int      @id @default(autoincrement())
     totalMoA      String?
     aktif         String?
     dalamProses   String?
     tidakAktif    String?
-  }
+
+    @@map("statistikmoa")
+}
 model DataPKPA {
    id                Int      @id @default(autoincrement())
    foto              String?
    title             String?
    deskripsi         String?
    jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+
+   @@map("datapkpa")
 }
 
 model statistikPKPA {
@@ -2442,6 +2218,8 @@ model statistikPKPA {
   angkatan         String?
   tingkatKelulusan   String?
   mitraHukum    String?
+
+  @@map("statistikpkpa")
 }
 
 
@@ -2451,6 +2229,8 @@ model DataPeradilanSemu {
    title             String?
    deskripsi         String?
    jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+
+   @@map("dataperadilansemu")
 }
 
 model statistikPeradilanSemu {
@@ -2459,6 +2239,8 @@ model statistikPeradilanSemu {
   peserta         String?
   tingkatKepuasan   String?
   kasusSimulasi    String?
+
+  @@map("statistikperadilansemu")
 }
 
 
@@ -2472,32 +2254,7 @@ model statistikPeradilanSemu {
 
 
 
-// Model: Fasilitas
-// Fungsi: Menyimpan data fasilitas dan infrastruktur fakultas
-// Digunakan di menu: Tentang > Fasilitas atau halaman Fasilitas
-// Berisi: Nama, kategori, deskripsi, kapasitas, lokasi, foto
-model Fasilitas {
-  id                Int      @id @default(autoincrement())
-  nama              String
-  kategori          String   // "Ruang Kuliah", "Laboratorium", "Perpustakaan", "Ruang Seminar", dst.
-  deskripsi         String   
-  kapasitas         Int?     // Kapasitas orang (jika applicable)
-  lokasi            String   // "Gedung A Lantai 2", "Kampus Utama", dst.
-  luas              String?  // "100 m²", "50 m²", dst.
-  fasilitas         Json // Array fasilitas yang tersedia: ["AC", "Proyektor", "WiFi", dst.]
-  kondisi           String   @default("Baik") // "Baik", "Sedang", "Perlu Perbaikan"
-  jamOperasional    String?  // "Senin-Jumat 08:00-16:00"
-  penanggungJawab   String?  // Nama penanggung jawab
-  kontakPJ          String?  // Kontak penanggung jawab
-  foto              Json // Array URL foto fasilitas
-  thumbnail         String?  // Foto utama untuk preview
-  urutan            Int      @default(0)
-  featured          Boolean  @default(false)
-  aktif             Boolean  @default(true)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
+
 
 // ============================================
 // BERITA & PENGUMUMAN
@@ -2520,6 +2277,8 @@ model Berita {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("berita")
 }
 
 // Model: Pengumuman
@@ -2539,48 +2298,11 @@ model Pengumuman {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@map("pengumuman")
 }
 
-// ============================================
-// GALERI & MEDIA
-// ============================================
 
-// Model: Galeri
-// Fungsi: Menyimpan galeri foto kegiatan fakultas
-// Digunakan di menu: Beranda atau halaman Galeri
-// Berisi: Judul, deskripsi, kategori, kumpulan foto
-model Galeri {
-  id                Int      @id @default(autoincrement())
-  judul             String
-  deskripsi         String?  
-  kategori          String   // "Kegiatan", "Fasilitas", "Wisuda", dst.
-  tanggal           DateTime
-  foto              Json // Array URL foto
-  featured          Boolean  @default(false)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: Video
-// Fungsi: Menyimpan video profil dan kegiatan fakultas
-// Digunakan di menu: Beranda atau halaman Video
-// Berisi: Judul, deskripsi, URL video, thumbnail
-model Video {
-  id                Int      @id @default(autoincrement())
-  judul             String
-  deskripsi         String?  
-  kategori          String   // "Profil", "Kegiatan", "Tutorial", dst.
-  urlVideo          String   // YouTube, Vimeo, atau URL lainnya
-  thumbnail         String?
-  durasi            String?  // "10:30"
-  tanggalUpload     DateTime
-  views             Int      @default(0)
-  featured          Boolean  @default(false)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
 
 // ============================================
 // TESTIMONI & FAQ
@@ -2605,113 +2327,6 @@ model Testimoni {
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-}
 
-// Model: FAQ
-// Fungsi: Menyimpan pertanyaan yang sering diajukan
-// Digunakan di menu: Halaman FAQ atau footer
-// Berisi: Pertanyaan, jawaban, kategori
-model FAQ {
-  id                Int      @id @default(autoincrement())
-  pertanyaan        String
-  jawaban           String   
-  kategori          String   // "Akademik", "Pendaftaran", "Beasiswa", dst.
-  urutan            Int      @default(0)
-  aktif             Boolean  @default(true)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// ============================================
-// KONTAK & PENGATURAN
-// ============================================
-
-// Model: InformasiKontak
-// Fungsi: Menyimpan informasi kontak fakultas
-// Digunakan di menu: Footer dan halaman Kontak
-// Berisi: Alamat, telepon, email, jam operasional, maps
-model InformasiKontak {
-  id                Int      @id @default(autoincrement())
-  jenis             String   @unique // "utama", "akademik", "kemahasiswaan", dst.
-  alamat            String   
-  telepon           Json
-  email             Json
-  fax               String?
-  whatsapp          String?
-  jamOperasional    String?
-  maps              String?  // Google Maps embed URL
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: MediaSosial
-// Fungsi: Menyimpan link media sosial fakultas
-// Digunakan di menu: Footer dan header
-// Berisi: Platform, URL, username
-model MediaSosial {
-  id                Int      @id @default(autoincrement())
-  platform          String   @unique // "facebook", "instagram", "twitter", dst.
-  url               String
-  username          String?
-  aktif             Boolean  @default(true)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: PengaturanSitus
-// Fungsi: Menyimpan pengaturan umum website
-// Digunakan di menu: Seluruh website (logo, nama, favicon, dll)
-// Berisi: Key-value pair untuk berbagai pengaturan
-// Contoh: nama_fakultas, logo, favicon, warna_tema, dll
-model PengaturanSitus {
-  id                Int      @id @default(autoincrement())
-  kunci             String   @unique // "nama_fakultas", "logo", "favicon", dst.
-  nilai             String   
-  tipe              String   // "text", "image", "number", "boolean", dst.
-  deskripsi         String?
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// ============================================
-// SISTEM/ADMIN
-// ============================================
-
-// Model: Pengguna
-// Fungsi: Menyimpan data pengguna sistem (admin, staff)
-// Digunakan di menu: Dashboard Admin (untuk login dan manajemen user)
-// Berisi: Email, password, nama, role, foto
-model Pengguna {
-  id                Int      @id @default(autoincrement())
-  email             String   @unique
-  password          String
-  nama              String
-  role              String   // "Admin", "Staff", "Dosen", dst.
-  foto              String?
-  aktif             Boolean  @default(true)
-  terakhirLogin     DateTime?
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// Model: LogAktivitas
-// Fungsi: Menyimpan log aktivitas pengguna untuk audit trail
-// Digunakan di menu: Dashboard Admin (untuk monitoring aktivitas)
-// Berisi: Pengguna, aksi, entitas, deskripsi, IP, user agent
-model LogAktivitas {
-  id                Int      @id @default(autoincrement())
-  penggunaId        Int?
-  aksi              String   // "create", "update", "delete", "login", dst.
-  entitas           String   // "Mahasiswa", "Berita", "Surat", dst.
-  entitasId         Int?
-  deskripsi         String   
-  ipAddress         String?
-  userAgent         String?
-  
-  createdAt         DateTime @default(now())
+  @@map("testimoni")
 }

@@ -8,8 +8,8 @@ interface DewanPerwakilanMahasiswa {
   tugas: string;
   visi: string;
   misi: string;
-  programKerja: Prisma.JsonValue;
-  pencapaian: Prisma.JsonValue;
+  programKerja: Prisma.JsonValue[];
+  pencapaian: Prisma.JsonValue[];
   email: string;
   noTelp: string;
 }
@@ -29,8 +29,16 @@ class DewanPerwakilanMahasiswaService {
       const createDewanPerwakilanMahasiswa =
         await prisma.dewanPerwakilanMahasiswa.create({
           data: {
-            ...data,
             foto: fotoUrl,
+            nama: data.nama,
+            jabatan: data.jabatan,
+            tugas: data.tugas,
+            visi: data.visi,
+            misi: data.misi,
+            programKerja: data.programKerja,
+            pencapaian: data.pencapaian,
+            email: data.email,
+            noTelp: data.noTelp,
           },
         });
       return createDewanPerwakilanMahasiswa;

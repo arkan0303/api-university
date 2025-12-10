@@ -70,6 +70,17 @@ class TestimoniService {
       throw new Error("Failed to get testimoni");
     }
   }
+  async deleteTestimoni(id: number) {
+    try {
+      const deletedTestimoni = await prisma.testimoni.delete({
+        where: { id },
+      });
+      return deletedTestimoni;
+    } catch (error) {
+      console.error("Error in deleteTestimoni:", error);
+      throw new Error("Failed to delete testimoni");
+    }
+  }
 }
 
 export default new TestimoniService();

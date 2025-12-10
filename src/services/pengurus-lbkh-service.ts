@@ -7,7 +7,7 @@ interface PengurusLBKH {
   foto: Express.Multer.File;
   deskripsi: string;
   jabatan: string;
-  kategori: Prisma.JsonValue;
+  kategori: Prisma.JsonValue[];
   email: string;
   noTelp: string;
 }

@@ -7,7 +7,7 @@ interface VisiMisiLBKH {
   foto: Express.Multer.File;
   title: string;
   deskripsi: string;
-  kategori: Prisma.JsonValue;
+  kategori: Prisma.JsonValue[];
 }
 
 interface StatistikVisiMisiLBKH {

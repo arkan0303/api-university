@@ -192,6 +192,7 @@ class BeasiswaIndonesiaController {
       return res.status(500).json({
         success: false,
         message: "Gagal mendapatkan statistik beasiswa Indonesia",
+        error,
       });
     }
   }

@@ -8,7 +8,7 @@ interface AdvokatParalegal {
   foto: Express.Multer.File;
   jabatan: string;
   deskripsi: string;
-  kategori: Prisma.JsonValue;
+  kategori: Prisma.JsonValue[];
   email: string;
   noTelp: string;
   note: string;
@@ -60,21 +60,29 @@ class AdvokatParalegalService {
 
   async updateAdvokatParalegal(id: number, data: AdvokatParalegal) {
     try {
-      const updateAdvokatParalegal = await prisma.advokatParalegal.update({
+      const updateData: any = {
+        type: data.type,
+        nama: data.nama,
+        jabatan: data.jabatan,
+        deskripsi: data.deskripsi,
+        kategori: data.kategori,
+        email: data.email,
+        noTelp: data.noTelp,
+        note: data.note,
+      };
+
+      // Hanya upload foto baru jika ada file yang diunggah
+      if (data.foto) {
+        const fotoUrl = await uploadToCloudinary(data.foto.buffer);
+        updateData.foto = fotoUrl;
+      }
+
+      const updatedAdvokatParalegal = await prisma.advokatParalegal.update({
         where: { id },
-        data: {
-          type: data.type,
-          nama: data.nama,
-          foto: data.foto,
-          jabatan: data.jabatan,
-          deskripsi: data.deskripsi,
-          kategori: data.kategori,
-          email: data.email,
-          noTelp: data.noTelp,
-          note: data.note,
-        },
+        data: updateData,
       });
-      return updateAdvokatParalegal;
+
+      return updatedAdvokatParalegal;
     } catch (error) {
       throw error;
     }

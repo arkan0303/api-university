@@ -2,9 +2,9 @@ import { v2 as cloudinary } from "cloudinary";
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: "djbmw2h3h",
-  api_key: "211287959868716",
-  api_secret: "9CvrQ2ene_9BkMM2uF-eX0DcSmI",
+  cloud_name: "dzeqt1uj4",
+  api_key: "491447296997452",
+  api_secret: "qsiwNT6P9QZorSgYBI6GCSY_44A",
 });
 
 export const uploadToCloudinary = async (

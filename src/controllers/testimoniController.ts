@@ -70,6 +70,26 @@ class TestimoniController {
       });
     }
   }
+
+  async deleteTestimoni(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const deletedTestimoni = await testimoniSErvice.deleteTestimoni(
+        Number(id)
+      );
+      return res.status(200).json({
+        success: true,
+        message: "Testimoni berhasil dihapus",
+        deletedTestimoni,
+      });
+    } catch (error) {
+      console.error("Error in deleteTestimoni:", error);
+      res.status(500).json({
+        success: false,
+        message: "Gagal menghapus testimoni",
+      });
+    }
+  }
 }
 
 export default new TestimoniController();

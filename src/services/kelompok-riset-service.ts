@@ -3,23 +3,23 @@ import prisma from "../db/prisma";
 import { uploadToCloudinary } from "../utils/cloudinary";
 
 interface KelompokRiset {
-  title: String;
-  fokusPenelitian: Prisma.JsonValue;
+  title: string;
+  fokusPenelitian: Prisma.JsonValue[];
   foto: Express.Multer.File;
-  namaMahasiswa: String;
-  anggota: String;
-  publikasi: String; // 2b publikasi
-  deskripsi: String;
-  status: String; // "Aktif", "Tidak Aktif"
+  namaMahasiswa: string;
+  anggota: string;
+  publikasi: string; // 2b publikasi
+  deskripsi: string;
+  status: string; // "Aktif", "Tidak Aktif"
 }
 
 interface StatistikKelompokRiset {
-  total: String;
-  penelitianAktif: String;
-  publikasiPerTahun: String;
-  jurnalTerAkreditasi: String;
-  slogan: String;
-  deskripsi: String;
+  total: string;
+  penelitianAktif: string;
+  publikasiPerTahun: string;
+  jurnalTerAkreditasi: string;
+  slogan: string;
+  deskripsi: string;
 }
 
 class KelompokRisetService {

@@ -70,6 +70,61 @@ class BeritaController {
     }
   }
 
+  async deleteDataBerita(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const deletedData = await beritaService.deleteBerita(Number(id));
+      res.json({
+        success: true,
+        data: deletedData,
+      });
+    } catch (error) {
+      console.error("Error in deleteDataBerita:", error);
+      res.status(500).json({
+        success: false,
+        message: "Gagal menghapus data berita",
+      });
+    }
+  }
+
+  async updateBerita(req: MulterRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const { judul, konten, kategori, penulis, aktif, tanggalPublikasi } =
+        req.body;
+      const updateData: any = {
+        judul,
+        kategori,
+        konten,
+        penulis,
+        aktif,
+        tanggalPublikasi,
+      };
+      // Handle galeri files
+      if (req.files?.["galeri"]) {
+        updateData.galeri = Array.isArray(req.files["galeri"])
+          ? [...req.files["galeri"]]
+          : [req.files["galeri"]];
+      }
+      if (req.files?.["fotoUtama"]?.[0]) {
+        updateData.foto = req.files["fotoUtama"][0];
+      }
+
+      const updatedBerita = await beritaService.updateBerita(
+        Number(id),
+        updateData
+      );
+      console.log("Updated Berita:", updateData);
+      res.status(200).json({
+        success: true,
+        data: updatedBerita,
+      });
+    } catch (error) {
+      console.error("Error in updateBerita:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
   //   async getBeritaById(req: Request, res: Response) {
   //     try {
   //       const { id } = req.params;

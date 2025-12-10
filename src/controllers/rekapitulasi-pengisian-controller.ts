@@ -7,7 +7,7 @@ interface MulterRequest extends Request {
   };
 }
 class RekapitulasiPengisianController {
-  async createRekapitulasiPengisian(req: MulterRequest, res: Response) {
+  async createRekapitulasiPengisian(req: Request, res: Response) {
     try {
       const {
         programNama,
@@ -110,7 +110,7 @@ class RekapitulasiPengisianController {
     }
   }
 
-  async createRekapitulasiPerKategori(req: MulterRequest, res: Response) {
+  async createRekapitulasiPerKategori(req: Request, res: Response) {
     try {
       const { programNama, totalMahasiswa, jumlahResponden, persentasi } =
         req.body;
@@ -193,10 +193,7 @@ class RekapitulasiPengisianController {
     }
   }
 
-  async createStatistikRekapitulasiPerKategori(
-    req: MulterRequest,
-    res: Response
-  ) {
+  async createStatistikRekapitulasiPerKategori(req: Request, res: Response) {
     try {
       const {
         totalResponden,

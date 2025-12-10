@@ -68,6 +68,71 @@ class BeritaService {
       throw new Error("Failed to get data berita");
     }
   }
+
+  async updateBerita(
+    id: number,
+    data: ICreateBerita & { galeri?: Express.Multer.File[] }
+  ) {
+    try {
+      const updateData: any = {
+        judul: data.judul,
+        konten: data.konten,
+        kategori: data.kategori,
+        penulis: data.penulis,
+        foto: data.foto,
+        galeri: data.galeri,
+        aktif:
+          data.aktif !== undefined
+            ? typeof data.aktif === "string"
+              ? data.aktif === "true"
+              : data.aktif
+            : false,
+        tanggalPublikasi: data.tanggalPublikasi,
+      };
+
+      const tanggalPublikasi = data.tanggalPublikasi
+        ? new Date(data.tanggalPublikasi)
+        : null;
+
+      updateData.tanggalPublikasi = tanggalPublikasi;
+
+      // Hanya upload foto baru jika ada file yang diunggah
+      if (data.foto) {
+        const fotoUrl = await uploadToCloudinary(data.foto.buffer);
+        updateData.foto = fotoUrl;
+      }
+      // Hanya upload galeri baru jika ada file yang diunggah
+      if (data.galeri && data.galeri.length > 0) {
+        const uploadedUrls = await Promise.all(
+          data.galeri.map((file) => uploadToCloudinary(file.buffer))
+        );
+        updateData.galeri = uploadedUrls as Prisma.JsonArray;
+      }
+
+      const updatedBerita = await prisma.berita.update({
+        where: { id },
+        data: updateData,
+      });
+      console.log("Updated Berita Data :", updatedBerita);
+
+      return updatedBerita;
+    } catch (error) {
+      console.error("Error in updateBerita:", error);
+      throw new Error("Failed to update berita");
+    }
+  }
+
+  async deleteBerita(id: number) {
+    try {
+      const deletedBerita = await prisma.berita.delete({
+        where: { id },
+      });
+      return deletedBerita;
+    } catch (error) {
+      console.error("Error in deleteBerita:", error);
+      throw new Error("Failed to delete berita");
+    }
+  }
 }
 
 export default new BeritaService();
