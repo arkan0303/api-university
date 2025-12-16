@@ -8,19 +8,19 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS utama
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://fh.unigal.ac.id"],
+  origin: [
+    "http://localhost:3000",
+    "https://fh.unigal.ac.id",
+    "https://university-galuh-kw6n.vercel.app",
+  ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
+  optionsSuccessStatus: 200,
 };
 
-// Middleware CORS untuk semua route
 app.use(cors(corsOptions));
-
-// Preflight untuk semua OPTIONS
-app.options("*", cors(corsOptions));
 
 app.use("/api/v1", userRoutes);
 

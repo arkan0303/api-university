@@ -75,6 +75,7 @@ const heroSectionController = new heroSectionController_1.default();
 // Apply the upload middleware to the route
 router.post("/hero-section", heroSectionController_1.default.uploadImage(), heroSectionController.createHeroSection.bind(heroSectionController));
 router.get("/hero-section", heroSectionController.getDataHeroSection.bind(heroSectionController));
+router.delete("/hero-section/:id", heroSectionController.delete.bind(heroSectionController));
 router.post("/berita", multer_1.default.fields([
     { name: "fotoUtama", maxCount: 1 },
     { name: "galeri", maxCount: 10 },
@@ -148,6 +149,29 @@ router.post("/testimoni", multer_1.default.fields([
 });
 router.get("/testimoni", testimoniController_1.default.getAllTestimoni.bind(testimoniController_1.default));
 router.delete("/testimoni/:id", testimoniController_1.default.deleteTestimoni.bind(testimoniController_1.default));
+router.put("/testimoni/:id", multer_1.default.fields([
+    { name: "fotoUtama", maxCount: 1 },
+    { name: "galeri", maxCount: 10 },
+]), (err, req, res, next) => {
+    if (err) {
+        return res.status(400).json({
+            success: false,
+            message: err.message || "File upload error",
+        });
+    }
+    next();
+}, (req, res, next) => {
+    const multerReq = req;
+    if (multerReq.fileValidationError) {
+        return res.status(400).json({
+            success: false,
+            message: multerReq.fileValidationError,
+        });
+    }
+    next();
+}, (req, res) => {
+    return testimoniController_1.default.update(req, res);
+});
 router.post("/sejarah-s1", multer_1.default.fields([{ name: "foto", maxCount: 1 }]), (err, req, res, next) => {
     if (err) {
         return res.status(400).json({

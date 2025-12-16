@@ -20,7 +20,11 @@ class VisMisiController {
                 deskripsi,
                 gambar: req.files?.["gambar"][0],
             });
-            res.status(201).json(visMisi);
+            res.status(201).json({
+                success: true,
+                message: "Vis Misi berhasil diambil",
+                data: visMisi,
+            });
         }
         catch (error) {
             console.error("Error in createVisMisi:", error);
@@ -105,7 +109,11 @@ class VisMisiController {
                 slogan,
                 deskripsi,
             });
-            return res.status(201).json(statistikVisiMisi);
+            return res.status(201).json({
+                success: true,
+                message: "Vis Misi berhasil diambil",
+                data: statistikVisiMisi,
+            });
         }
         catch (error) {
             console.error("Error in createStatistikVisiMisi:", error);

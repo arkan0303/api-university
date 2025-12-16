@@ -51,5 +51,22 @@ class HeroSectionController {
             });
         }
     }
+    async delete(req, res) {
+        try {
+            const result = await heroSectionService_1.default.delete(Number(req.params.id));
+            return res.status(200).json({
+                success: true,
+                message: " berhasil dihapus",
+                data: result,
+            });
+        }
+        catch (error) {
+            console.error("Error in delete:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Gagal menghapus ",
+            });
+        }
+    }
 }
 exports.default = HeroSectionController;

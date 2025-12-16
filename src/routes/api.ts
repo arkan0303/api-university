@@ -89,6 +89,10 @@ router.get(
   "/hero-section",
   heroSectionController.getDataHeroSection.bind(heroSectionController)
 );
+router.delete(
+  "/hero-section/:id",
+  heroSectionController.delete.bind(heroSectionController)
+);
 
 router.post(
   "/berita",
@@ -198,6 +202,35 @@ router.get(
 router.delete(
   "/testimoni/:id",
   TestimoniController.deleteTestimoni.bind(TestimoniController)
+);
+router.put(
+  "/testimoni/:id",
+  upload.fields([
+    { name: "fotoUtama", maxCount: 1 },
+    { name: "galeri", maxCount: 10 },
+  ]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return TestimoniController.update(req as unknown as MulterRequest, res);
+  }
 );
 
 router.post(

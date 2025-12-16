@@ -24,7 +24,10 @@ class SaranaPrasaranaController {
           deskripsi,
           foto: Array.isArray(galeriFiles) ? galeriFiles : [galeriFiles],
         });
-      res.status(201).json(saranaPrasarana);
+      res.status(201).json({
+        success: true,
+        data: saranaPrasarana,
+      });
     } catch (error) {
       console.error("Error in createSaranaPrasarana:", error);
       res.status(500).json({ error: "Failed to create sarana prasarana" });
@@ -71,7 +74,10 @@ class SaranaPrasaranaController {
           Number(id), // Konversi id ke number
           updateData
         );
-      res.status(200).json(saranaPrasarana);
+      res.status(200).json({
+        success: true,
+        data: saranaPrasarana,
+      });
     } catch (error) {
       console.error("Error in updateSaranaPrasarana:", error);
       res.status(500).json({ error: "Failed to update sarana prasarana" });
@@ -84,7 +90,10 @@ class SaranaPrasaranaController {
       const deletedData = await saranaPrasaranaService.deleteSaranaPrasarana(
         parseInt(id)
       );
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteSaranaPrasarana:", error);
       res.status(500).json({ error: "Failed to delete sarana prasarana" });
@@ -105,7 +114,10 @@ class SaranaPrasaranaController {
           banner: req.files?.["banner"][0],
           konten,
         });
-      res.status(201).json(bannerSaranaPrasarana);
+      res.status(201).json({
+        success: true,
+        data: bannerSaranaPrasarana,
+      });
     } catch (error) {
       console.error("Error in createBannerSaranaPrasarana:", error);
       res
@@ -132,7 +144,10 @@ class SaranaPrasaranaController {
           Number(id), // Konversi id ke number
           updateData
         );
-      res.status(200).json(updatedBanner);
+      res.status(200).json({
+        success: true,
+        data: updatedBanner,
+      });
     } catch (error) {
       console.error("Error in updateBannerSaranaPrasarana:", error);
       res
@@ -146,7 +161,10 @@ class SaranaPrasaranaController {
       const { id } = req.params;
       const deletedData =
         await saranaPrasaranaService.deleteBannerSaranaPrasarana(parseInt(id));
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteBannerSaranaPrasarana:", error);
       res

@@ -36,6 +36,20 @@ class HeroSectionService {
       throw new Error("Failed to get hero section data");
     }
   }
+
+  async delete(id: number) {
+    try {
+      const heroSections = await prisma.heroSection.delete({
+        where: {
+          id,
+        },
+      });
+      return heroSections;
+    } catch (error) {
+      console.error("Error in deleteStatistikDewanPerwakilanMahasiswa:", error);
+      return null;
+    }
+  }
 }
 
 export default new HeroSectionService();

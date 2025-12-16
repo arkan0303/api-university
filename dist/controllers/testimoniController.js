@@ -76,5 +76,40 @@ class TestimoniController {
             });
         }
     }
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const { judul, nama, jabatan, konten, kategori, note, aktif, tanggalPublikasi, } = req.body;
+            const updateData = {
+                judul,
+                nama,
+                jabatan,
+                konten,
+                kategori,
+                note,
+                aktif,
+                tanggalPublikasi,
+            };
+            // Handle galeri files
+            if (req.files?.["galeri"]) {
+                updateData.galeri = Array.isArray(req.files["galeri"])
+                    ? [...req.files["galeri"]]
+                    : [req.files["galeri"]];
+            }
+            if (req.files?.["fotoUtama"]?.[0]) {
+                updateData.foto = req.files["fotoUtama"][0];
+            }
+            const updatedBerita = await testimoniService_1.default.update(Number(id), updateData);
+            console.log("Updated Berita:", updateData);
+            res.status(200).json({
+                success: true,
+                data: updatedBerita,
+            });
+        }
+        catch (error) {
+            console.error("Error in updateBerita:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    }
 }
 exports.default = new TestimoniController();
