@@ -24,7 +24,11 @@ class ProgramSarjanaHukumController {
           deskripsi,
           image: galeriFiles,
         });
-      res.status(201).json(strategis);
+      res.status(201).json({
+        success: true,
+        message: "Program sarjana hukum berhasil dibuat",
+        data: strategis,
+      });
     } catch (error) {
       console.error("Error in createProgramSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -66,7 +70,11 @@ class ProgramSarjanaHukumController {
           Number(id),
           updateData
         );
-      res.status(200).json(updatedProgramSarjanaHukum);
+      res.status(200).json({
+        success: true,
+        message: "Program sarjana hukum berhasil diupdate",
+        data: updatedProgramSarjanaHukum,
+      });
     } catch (error) {
       console.error("Error in updateProgramSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -78,7 +86,11 @@ class ProgramSarjanaHukumController {
       const { id } = req.params;
       const deletedData =
         await programSarjanaHukumService.deleteProgramSarjanaHukum(Number(id));
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        message: "Program sarjana hukum berhasil dihapus",
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteProgramSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -98,7 +110,11 @@ class ProgramSarjanaHukumController {
           slogan,
           deskripsi,
         });
-      res.status(201).json(statistik);
+      res.status(201).json({
+        success: true,
+        message: "Statistik program sarjana hukum berhasil dibuat",
+        data: statistik,
+      });
     } catch (error) {
       console.error("Error in createStatistikProgramSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -137,7 +153,11 @@ class ProgramSarjanaHukumController {
             deskripsi,
           }
         );
-      res.status(200).json(statistik);
+      res.status(200).json({
+        success: true,
+        message: "Statistik program sarjana hukum berhasil diupdate",
+        data: statistik,
+      });
     } catch (error) {
       console.error("Error in updateStatistikProgramSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -151,7 +171,11 @@ class ProgramSarjanaHukumController {
         await programSarjanaHukumService.deleteStatistikProgramSarjanaHukum(
           Number(id)
         );
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        message: "Statistik program sarjana hukum berhasil dihapus",
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteStatistikProgramSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -166,7 +190,11 @@ class ProgramSarjanaHukumController {
           judul,
           deskripsi,
         });
-      res.status(201).json(prospekKarirSarjanaHukum);
+      res.status(201).json({
+        success: true,
+        message: "Prospek karir sarjana hukum berhasil dibuat",
+        data: prospekKarirSarjanaHukum,
+      });
     } catch (error) {
       console.error("Error in createProspekKarirSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -200,7 +228,11 @@ class ProgramSarjanaHukumController {
             deskripsi,
           }
         );
-      res.status(200).json(updatedData);
+      res.status(200).json({
+        success: true,
+        message: "Prospek karir sarjana hukum berhasil diupdate",
+        data: updatedData,
+      });
     } catch (error) {
       console.error("Error in updateProspekKarirSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -214,7 +246,11 @@ class ProgramSarjanaHukumController {
         await programSarjanaHukumService.deleteProspekKarirSarjanaHukum(
           Number(id)
         );
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        message: "Prospek karir sarjana hukum berhasil dihapus",
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteProspekKarirSarjanaHukum:", error);
       res.status(500).json({ error: "Internal Server Error" });

@@ -19,7 +19,11 @@ class ProgramMagisterHukumController {
                 deskripsi,
                 image: galeriFiles,
             });
-            res.status(201).json(strategis);
+            res.status(201).json({
+                success: true,
+                message: "Program magister hukum berhasil dibuat",
+                data: strategis,
+            });
         }
         catch (error) {
             console.error("Error in createProgramSarjanaHukum:", error);
@@ -56,7 +60,11 @@ class ProgramMagisterHukumController {
                 updateData.image = image;
             }
             const updatedProgramMagisterHukum = await program_magister_hukum_service_1.default.updateProgramMagisterHukum(Number(id), updateData);
-            res.status(200).json(updatedProgramMagisterHukum);
+            res.status(200).json({
+                success: true,
+                message: "Program magister hukum berhasil diupdate",
+                data: updatedProgramMagisterHukum,
+            });
         }
         catch (error) {
             console.error("Error in updateProgramSarjanaHukum:", error);
@@ -67,7 +75,11 @@ class ProgramMagisterHukumController {
         try {
             const { id } = req.params;
             const deletedData = await program_magister_hukum_service_1.default.deleteProgramMagisterHukum(Number(id));
-            res.status(200).json(deletedData);
+            res.status(200).json({
+                success: true,
+                message: "Program magister hukum berhasil dihapus",
+                data: deletedData,
+            });
         }
         catch (error) {
             console.error("Error in deleteProgramSarjanaHukum:", error);
@@ -85,7 +97,11 @@ class ProgramMagisterHukumController {
                 slogan,
                 deskripsi,
             });
-            res.status(201).json(statistik);
+            res.status(201).json({
+                success: true,
+                message: "Statistik program magister hukum berhasil dibuat",
+                data: statistik,
+            });
         }
         catch (error) {
             console.error("Error in createStatistikProgramSarjanaHukum:", error);
@@ -118,7 +134,11 @@ class ProgramMagisterHukumController {
                 slogan,
                 deskripsi,
             });
-            res.status(200).json(statistik);
+            res.status(200).json({
+                success: true,
+                message: "Statistik program magister hukum berhasil diupdate",
+                data: statistik,
+            });
         }
         catch (error) {
             console.error("Error in updateStatistikProgramSarjanaHukum:", error);
@@ -129,7 +149,11 @@ class ProgramMagisterHukumController {
         try {
             const { id } = req.params;
             const deletedData = await program_magister_hukum_service_1.default.deleteStatistikProgramMagisterHukum(Number(id));
-            res.status(200).json(deletedData);
+            res.status(200).json({
+                success: true,
+                message: "Statistik program magister hukum berhasil dihapus",
+                data: deletedData,
+            });
         }
         catch (error) {
             console.error("Error in deleteStatistikProgramSarjanaHukum:", error);
@@ -150,7 +174,11 @@ class ProgramMagisterHukumController {
                 deskripsi,
                 image: req.files?.["image"][0],
             });
-            res.status(201).json(prospekKarirMagisterHukum);
+            res.status(201).json({
+                success: true,
+                message: "Prospek karir magister hukum berhasil dibuat",
+                data: prospekKarirMagisterHukum,
+            });
         }
         catch (error) {
             console.error("Error in createProspekKarirSarjanaHukum:", error);
@@ -180,7 +208,11 @@ class ProgramMagisterHukumController {
                 deskripsi,
                 image,
             });
-            res.status(200).json(updatedData);
+            res.status(200).json({
+                success: true,
+                message: "Prospek karir magister hukum berhasil diupdate",
+                data: updatedData,
+            });
         }
         catch (error) {
             console.error("Error in updateProspekKarirMagisterHukum:", error);
@@ -191,7 +223,11 @@ class ProgramMagisterHukumController {
         try {
             const { id } = req.params;
             const deletedData = await program_magister_hukum_service_1.default.deleteProspekKarirMagisterHukum(Number(id));
-            res.status(200).json(deletedData);
+            res.status(200).json({
+                success: true,
+                message: "Prospek karir magister hukum berhasil dihapus",
+                data: deletedData,
+            });
         }
         catch (error) {
             console.error("Error in deleteProspekKarirMagisterHukum:", error);

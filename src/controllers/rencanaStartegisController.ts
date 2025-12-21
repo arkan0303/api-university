@@ -23,7 +23,11 @@ class RencanaStrategisController {
         deskripsi,
         foto: galeriFiles,
       });
-      res.status(201).json(strategis);
+      res.status(201).json({
+        success: true,
+        message: "Strategis berhasil dibuat",
+        data: strategis,
+      });
     } catch (error) {
       console.error("Error in createRencanaStrategis:", error);
       res.status(500).json({ error: "Failed to create strategis" });
@@ -67,7 +71,11 @@ class RencanaStrategisController {
         Number(id),
         updateData
       );
-      res.status(200).json(strategis);
+      res.status(200).json({
+        success: true,
+        message: "Strategis berhasil diupdate",
+        data: strategis,
+      });
     } catch (error) {
       console.error("Error in updateRencanaStrategis:", error);
       res.status(500).json({ error: "Failed to update strategis" });
@@ -80,7 +88,11 @@ class RencanaStrategisController {
       const deletedData = await RencanaStrategisService.deleteStrategis(
         Number(id)
       );
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        message: "Strategis berhasil dihapus",
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteRencanaStrategis:", error);
       res.status(500).json({ error: "Failed to delete strategis" });
@@ -105,7 +117,11 @@ class RencanaStrategisController {
         slogan,
         deskripsi,
       });
-      res.status(201).json(statistik);
+      res.status(201).json({
+        success: true,
+        message: "Statistik strategis berhasil dibuat",
+        data: statistik,
+      });
     } catch (error) {
       console.error("Error in createStatistikStrategis:", error);
       res.status(500).json({ error: "Failed to create statistik strategis" });
@@ -152,7 +168,11 @@ class RencanaStrategisController {
           deskripsi,
         }
       );
-      res.status(200).json(statistik);
+      res.status(200).json({
+        success: true,
+        message: "Statistik strategis berhasil diupdate",
+        data: statistik,
+      });
     } catch (error) {
       console.error("Error in updateStatistikStrategis:", error);
       res.status(500).json({ error: "Failed to update statistik strategis" });
@@ -164,7 +184,11 @@ class RencanaStrategisController {
       const { id } = req.params;
       const deletedData =
         await RencanaStrategisService.deleteStatistikStrategis(Number(id));
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        message: "Statistik strategis berhasil dihapus",
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteStatistikStrategis:", error);
       res.status(500).json({ error: "Failed to delete statistik strategis" });

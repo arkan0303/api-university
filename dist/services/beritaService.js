@@ -62,34 +62,38 @@ class BeritaService {
                 konten: data.konten,
                 kategori: data.kategori,
                 penulis: data.penulis,
-                foto: data.foto,
-                galeri: data.galeri,
                 aktif: data.aktif !== undefined
                     ? typeof data.aktif === "string"
                         ? data.aktif === "true"
                         : data.aktif
-                    : false,
-                tanggalPublikasi: data.tanggalPublikasi,
+                    : undefined,
+                tanggalPublikasi: data.tanggalPublikasi
+                    ? new Date(data.tanggalPublikasi)
+                    : undefined,
             };
-            const tanggalPublikasi = data.tanggalPublikasi
-                ? new Date(data.tanggalPublikasi)
-                : null;
-            updateData.tanggalPublikasi = tanggalPublikasi;
-            // Hanya upload foto baru jika ada file yang diunggah
+            // ===============================
+            // FOTO UTAMA → replace (jika ada)
+            // ===============================
             if (data.foto) {
                 const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(data.foto.buffer);
                 updateData.foto = fotoUrl;
             }
-            // Hanya upload galeri baru jika ada file yang diunggah
+            // ===============================
+            // GALERI → APPEND (bukan replace)
+            // ===============================
             if (data.galeri && data.galeri.length > 0) {
-                const uploadedUrls = await Promise.all(data.galeri.map((file) => (0, cloudinary_1.uploadToCloudinary)(file.buffer)));
-                updateData.galeri = uploadedUrls;
+                const beritaLama = await prisma_1.default.berita.findUnique({
+                    where: { id },
+                    select: { galeri: true },
+                });
+                const galeriLama = beritaLama?.galeri || [];
+                const galeriBaru = await Promise.all(data.galeri.map((file) => (0, cloudinary_1.uploadToCloudinary)(file.buffer)));
+                updateData.galeri = [...galeriLama, ...galeriBaru];
             }
             const updatedBerita = await prisma_1.default.berita.update({
                 where: { id },
                 data: updateData,
             });
-            console.log("Updated Berita Data :", updatedBerita);
             return updatedBerita;
         }
         catch (error) {
