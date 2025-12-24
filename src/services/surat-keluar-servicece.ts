@@ -7,7 +7,7 @@ interface ArsipSuratKeluar {
   deskripsi: string;
   pengirim: string;
   nomorSurat: string;
-  tanggalDiterima: string;
+  tanggalKirim: string;
   file: Express.Multer.File[];
   foto: Express.Multer.File;
   status: string;
@@ -71,12 +71,19 @@ class SuratKeluarService {
     }
   ) {
     try {
+      const existingData = await prisma.arsipSuratKeluar.findUnique({
+        where: { id },
+      });
+      if (!existingData) {
+        throw new Error("Data surat keluar tidak ditemukan");
+      }
+
       const updateData: any = {
         title: arsipSuratKeluar.title,
         deskripsi: arsipSuratKeluar.deskripsi,
         pengirim: arsipSuratKeluar.pengirim,
         nomorSurat: arsipSuratKeluar.nomorSurat,
-        tanggalDiterima: arsipSuratKeluar.tanggalDiterima,
+        tanggalKirim: arsipSuratKeluar.tanggalKirim,
         file: arsipSuratKeluar.file,
         foto: arsipSuratKeluar.foto,
         status: arsipSuratKeluar.status,
@@ -84,23 +91,22 @@ class SuratKeluarService {
         note: arsipSuratKeluar.note,
       };
 
-      // Hanya upload foto baru jika ada file yang diunggah
+      // Only update photo if a new one is uploaded
       if (arsipSuratKeluar.foto) {
         const fotoUrl = await uploadToCloudinary(arsipSuratKeluar.foto.buffer);
         updateData.foto = fotoUrl;
       }
-
-      // Process gallery if exists
-      let galeriData: Prisma.JsonArray = [];
-
+      // Process gallery if new files are uploaded
       if (arsipSuratKeluar.file && arsipSuratKeluar.file.length > 0) {
         const uploadedUrls = await Promise.all(
           arsipSuratKeluar.file.map((file) => uploadToCloudinary(file.buffer))
         );
-        galeriData = uploadedUrls as Prisma.JsonArray;
+        // If there are existing files, combine them with the new ones
+        const existingFiles = existingData.file
+          ? (existingData.file as string[])
+          : [];
+        updateData.file = [...existingFiles, ...uploadedUrls];
       }
-
-      updateData.file = galeriData;
 
       const updatedArsipSuratKeluar = await prisma.arsipSuratKeluar.update({
         where: { id },

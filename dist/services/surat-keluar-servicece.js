@@ -41,30 +41,38 @@ class SuratKeluarService {
     }
     async updateArsipSuratKeluar(id, arsipSuratKeluar) {
         try {
+            const existingData = await prisma_1.default.arsipSuratKeluar.findUnique({
+                where: { id },
+            });
+            if (!existingData) {
+                throw new Error("Data surat keluar tidak ditemukan");
+            }
             const updateData = {
                 title: arsipSuratKeluar.title,
                 deskripsi: arsipSuratKeluar.deskripsi,
                 pengirim: arsipSuratKeluar.pengirim,
                 nomorSurat: arsipSuratKeluar.nomorSurat,
-                tanggalDiterima: arsipSuratKeluar.tanggalDiterima,
+                tanggalKirim: arsipSuratKeluar.tanggalKirim,
                 file: arsipSuratKeluar.file,
                 foto: arsipSuratKeluar.foto,
                 status: arsipSuratKeluar.status,
                 penerima: arsipSuratKeluar.penerima,
                 note: arsipSuratKeluar.note,
             };
-            // Hanya upload foto baru jika ada file yang diunggah
+            // Only update photo if a new one is uploaded
             if (arsipSuratKeluar.foto) {
                 const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(arsipSuratKeluar.foto.buffer);
                 updateData.foto = fotoUrl;
             }
-            // Process gallery if exists
-            let galeriData = [];
+            // Process gallery if new files are uploaded
             if (arsipSuratKeluar.file && arsipSuratKeluar.file.length > 0) {
                 const uploadedUrls = await Promise.all(arsipSuratKeluar.file.map((file) => (0, cloudinary_1.uploadToCloudinary)(file.buffer)));
-                galeriData = uploadedUrls;
+                // If there are existing files, combine them with the new ones
+                const existingFiles = existingData.file
+                    ? existingData.file
+                    : [];
+                updateData.file = [...existingFiles, ...uploadedUrls];
             }
-            updateData.file = galeriData;
             const updatedArsipSuratKeluar = await prisma_1.default.arsipSuratKeluar.update({
                 where: { id },
                 data: updateData,

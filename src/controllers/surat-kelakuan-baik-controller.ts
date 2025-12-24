@@ -35,7 +35,11 @@ class SuratKelakuanBaikController {
           status,
         });
 
-      return res.status(201).json(suratKelakuanBaik);
+      return res.status(201).json({
+        success: true,
+        message: "Surat kelakuan baik berhasil dibuat",
+        data: suratKelakuanBaik,
+      });
     } catch (error) {
       console.error("Error creating surat kelakuan baik:", error);
       return res.status(500).json({ error: "Internal Server Error" });
@@ -93,7 +97,7 @@ class SuratKelakuanBaikController {
           Number(id),
           updateData
         );
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: "Surat kelakuan baik berhasil diupdate",
         data: updatedSuratKelakuanBaik,

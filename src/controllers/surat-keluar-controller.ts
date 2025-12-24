@@ -15,7 +15,7 @@ class SuratKeluarController {
         deskripsi,
         pengirim,
         nomorSurat,
-        tanggalDiterima,
+        tanggalKirim,
         status,
         penerima,
         note,
@@ -42,12 +42,13 @@ class SuratKeluarController {
       console.log(galeriFiles);
       console.log(req.files?.["foto"]);
       console.log(req.files?.["file"]);
+
       const suratKeluar = await SuratKeluarService.createArsipSuratKeluar({
         title,
         deskripsi,
         pengirim,
         nomorSurat,
-        tanggalDiterima,
+        tanggalKirim,
         foto: req.files?.["foto"][0],
         file: galeriFiles,
         status,
@@ -88,36 +89,18 @@ class SuratKeluarController {
         deskripsi,
         pengirim,
         nomorSurat,
-        tanggalDiterima,
+        tanggalKirim,
         status,
         penerima,
         note,
       } = req.body;
       const id = req.params.id;
-
-      // Validasi input
-      //   if (
-      //     !title ||
-      //     !deskripsi ||
-      //     !pengirim ||
-      //     !nomorSurat ||
-      //     !tanggalDiterima ||
-      //     !status ||
-      //     !penerima ||
-      //     !note
-      //   ) {
-      //     return res.status(400).json({
-      //       success: false,
-      //       message: "Semua field kecuali foto wajib diisi",
-      //     });
-      //   }
-
       const updateData: any = {
         title,
         deskripsi,
         pengirim,
         nomorSurat,
-        tanggalDiterima,
+        tanggalKirim,
         status,
         penerima,
         note,

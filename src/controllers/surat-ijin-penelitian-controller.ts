@@ -56,10 +56,17 @@ class SuratIjinPenelitianController {
           metodePenelitian: metodePenelitianJSON,
           hasilDiharapkan: hasilDiharapkanJSON,
         });
-      res.status(201).json(suratIjinPenelitian);
+      res.status(201).json({
+        success: true,
+        message: "Surat ijin penelitian berhasil dibuat",
+        data: suratIjinPenelitian,
+      });
     } catch (error) {
       console.error("Error in createProgramSarjanaHukum:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
     }
   }
 
@@ -74,7 +81,10 @@ class SuratIjinPenelitianController {
       });
     } catch (error) {
       console.error("Error in getAllSuratIjinPenelitian:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
     }
   }
 
@@ -121,7 +131,11 @@ class SuratIjinPenelitianController {
           Number(id),
           updateData
         );
-      res.status(200).json(updatedSuratIjinPenelitian);
+      res.status(200).json({
+        success: true,
+        message: "Surat ijin penelitian berhasil diambil",
+        data: updatedSuratIjinPenelitian,
+      });
     } catch (error) {
       console.error("Error in updateSuratIjinPenelitian:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -133,7 +147,11 @@ class SuratIjinPenelitianController {
       const { id } = req.params;
       const deletedData =
         await suratIjinPenelitianService.deleteSuratIjinPenelitian(Number(id));
-      res.status(200).json(deletedData);
+      res.status(200).json({
+        success: true,
+        message: "Surat ijin penelitian berhasil diambil",
+        data: deletedData,
+      });
     } catch (error) {
       console.error("Error in deleteSuratIjinPenelitian:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -153,7 +171,11 @@ class SuratIjinPenelitianController {
           slogan,
           deskripsi,
         });
-      res.status(201).json(statistikSuratIjinPenelitian);
+      res.status(200).json({
+        success: true,
+        message: "Surat ijin penelitian berhasil diambil",
+        data: statistikSuratIjinPenelitian,
+      });
     } catch (error) {
       console.error("Error in createStatistikSuratIjinPenelitian:", error);
       res.status(500).json({ error: "Internal Server Error" });

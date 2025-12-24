@@ -31,7 +31,11 @@ class SuratPengajuanBeasiswaController {
                 status,
                 dokumen: galeriFiles,
             });
-            res.status(201).json(strategis);
+            res.status(201).json({
+                success: true,
+                message: "Surat pengajuan beasiswa berhasil dibuat",
+                data: strategis,
+            });
         }
         catch (error) {
             console.error("Error in createRencanaStrategis:", error);
@@ -85,7 +89,11 @@ class SuratPengajuanBeasiswaController {
             }
             console.log(updateData);
             const strategis = await surat_pengajuan_beasiswa_service_1.default.updateSuratPengajuanBeasiswa(Number(id), updateData);
-            res.status(200).json(strategis);
+            res.status(200).json({
+                success: true,
+                message: "Surat pengajuan beasiswa berhasil diupdate",
+                data: strategis,
+            });
         }
         catch (error) {
             console.error("Error in updateSuratPengajuanBeasiswa:", error);

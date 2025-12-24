@@ -7,7 +7,7 @@ const surat_keluar_servicece_1 = __importDefault(require("../services/surat-kelu
 class SuratKeluarController {
     async createSuratKeluar(req, res) {
         try {
-            const { title, deskripsi, pengirim, nomorSurat, tanggalDiterima, status, penerima, note, } = req.body;
+            const { title, deskripsi, pengirim, nomorSurat, tanggalKirim, status, penerima, note, } = req.body;
             console.log(req.body);
             if (!req.files?.["foto"] || req.files["foto"].length === 0) {
                 return res.status(400).json({
@@ -30,7 +30,7 @@ class SuratKeluarController {
                 deskripsi,
                 pengirim,
                 nomorSurat,
-                tanggalDiterima,
+                tanggalKirim,
                 foto: req.files?.["foto"][0],
                 file: galeriFiles,
                 status,
@@ -66,30 +66,14 @@ class SuratKeluarController {
     }
     async updateSuratKeluar(req, res) {
         try {
-            const { title, deskripsi, pengirim, nomorSurat, tanggalDiterima, status, penerima, note, } = req.body;
+            const { title, deskripsi, pengirim, nomorSurat, tanggalKirim, status, penerima, note, } = req.body;
             const id = req.params.id;
-            // Validasi input
-            //   if (
-            //     !title ||
-            //     !deskripsi ||
-            //     !pengirim ||
-            //     !nomorSurat ||
-            //     !tanggalDiterima ||
-            //     !status ||
-            //     !penerima ||
-            //     !note
-            //   ) {
-            //     return res.status(400).json({
-            //       success: false,
-            //       message: "Semua field kecuali foto wajib diisi",
-            //     });
-            //   }
             const updateData = {
                 title,
                 deskripsi,
                 pengirim,
                 nomorSurat,
-                tanggalDiterima,
+                tanggalKirim,
                 status,
                 penerima,
                 note,

@@ -36,11 +36,18 @@ class SuratIjinPenelitianController {
                 metodePenelitian: metodePenelitianJSON,
                 hasilDiharapkan: hasilDiharapkanJSON,
             });
-            res.status(201).json(suratIjinPenelitian);
+            res.status(201).json({
+                success: true,
+                message: "Surat ijin penelitian berhasil dibuat",
+                data: suratIjinPenelitian,
+            });
         }
         catch (error) {
             console.error("Error in createProgramSarjanaHukum:", error);
-            res.status(500).json({ error: "Internal Server Error" });
+            res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+            });
         }
     }
     async getAllSuratIjinPenelitian(req, res) {
@@ -54,7 +61,10 @@ class SuratIjinPenelitianController {
         }
         catch (error) {
             console.error("Error in getAllSuratIjinPenelitian:", error);
-            res.status(500).json({ error: "Internal Server Error" });
+            res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+            });
         }
     }
     async updateSuratIjinPenelitian(req, res) {
@@ -83,7 +93,11 @@ class SuratIjinPenelitianController {
                 updateData.foto = image;
             }
             const updatedSuratIjinPenelitian = await surat_ijin_penelitian_service_1.default.updateSuratIjinPenelitian(Number(id), updateData);
-            res.status(200).json(updatedSuratIjinPenelitian);
+            res.status(200).json({
+                success: true,
+                message: "Surat ijin penelitian berhasil diambil",
+                data: updatedSuratIjinPenelitian,
+            });
         }
         catch (error) {
             console.error("Error in updateSuratIjinPenelitian:", error);
@@ -94,7 +108,11 @@ class SuratIjinPenelitianController {
         try {
             const { id } = req.params;
             const deletedData = await surat_ijin_penelitian_service_1.default.deleteSuratIjinPenelitian(Number(id));
-            res.status(200).json(deletedData);
+            res.status(200).json({
+                success: true,
+                message: "Surat ijin penelitian berhasil diambil",
+                data: deletedData,
+            });
         }
         catch (error) {
             console.error("Error in deleteSuratIjinPenelitian:", error);
@@ -112,7 +130,11 @@ class SuratIjinPenelitianController {
                 slogan,
                 deskripsi,
             });
-            res.status(201).json(statistikSuratIjinPenelitian);
+            res.status(200).json({
+                success: true,
+                message: "Surat ijin penelitian berhasil diambil",
+                data: statistikSuratIjinPenelitian,
+            });
         }
         catch (error) {
             console.error("Error in createStatistikSuratIjinPenelitian:", error);

@@ -22,7 +22,11 @@ class SuratKelakuanBaikController {
                 keperluan,
                 status,
             });
-            return res.status(201).json(suratKelakuanBaik);
+            return res.status(201).json({
+                success: true,
+                message: "Surat kelakuan baik berhasil dibuat",
+                data: suratKelakuanBaik,
+            });
         }
         catch (error) {
             console.error("Error creating surat kelakuan baik:", error);
@@ -62,7 +66,7 @@ class SuratKelakuanBaikController {
                 status,
             };
             const updatedSuratKelakuanBaik = await surat_kelakuan_baik_service_1.default.updateSuratKelakuanBaik(Number(id), updateData);
-            res.status(200).json({
+            return res.status(200).json({
                 success: true,
                 message: "Surat kelakuan baik berhasil diupdate",
                 data: updatedSuratKelakuanBaik,
