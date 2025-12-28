@@ -22,6 +22,7 @@ class PendampinganHukumController {
                 waktu,
                 foto: req.files?.["foto"][0],
             });
+            console.log(pendampinganHukum);
             return res.status(200).json({
                 success: true,
                 message: "Pendampingan Hukum berhasil dibuat",

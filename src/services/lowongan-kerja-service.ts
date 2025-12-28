@@ -18,6 +18,7 @@ interface LowonganKerja {
   persyaratan: Prisma.JsonValue[];
   keahlian: Prisma.JsonValue[];
   benefit: Prisma.JsonValue[];
+  kategori: string;
   email: string;
   link: string;
 }
@@ -75,6 +76,7 @@ class LowonganKerjaService {
         persyaratan: lowonganKerja.persyaratan,
         keahlian: lowonganKerja.keahlian,
         benefit: lowonganKerja.benefit,
+        kategori: lowonganKerja.kategori,
         email: lowonganKerja.email,
         link: lowonganKerja.link,
       };

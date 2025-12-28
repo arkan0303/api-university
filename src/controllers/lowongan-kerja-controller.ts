@@ -26,6 +26,7 @@ class LowonganKerjaController {
         persyaratan,
         keahlian,
         benefit,
+        kategori,
         email,
         link,
       } = req.body;
@@ -56,6 +57,7 @@ class LowonganKerjaController {
         persyaratan: persyaratanJson,
         keahlian: keahlianJson,
         benefit: benefitJson,
+        kategori,
         email,
         link,
       });
@@ -107,6 +109,7 @@ class LowonganKerjaController {
         persyaratan,
         keahlian,
         benefit,
+        kategori,
         email,
         link,
       } = req.body;
@@ -135,6 +138,7 @@ class LowonganKerjaController {
         persyaratan: persyaratanJson,
         keahlian: keahlianJson,
         benefit: benefitJson,
+        kategori,
         email,
         link,
       };

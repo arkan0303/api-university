@@ -8,7 +8,7 @@ class LowonganKerjaController {
     async createLowonganKerja(req, res) {
         try {
             const { foto, title, perusahaan, lokasi, tipePekerjaan, // Full Time, Part Time
-            gaji, pengalaman, pendidikan, batasLama, tentangPerusahaan, deskripsi, tanggungJawab, persyaratan, keahlian, benefit, email, link, } = req.body;
+            gaji, pengalaman, pendidikan, batasLama, tentangPerusahaan, deskripsi, tanggungJawab, persyaratan, keahlian, benefit, kategori, email, link, } = req.body;
             if (!req.files?.["foto"] || req.files["foto"].length === 0) {
                 return res.status(400).json({
                     success: false,
@@ -35,6 +35,7 @@ class LowonganKerjaController {
                 persyaratan: persyaratanJson,
                 keahlian: keahlianJson,
                 benefit: benefitJson,
+                kategori,
                 email,
                 link,
             });
@@ -69,7 +70,7 @@ class LowonganKerjaController {
     async updateLowonganKerja(req, res) {
         try {
             const { id } = req.params;
-            const { foto, title, perusahaan, lokasi, tipePekerjaan, gaji, pengalaman, pendidikan, batasLama, tentangPerusahaan, deskripsi, tanggungJawab, persyaratan, keahlian, benefit, email, link, } = req.body;
+            const { foto, title, perusahaan, lokasi, tipePekerjaan, gaji, pengalaman, pendidikan, batasLama, tentangPerusahaan, deskripsi, tanggungJawab, persyaratan, keahlian, benefit, kategori, email, link, } = req.body;
             //   if (!req.files?.["foto"] || req.files["foto"].length === 0) {
             //     return res.status(400).json({
             //       success: false,
@@ -95,6 +96,7 @@ class LowonganKerjaController {
                 persyaratan: persyaratanJson,
                 keahlian: keahlianJson,
                 benefit: benefitJson,
+                kategori,
                 email,
                 link,
             };
