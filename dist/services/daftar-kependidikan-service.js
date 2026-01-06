@@ -24,6 +24,7 @@ class DaftarKependidikanService {
                     email: data.email,
                     noTelp: data.noTelp,
                     pengalaman: data.pengalaman,
+                    nik: data.nik,
                 },
             });
             return createKependidikan;
@@ -56,6 +57,7 @@ class DaftarKependidikanService {
                 noTelp: data.noTelp,
                 pengalaman: data.pengalaman,
                 tanggungJawab: data.tanggungJawab,
+                nik: data.nik,
             };
             // Hanya upload foto baru jika ada file yang diunggah
             if (data.foto) {

@@ -18,6 +18,7 @@ class SuratMasukController {
         tanggalDiterima,
         status,
         penerima,
+        fileMetadata, // Added fileMetadata from frontend
       } = req.body;
 
       console.log(req.body);
@@ -29,18 +30,23 @@ class SuratMasukController {
         });
       }
 
-      //   if (!req.files?.["file"] || req.files["file"].length === 0) {
-      //     return res.status(400).json({
-      //       success: false,
-      //       message: "File harus diupload",
-      //     });
-      //   }
-
       const galeriFiles = req.files?.["file"] || [];
 
+      let parsedFileMetadata: Array<{ fileName: string; status_file: string }> =
+        [];
+      if (fileMetadata) {
+        try {
+          parsedFileMetadata = JSON.parse(fileMetadata);
+        } catch (e) {
+          console.error("Error parsing fileMetadata:", e);
+        }
+      }
+
+      console.log("Parsed file metadata:", parsedFileMetadata);
       console.log(galeriFiles);
       console.log(req.files?.["foto"]);
       console.log(req.files?.["file"]);
+
       const suratMasuk = await SuratMasukService.createArsipSuratMasuk({
         title,
         deskripsi,
@@ -49,9 +55,11 @@ class SuratMasukController {
         tanggalDiterima,
         foto: req.files?.["foto"][0],
         file: galeriFiles,
+        fileMetadata: parsedFileMetadata, // Pass metadata to service
         status,
         penerima,
       });
+
       return res.status(201).json({
         success: true,
         data: suratMasuk,

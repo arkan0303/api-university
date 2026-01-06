@@ -21,6 +21,15 @@ class DaftarDosenController {
         publikasi,
         email,
         noTelp,
+        nuptk,
+        nik,
+        id_sinta,
+        tahun_publikasi,
+        jabatan_akademik,
+        link_sinta,
+        link_ppdikti,
+        urutan,
+        jabatan_struktural,
       } = req.body;
       if (!req.files?.["foto"] || req.files["foto"].length === 0) {
         return res.status(400).json({
@@ -33,6 +42,7 @@ class DaftarDosenController {
       const publikasiJson = JSON.parse(publikasi);
       const riwayatPendidikanJson = JSON.parse(riwayatPendidikan);
       const foto = req.files["foto"][0];
+      const ahli = req.files?.["ahli"]?.[0] ?? null;
       const daftarDosen = await daftarDosenService.createDaftarDosen({
         nama,
         jabatan,
@@ -45,6 +55,16 @@ class DaftarDosenController {
         email,
         noTelp,
         foto,
+        nuptk,
+        nik,
+        id_sinta,
+        tahun_publikasi,
+        ahli,
+        jabatan_akademik,
+        link_sinta,
+        link_ppdikti,
+        urutan,
+        jabatan_struktural,
       });
       return res.status(201).json({
         success: true,
@@ -66,6 +86,8 @@ class DaftarDosenController {
         data: daftarDosen,
       });
     } catch (error) {
+      console.error("ERROR getAllDaftarDosen:", error);
+
       return res.status(500).json({
         success: false,
         message: "Gagal mendapatkan daftar dosen",
@@ -86,6 +108,15 @@ class DaftarDosenController {
         publikasi,
         email,
         noTelp,
+        nuptk,
+        nik,
+        id_sinta,
+        tahun_publikasi,
+        jabatan_akademik,
+        link_sinta,
+        link_ppdikti,
+        urutan,
+        jabatan_struktural,
       } = req.body;
       const id = req.params.id;
 
@@ -105,11 +136,23 @@ class DaftarDosenController {
         publikasi: publikasiJson,
         email,
         noTelp,
+        nuptk,
+        nik,
+        id_sinta,
+        tahun_publikasi,
+        jabatan_akademik,
+        link_sinta,
+        link_ppdikti,
+        urutan,
+        jabatan_struktural,
       };
 
       // Hanya tambahkan foto jika ada file yang diunggah
       if (req.files?.["foto"]?.[0]) {
         updateData.foto = req.files["foto"][0];
+      }
+      if (req.files?.["ahli"]?.[0]) {
+        updateData.ahli = req.files["ahli"][0];
       }
 
       const updatedDaftarDosen = await daftarDosenService.updateDaftarDosen(

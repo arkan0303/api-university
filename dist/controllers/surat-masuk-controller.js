@@ -7,7 +7,8 @@ const surat_masuk_service_1 = __importDefault(require("../services/surat-masuk-s
 class SuratMasukController {
     async createSuratMasuk(req, res) {
         try {
-            const { title, deskripsi, pengirim, nomorSurat, tanggalDiterima, status, penerima, } = req.body;
+            const { title, deskripsi, pengirim, nomorSurat, tanggalDiterima, status, penerima, fileMetadata, // Added fileMetadata from frontend
+             } = req.body;
             console.log(req.body);
             if (!req.files?.["foto"] || req.files["foto"].length === 0) {
                 return res.status(400).json({
@@ -15,13 +16,17 @@ class SuratMasukController {
                     message: "Foto utama harus diupload",
                 });
             }
-            //   if (!req.files?.["file"] || req.files["file"].length === 0) {
-            //     return res.status(400).json({
-            //       success: false,
-            //       message: "File harus diupload",
-            //     });
-            //   }
             const galeriFiles = req.files?.["file"] || [];
+            let parsedFileMetadata = [];
+            if (fileMetadata) {
+                try {
+                    parsedFileMetadata = JSON.parse(fileMetadata);
+                }
+                catch (e) {
+                    console.error("Error parsing fileMetadata:", e);
+                }
+            }
+            console.log("Parsed file metadata:", parsedFileMetadata);
             console.log(galeriFiles);
             console.log(req.files?.["foto"]);
             console.log(req.files?.["file"]);
@@ -33,6 +38,7 @@ class SuratMasukController {
                 tanggalDiterima,
                 foto: req.files?.["foto"][0],
                 file: galeriFiles,
+                fileMetadata: parsedFileMetadata, // Pass metadata to service
                 status,
                 penerima,
             });

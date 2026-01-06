@@ -15,13 +15,13 @@ class HeroSectionController {
             if (!req.file) {
                 return res.status(400).json({ error: "No image file provided" });
             }
-            const { judul, deskripsi } = req.body;
+            const { judul, deskripsi, status } = req.body;
             console.log(judul, deskripsi);
             // Ensure buffer exists before proceeding
             if (!req.file.buffer) {
                 throw new Error("Failed to process the uploaded file");
             }
-            const heroSection = await heroSectionService_1.default.createHeroSection(judul, deskripsi, req.file.buffer);
+            const heroSection = await heroSectionService_1.default.createHeroSection(judul, deskripsi, req.file.buffer, status);
             res.status(201).json({
                 success: true,
                 data: heroSection,
@@ -32,6 +32,28 @@ class HeroSectionController {
             res.status(500).json({
                 success: false,
                 message: error.message || "Failed to create hero section",
+            });
+        }
+    }
+    async update(req, res) {
+        try {
+            const id = Number(req.params.id);
+            const { judul, deskripsi, status } = req.body;
+            let imageBuffer = undefined;
+            if (req.file) {
+                imageBuffer = req.file.buffer;
+            }
+            const heroSection = await heroSectionService_1.default.update(id, judul, deskripsi, imageBuffer, status);
+            res.status(200).json({
+                success: true,
+                data: heroSection,
+            });
+        }
+        catch (error) {
+            console.error("Error in updateHeroSection:", error);
+            res.status(500).json({
+                success: false,
+                message: error.message || "Failed to update hero section",
             });
         }
     }

@@ -7,7 +7,7 @@ const daftar_kependidikan_service_1 = __importDefault(require("../services/dafta
 class DaftarKependidikanController {
     async createDaftarKependidikan(req, res) {
         try {
-            const { nama, jabatan, nip, deskripsi, riwayatPendidikan, keahlian, tanggungJawab, prestasi, pelatihan, email, noTelp, pengalaman, } = req.body;
+            const { nama, jabatan, nip, deskripsi, riwayatPendidikan, keahlian, tanggungJawab, prestasi, pelatihan, email, noTelp, pengalaman, nik, } = req.body;
             if (!req.files?.["foto"] || req.files["foto"].length === 0) {
                 return res.status(400).json({
                     success: false,
@@ -35,6 +35,7 @@ class DaftarKependidikanController {
                 noTelp,
                 pengalaman: pengalamanJson,
                 foto: req.files["foto"][0],
+                nik,
             });
             console.log(daftarKependidikan);
             return res.status(201).json({
@@ -66,7 +67,7 @@ class DaftarKependidikanController {
     }
     async updateDaftarKependidikan(req, res) {
         try {
-            const { nama, jabatan, nip, deskripsi, riwayatPendidikan, keahlian, prestasi, pelatihan, pengalaman, tanggungJawab, email, noTelp, } = req.body;
+            const { nama, jabatan, nip, deskripsi, riwayatPendidikan, keahlian, prestasi, pelatihan, pengalaman, tanggungJawab, email, noTelp, nik, } = req.body;
             const id = req.params.id;
             const keahlianJson = JSON.parse(keahlian);
             const prestasiJson = JSON.parse(prestasi);
@@ -87,6 +88,7 @@ class DaftarKependidikanController {
                 tanggungJawab: tanggungJawabJson,
                 email,
                 noTelp,
+                nik,
             };
             // Hanya tambahkan foto jika ada file yang diunggah
             if (req.files?.["foto"]?.[0]) {

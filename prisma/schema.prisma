@@ -32,6 +32,7 @@ model HeroSection {
   // textColor         String?  // Hex color
   // aktif             Boolean  @default(true)
   image             String
+  status             String?
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -1492,6 +1493,16 @@ model DaftarDosen{
   publikasi         Json?
   email             String?
   noTelp            String?
+  nuptk             String?
+  nik               String?
+  id_sinta          String?
+  tahun_publikasi   String?
+  ahli              String?
+  jabatan_akademik  String?
+  link_sinta        String?
+  link_ppdikti      String?
+  urutan            String?
+  jabatan_struktural      String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -1525,6 +1536,7 @@ model TenagaKependidikan{
   email             String?
   noTelp            String?
   pengalaman         Json?
+  nik               String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 

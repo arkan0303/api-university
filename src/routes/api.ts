@@ -94,6 +94,12 @@ router.delete(
   heroSectionController.delete.bind(heroSectionController)
 );
 
+router.put(
+  "/hero-section/:id",
+  HeroSectionController.uploadImage(),
+  heroSectionController.update.bind(heroSectionController)
+);
+
 router.post(
   "/berita",
   upload.fields([
@@ -4863,7 +4869,10 @@ router.delete(
 
 router.post(
   "/daftar-dosen",
-  upload.fields([{ name: "foto", maxCount: 1 }]),
+  upload.fields([
+    { name: "foto", maxCount: 1 },
+    { name: "ahli", maxCount: 1 },
+  ]),
   (err: any, req: Request, res: Response, next: Function) => {
     if (err) {
       return res.status(400).json({
@@ -4898,7 +4907,10 @@ router.get(
 
 router.put(
   "/daftar-dosen/:id",
-  upload.fields([{ name: "foto", maxCount: 1 }]),
+  upload.fields([
+    { name: "foto", maxCount: 1 },
+    { name: "ahli", maxCount: 1 },
+  ]),
   (err: any, req: Request, res: Response, next: Function) => {
     if (err) {
       return res.status(400).json({

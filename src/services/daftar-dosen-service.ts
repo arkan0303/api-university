@@ -14,6 +14,16 @@ interface DaftarDosen {
   publikasi: Prisma.JsonValue[];
   email: string;
   noTelp: string;
+  nuptk: string;
+  nik: string;
+  id_sinta: string;
+  tahun_publikasi: string;
+  ahli: Express.Multer.File;
+  jabatan_akademik: string;
+  link_sinta: string;
+  link_ppdikti: string;
+  urutan: string;
+  jabatan_struktural: string;
 }
 interface StatistikDaftarDosen {
   totalDosen: string;
@@ -28,6 +38,9 @@ class DaftarDosenService {
   async createDaftarDosen(data: DaftarDosen) {
     try {
       const fotoUrl = await uploadToCloudinary(data.foto.buffer);
+      const ahliUrl = data.ahli
+        ? await uploadToCloudinary(data.ahli.buffer)
+        : null;
       const createDosen = await prisma.daftarDosen.create({
         data: {
           foto: fotoUrl,
@@ -41,6 +54,16 @@ class DaftarDosenService {
           publikasi: data.publikasi,
           email: data.email,
           noTelp: data.noTelp,
+          nuptk: data.nuptk,
+          nik: data.nik,
+          id_sinta: data.id_sinta,
+          tahun_publikasi: data.tahun_publikasi,
+          ahli: ahliUrl,
+          jabatan_akademik: data.jabatan_akademik,
+          link_sinta: data.link_sinta,
+          link_ppdikti: data.link_ppdikti,
+          urutan: data.urutan,
+          jabatan_struktural: data.jabatan_struktural,
         },
       });
       return createDosen;
@@ -71,12 +94,25 @@ class DaftarDosenService {
         publikasi: data.publikasi,
         email: data.email,
         noTelp: data.noTelp,
+        nuptk: data.nuptk,
+        nik: data.nik,
+        id_sinta: data.id_sinta,
+        tahun_publikasi: data.tahun_publikasi,
+        jabatan_akademik: data.jabatan_akademik,
+        link_sinta: data.link_sinta,
+        link_ppdikti: data.link_ppdikti,
+        urutan: data.urutan,
+        jabatan_struktural: data.jabatan_struktural,
       };
 
       // Hanya upload foto baru jika ada file yang diunggah
       if (data.foto) {
         const fotoUrl = await uploadToCloudinary(data.foto.buffer);
         updateData.foto = fotoUrl;
+      }
+      if (data.ahli) {
+        const ahliUrl = await uploadToCloudinary(data.ahli.buffer);
+        updateData.ahli = ahliUrl;
       }
 
       const updatedDaftarDosen = await prisma.daftarDosen.update({

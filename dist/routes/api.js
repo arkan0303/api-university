@@ -76,6 +76,7 @@ const heroSectionController = new heroSectionController_1.default();
 router.post("/hero-section", heroSectionController_1.default.uploadImage(), heroSectionController.createHeroSection.bind(heroSectionController));
 router.get("/hero-section", heroSectionController.getDataHeroSection.bind(heroSectionController));
 router.delete("/hero-section/:id", heroSectionController.delete.bind(heroSectionController));
+router.put("/hero-section/:id", heroSectionController_1.default.uploadImage(), heroSectionController.update.bind(heroSectionController));
 router.post("/berita", multer_1.default.fields([
     { name: "fotoUtama", maxCount: 1 },
     { name: "galeri", maxCount: 10 },
@@ -2385,7 +2386,10 @@ router.post("/kekhususan-hukum-perdata/statistik", kekhususan_hukum_perdata_cont
 router.get("/kekhususan-hukum-perdata/statistik", kekhususan_hukum_perdata_controller_1.default.getAllStatistikKekhususanHukumPerdata.bind(kekhususan_hukum_perdata_controller_1.default));
 router.put("/kekhususan-hukum-perdata/statistik/:id", kekhususan_hukum_perdata_controller_1.default.updateStatistikKekhususanHukumPerdata.bind(kekhususan_hukum_perdata_controller_1.default));
 router.delete("/kekhususan-hukum-perdata/statistik/:id", kekhususan_hukum_perdata_controller_1.default.deleteStatistikKekhususanHukumPerdata.bind(kekhususan_hukum_perdata_controller_1.default));
-router.post("/daftar-dosen", multer_1.default.fields([{ name: "foto", maxCount: 1 }]), (err, req, res, next) => {
+router.post("/daftar-dosen", multer_1.default.fields([
+    { name: "foto", maxCount: 1 },
+    { name: "ahli", maxCount: 1 },
+]), (err, req, res, next) => {
     if (err) {
         return res.status(400).json({
             success: false,
@@ -2406,7 +2410,10 @@ router.post("/daftar-dosen", multer_1.default.fields([{ name: "foto", maxCount: 
     return daftar_dosen_controller_1.default.createDaftarDosen(req, res);
 });
 router.get("/daftar-dosen", daftar_dosen_controller_1.default.getAllDaftarDosen.bind(daftar_dosen_controller_1.default));
-router.put("/daftar-dosen/:id", multer_1.default.fields([{ name: "foto", maxCount: 1 }]), (err, req, res, next) => {
+router.put("/daftar-dosen/:id", multer_1.default.fields([
+    { name: "foto", maxCount: 1 },
+    { name: "ahli", maxCount: 1 },
+]), (err, req, res, next) => {
     if (err) {
         return res.status(400).json({
             success: false,

@@ -10,6 +10,7 @@ interface ArsipSuratMasuk {
   tanggalDiterima: string;
   file: Express.Multer.File[];
   foto: Express.Multer.File;
+  fileMetadata: any[];
   status: string;
   penerima: string;
 }
@@ -28,23 +29,38 @@ class SuratMasukService {
     try {
       const fotoUrl = await uploadToCloudinary(arsipSuratMasuk.foto.buffer);
 
-      // Process gallery if exists
       let galeriData: Prisma.JsonArray = [];
 
       if (arsipSuratMasuk.file && arsipSuratMasuk.file.length > 0) {
+        // Upload all files to Cloudinary
         const uploadedUrls = await Promise.all(
           arsipSuratMasuk.file.map((file) => uploadToCloudinary(file.buffer))
         );
-        galeriData = uploadedUrls as Prisma.JsonArray;
+
+        galeriData = uploadedUrls.map((url, index) => {
+          const metadata = arsipSuratMasuk.fileMetadata?.[index];
+          return {
+            fileName: metadata?.fileName || `file-${index + 1}`,
+            fileUrl: url,
+            status_file: metadata?.status_file || "public",
+          };
+        }) as Prisma.JsonArray;
       }
 
       const arsipSuratMasukk = await prisma.arsipSuratMasuk.create({
         data: {
-          ...arsipSuratMasuk,
+          title: arsipSuratMasuk.title,
+          deskripsi: arsipSuratMasuk.deskripsi,
+          pengirim: arsipSuratMasuk.pengirim,
+          nomorSurat: arsipSuratMasuk.nomorSurat,
+          tanggalDiterima: arsipSuratMasuk.tanggalDiterima,
+          status: arsipSuratMasuk.status,
+          penerima: arsipSuratMasuk.penerima,
           foto: fotoUrl,
-          file: galeriData,
+          file: galeriData, // Now saves as JSON array of objects
         },
       });
+
       return arsipSuratMasukk;
     } catch (error) {
       console.error("Error in createArsipSuratMasuk:", error);

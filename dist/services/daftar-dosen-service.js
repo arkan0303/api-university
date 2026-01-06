@@ -9,6 +9,9 @@ class DaftarDosenService {
     async createDaftarDosen(data) {
         try {
             const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(data.foto.buffer);
+            const ahliUrl = data.ahli
+                ? await (0, cloudinary_1.uploadToCloudinary)(data.ahli.buffer)
+                : null;
             const createDosen = await prisma_1.default.daftarDosen.create({
                 data: {
                     foto: fotoUrl,
@@ -22,6 +25,16 @@ class DaftarDosenService {
                     publikasi: data.publikasi,
                     email: data.email,
                     noTelp: data.noTelp,
+                    nuptk: data.nuptk,
+                    nik: data.nik,
+                    id_sinta: data.id_sinta,
+                    tahun_publikasi: data.tahun_publikasi,
+                    ahli: ahliUrl,
+                    jabatan_akademik: data.jabatan_akademik,
+                    link_sinta: data.link_sinta,
+                    link_ppdikti: data.link_ppdikti,
+                    urutan: data.urutan,
+                    jabatan_struktural: data.jabatan_struktural,
                 },
             });
             return createDosen;
@@ -52,11 +65,24 @@ class DaftarDosenService {
                 publikasi: data.publikasi,
                 email: data.email,
                 noTelp: data.noTelp,
+                nuptk: data.nuptk,
+                nik: data.nik,
+                id_sinta: data.id_sinta,
+                tahun_publikasi: data.tahun_publikasi,
+                jabatan_akademik: data.jabatan_akademik,
+                link_sinta: data.link_sinta,
+                link_ppdikti: data.link_ppdikti,
+                urutan: data.urutan,
+                jabatan_struktural: data.jabatan_struktural,
             };
             // Hanya upload foto baru jika ada file yang diunggah
             if (data.foto) {
                 const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(data.foto.buffer);
                 updateData.foto = fotoUrl;
+            }
+            if (data.ahli) {
+                const ahliUrl = await (0, cloudinary_1.uploadToCloudinary)(data.ahli.buffer);
+                updateData.ahli = ahliUrl;
             }
             const updatedDaftarDosen = await prisma_1.default.daftarDosen.update({
                 where: { id },

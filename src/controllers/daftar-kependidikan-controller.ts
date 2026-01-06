@@ -23,6 +23,7 @@ class DaftarKependidikanController {
         email,
         noTelp,
         pengalaman,
+        nik,
       } = req.body;
       if (!req.files?.["foto"] || req.files["foto"].length === 0) {
         return res.status(400).json({
@@ -53,6 +54,7 @@ class DaftarKependidikanController {
           noTelp,
           pengalaman: pengalamanJson,
           foto: req.files["foto"][0],
+          nik,
         });
 
       console.log(daftarKependidikan);
@@ -99,6 +101,7 @@ class DaftarKependidikanController {
         tanggungJawab,
         email,
         noTelp,
+        nik,
       } = req.body;
       const id = req.params.id;
 
@@ -122,6 +125,7 @@ class DaftarKependidikanController {
         tanggungJawab: tanggungJawabJson,
         email,
         noTelp,
+        nik,
       };
 
       // Hanya tambahkan foto jika ada file yang diunggah
