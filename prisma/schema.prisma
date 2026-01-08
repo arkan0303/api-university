@@ -523,11 +523,12 @@ model StatistikPimpinan{
 
 model ProgramSarjanaHukum {
   id                Int      @id @default(autoincrement())
-  image             Json?
+  mata_kuliah       String?
   semester          String?
-  judul             String?
-  deskripsi         String?
-  kategori          Json?
+  kode_matkul       String?
+  bobot             String?
+  dokumen_rps       String?
+  penyelenggara     String?
 
   @@map("programsarjanahukum")
 }

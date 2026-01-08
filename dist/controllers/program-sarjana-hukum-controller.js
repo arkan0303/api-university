@@ -7,22 +7,22 @@ const program_sarjana_hukum_service_1 = __importDefault(require("../services/pro
 class ProgramSarjanaHukumController {
     async createProgramSarjanaHukum(req, res) {
         try {
-            const { semester, judul, kategori, deskripsi } = req.body;
+            const { mata_kuliah, semester, kode_matkul, bobot, penyelenggara } = req.body;
             console.log(req.body);
-            const galeriFiles = req.files?.["image"] || [];
-            const katagoriJSON = JSON.parse(kategori);
-            console.log(katagoriJSON);
-            const strategis = await program_sarjana_hukum_service_1.default.createProgramSarjanaHukum({
+            const dokumenRps = req.files?.["dokumen_rps"] || [];
+            console.log(dokumenRps);
+            const programSarjanaHukum = await program_sarjana_hukum_service_1.default.createProgramSarjanaHukum({
                 semester,
-                judul,
-                kategori: katagoriJSON,
-                deskripsi,
-                image: galeriFiles,
+                mata_kuliah,
+                kode_matkul,
+                bobot,
+                penyelenggara,
+                dokumen_rps: dokumenRps[0],
             });
             res.status(201).json({
                 success: true,
                 message: "Program sarjana hukum berhasil dibuat",
-                data: strategis,
+                data: programSarjanaHukum,
             });
         }
         catch (error) {
@@ -47,17 +47,17 @@ class ProgramSarjanaHukumController {
     async updateProgramSarjanaHukum(req, res) {
         try {
             const { id } = req.params;
-            const { semester, judul, kategori, deskripsi } = req.body;
-            const katagoriJSON = JSON.parse(kategori);
+            const { mata_kuliah, semester, kode_matkul, bobot, penyelenggara } = req.body;
             const updateData = {
+                mata_kuliah,
                 semester,
-                judul,
-                kategori: katagoriJSON,
-                deskripsi,
+                kode_matkul,
+                bobot,
+                penyelenggara,
             };
-            if (req.files?.["image"]?.[0]) {
-                const image = req.files["image"][0];
-                updateData.image = image;
+            if (req.files?.["dokumen_rps"]?.[0]) {
+                const dokumenRps = req.files["dokumen_rps"][0];
+                updateData.dokumen_rps = dokumenRps;
             }
             const updatedProgramSarjanaHukum = await program_sarjana_hukum_service_1.default.updateProgramSarjanaHukum(Number(id), updateData);
             res.status(200).json({

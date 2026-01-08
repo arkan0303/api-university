@@ -673,7 +673,7 @@ router.post("/pimpinan/statistik", pimpinan_controller_1.default.createStatistik
 router.put("/pimpinan/statistik/:id", pimpinan_controller_1.default.updateStatistikPimpinan.bind(pimpinan_controller_1.default));
 router.delete("/pimpinan/statistik/:id", pimpinan_controller_1.default.deleteStatistikPimpinan.bind(pimpinan_controller_1.default));
 router.get("/pimpinan/statistik", pimpinan_controller_1.default.getAllStatistikPimpinan.bind(pimpinan_controller_1.default));
-router.post("/program-sarjana-hukum", multer_1.default.fields([{ name: "image", maxCount: 5 }]), (err, req, res, next) => {
+router.post("/program-sarjana-hukum", multer_1.default.fields([{ name: "dokumen_rps", maxCount: 1 }]), (err, req, res, next) => {
     if (err) {
         return res.status(400).json({
             success: false,
@@ -694,7 +694,7 @@ router.post("/program-sarjana-hukum", multer_1.default.fields([{ name: "image", 
     return program_sarjana_hukum_controller_1.default.createProgramSarjanaHukum(req, res);
 });
 router.get("/program-sarjana-hukum", program_sarjana_hukum_controller_1.default.getAllProgramSarjanaHukum.bind(program_sarjana_hukum_controller_1.default));
-router.put("/program-sarjana-hukum/:id", multer_1.default.fields([{ name: "image", maxCount: 5 }]), (err, req, res, next) => {
+router.put("/program-sarjana-hukum/:id", multer_1.default.fields([{ name: "dokumen_rps", maxCount: 1 }]), (err, req, res, next) => {
     if (err) {
         return res.status(400).json({
             success: false,

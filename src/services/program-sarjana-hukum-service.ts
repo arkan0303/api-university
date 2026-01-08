@@ -3,11 +3,12 @@ import prisma from "../db/prisma";
 import { uploadToCloudinary } from "../utils/cloudinary";
 
 interface ProgramSarjanaHukum {
-  image: Express.Multer.File[];
+  mata_kuliah: string;
   semester: string;
-  judul: string;
-  deskripsi: string;
-  kategori: Prisma.JsonValue[];
+  kode_matkul: string;
+  bobot: string;
+  dokumen_rps: Express.Multer.File;
+  penyelenggara: string;
 }
 
 interface StatistikProgramSarjanaHukum {
@@ -27,22 +28,16 @@ interface ProspekKarirSarjanaHukum {
 class ProgramSarjanaHukumService {
   async createProgramSarjanaHukum(data: ProgramSarjanaHukum) {
     try {
-      let galeriData: Prisma.JsonArray = [];
-
-      if (data.image && data.image.length > 0) {
-        const uploadedUrls = await Promise.all(
-          data.image.map((file) => uploadToCloudinary(file.buffer))
-        );
-        galeriData = uploadedUrls as Prisma.JsonArray;
-      }
+      const dokumenRpsUrl = await uploadToCloudinary(data.dokumen_rps.buffer);
 
       const result = await prisma.programSarjanaHukum.create({
         data: {
-          image: galeriData,
+          mata_kuliah: data.mata_kuliah,
           semester: data.semester,
-          judul: data.judul,
-          deskripsi: data.deskripsi,
-          kategori: data.kategori,
+          kode_matkul: data.kode_matkul,
+          bobot: data.bobot,
+          penyelenggara: data.penyelenggara,
+          dokumen_rps: dokumenRpsUrl,
         },
       });
       return result;
@@ -64,29 +59,31 @@ class ProgramSarjanaHukumService {
 
   async updateProgramSarjanaHukum(
     id: number,
-    data: ProgramSarjanaHukum & { image?: Express.Multer.File[] }
+    data: ProgramSarjanaHukum & { dokumen_rps?: Express.Multer.File }
   ) {
     try {
       const updateData: any = {
+        mata_kuliah: data.mata_kuliah,
         semester: data.semester,
-        judul: data.judul,
-        kategori: data.kategori,
-        deskripsi: data.deskripsi,
-        image: data.image,
+        kode_matkul: data.kode_matkul,
+        bobot: data.bobot,
+        penyelenggara: data.penyelenggara,
+        dokumen_rps: data.dokumen_rps,
       };
 
       // Hanya upload foto baru jika ada file yang diunggah
-      if (data.image) {
-        const fotoUrl = await uploadToCloudinary(data.image[0].buffer);
-        updateData.image = fotoUrl;
+      if (data.dokumen_rps) {
+        const dokumenRpsUrl = await uploadToCloudinary(data.dokumen_rps.buffer);
+        updateData.dokumen_rps = dokumenRpsUrl;
       }
 
-      const updatedStrategis = await prisma.programSarjanaHukum.update({
-        where: { id },
-        data: updateData,
-      });
+      const updatedProgramSarjanaHukum =
+        await prisma.programSarjanaHukum.update({
+          where: { id },
+          data: updateData,
+        });
 
-      return updatedStrategis;
+      return updatedProgramSarjanaHukum;
     } catch (error) {
       console.error("Error in updateProgramSarjanaHukum:", error);
       throw error;

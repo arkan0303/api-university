@@ -1223,7 +1223,7 @@ router.get(
 
 router.post(
   "/program-sarjana-hukum",
-  upload.fields([{ name: "image", maxCount: 5 }]),
+  upload.fields([{ name: "dokumen_rps", maxCount: 1 }]),
   (err: any, req: Request, res: Response, next: Function) => {
     if (err) {
       return res.status(400).json({
@@ -1260,7 +1260,7 @@ router.get(
 
 router.put(
   "/program-sarjana-hukum/:id",
-  upload.fields([{ name: "image", maxCount: 5 }]),
+  upload.fields([{ name: "dokumen_rps", maxCount: 1 }]),
   (err: any, req: Request, res: Response, next: Function) => {
     if (err) {
       return res.status(400).json({
