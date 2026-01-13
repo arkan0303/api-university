@@ -8,7 +8,10 @@ const cloudinary_1 = require("../utils/cloudinary");
 class ProgramSarjanaHukumService {
     async createProgramSarjanaHukum(data) {
         try {
-            const dokumenRpsUrl = await (0, cloudinary_1.uploadToCloudinary)(data.dokumen_rps.buffer);
+            let dokumenRpsUrl = null;
+            if (data.dokumen_rps) {
+                dokumenRpsUrl = await (0, cloudinary_1.uploadToCloudinary)(data.dokumen_rps.buffer);
+            }
             const result = await prisma_1.default.programSarjanaHukum.create({
                 data: {
                     mata_kuliah: data.mata_kuliah,

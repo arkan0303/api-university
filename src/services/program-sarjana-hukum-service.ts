@@ -28,7 +28,10 @@ interface ProspekKarirSarjanaHukum {
 class ProgramSarjanaHukumService {
   async createProgramSarjanaHukum(data: ProgramSarjanaHukum) {
     try {
-      const dokumenRpsUrl = await uploadToCloudinary(data.dokumen_rps.buffer);
+      let dokumenRpsUrl = null;
+      if (data.dokumen_rps) {
+        dokumenRpsUrl = await uploadToCloudinary(data.dokumen_rps.buffer);
+      }
 
       const result = await prisma.programSarjanaHukum.create({
         data: {
