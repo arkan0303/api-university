@@ -443,9 +443,12 @@ model StatistikSenatFakultas{
 model VisiMisi {
   id          Int      @id @default(autoincrement())
   type        String   // 'visi' atau 'misi'
-  title       String
-  deskripsi   String
+  title       String?
+  deskripsi   String?
   gambar      String?
+  misi        Json?
+  tujuan      Json?
+  sasaran     Json?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

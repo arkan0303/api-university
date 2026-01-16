@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../db/prisma";
 import { uploadToCloudinary } from "../utils/cloudinary";
 
@@ -5,7 +6,10 @@ interface VisMisi {
   type: string;
   title: string;
   deskripsi: string;
-  gambar: Express.Multer.File;
+  gambar: Express.Multer.File | null;
+  misi: Prisma.JsonValue[];
+  tujuan: Prisma.JsonValue[];
+  sasaran: Prisma.JsonValue[];
 }
 
 interface StatistikVisiMisi {
@@ -20,7 +24,10 @@ interface StatistikVisiMisi {
 class VisMisiService {
   async createVisMisi(visMisi: VisMisi) {
     try {
-      const fotoUrl = await uploadToCloudinary(visMisi.gambar.buffer);
+      let fotoUrl: string | undefined = undefined;
+      if (visMisi.gambar) {
+        fotoUrl = await uploadToCloudinary(visMisi.gambar.buffer);
+      }
 
       const visMisii = await prisma.visiMisi.create({
         data: {

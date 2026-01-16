@@ -8,7 +8,10 @@ const cloudinary_1 = require("../utils/cloudinary");
 class VisMisiService {
     async createVisMisi(visMisi) {
         try {
-            const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(visMisi.gambar.buffer);
+            let fotoUrl = undefined;
+            if (visMisi.gambar) {
+                fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(visMisi.gambar.buffer);
+            }
             const visMisii = await prisma_1.default.visiMisi.create({
                 data: {
                     ...visMisi,

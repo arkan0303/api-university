@@ -7,22 +7,25 @@ const vis_misi_service_1 = __importDefault(require("../services/vis-misi-service
 class VisMisiController {
     async createVisMisi(req, res) {
         try {
-            const { type, title, deskripsi } = req.body;
-            if (!req.files?.["gambar"] || req.files["gambar"].length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Gambar harus diupload",
-                });
-            }
+            const { type, title, deskripsi, misi, tujuan, sasaran } = req.body;
+            // Parse JSON untuk field misi, tujuan, sasaran
+            const misiJSON = misi ? JSON.parse(misi) : [];
+            const tujuanJSON = tujuan ? JSON.parse(tujuan) : [];
+            const sasaranJSON = sasaran ? JSON.parse(sasaran) : [];
+            // Ambil file gambar jika ada, tapi opsional
+            const gambarFile = req.files?.["gambar"]?.[0] || null;
             const visMisi = await vis_misi_service_1.default.createVisMisi({
                 type,
                 title,
                 deskripsi,
-                gambar: req.files?.["gambar"][0],
+                gambar: gambarFile,
+                misi: misiJSON,
+                tujuan: tujuanJSON,
+                sasaran: sasaranJSON,
             });
             res.status(201).json({
                 success: true,
-                message: "Vis Misi berhasil diambil",
+                message: "Vis Misi berhasil dibuat",
                 data: visMisi,
             });
         }
