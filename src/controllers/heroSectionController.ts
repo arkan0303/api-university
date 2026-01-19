@@ -15,8 +15,8 @@ class HeroSectionController {
         return res.status(400).json({ error: "No image file provided" });
       }
 
-      const { judul, deskripsi, status } = req.body;
-      console.log(judul, deskripsi);
+      const { ururtan, status } = req.body;
+      console.log(ururtan);
 
       // Ensure buffer exists before proceeding
       if (!req.file.buffer) {
@@ -24,8 +24,7 @@ class HeroSectionController {
       }
 
       const heroSection = await HeroSectionService.createHeroSection(
-        judul,
-        deskripsi,
+        ururtan,
         req.file.buffer,
         status
       );
@@ -46,7 +45,7 @@ class HeroSectionController {
   async update(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const { judul, deskripsi, status } = req.body;
+      const { ururtan, status } = req.body;
 
       let imageBuffer: Buffer | undefined = undefined;
       if (req.file) {
@@ -55,8 +54,7 @@ class HeroSectionController {
 
       const heroSection = await HeroSectionService.update(
         id,
-        judul,
-        deskripsi,
+        ururtan,
         imageBuffer,
         status
       );

@@ -3,8 +3,8 @@ import { uploadToCloudinary } from "../utils/cloudinary";
 
 class HeroSectionService {
   async createHeroSection(
-    judul: string,
-    deskripsi: string,
+    urutan: string,
+    // deskripsi: string,
     imageBuffer: Buffer,
     status: string
   ) {
@@ -15,8 +15,8 @@ class HeroSectionService {
       // Save to database
       const heroSection = await prisma.heroSection.create({
         data: {
-          judul: judul,
-          deskripsi: deskripsi,
+          urutan: urutan,
+          // deskripsi: deskripsi,
           image: imageUrl,
           status: status,
         },
@@ -31,8 +31,8 @@ class HeroSectionService {
 
   async update(
     id: number,
-    judul?: string,
-    deskripsi?: string,
+    ururtan?: string,
+    // deskripsi?: string,
     imageBuffer?: Buffer,
     status?: string
   ) {
@@ -44,8 +44,8 @@ class HeroSectionService {
       }
 
       const updateData: any = {};
-      if (judul !== undefined) updateData.judul = judul;
-      if (deskripsi !== undefined) updateData.deskripsi = deskripsi;
+      if (ururtan !== undefined) updateData.ururtan = ururtan;
+      // if (deskripsi !== undefined) updateData.deskripsi = deskripsi;
       if (imageUrl) updateData.image = imageUrl;
       if (status !== undefined) updateData.status = status;
 

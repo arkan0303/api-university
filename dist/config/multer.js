@@ -4,13 +4,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const multer_1 = __importDefault(require("multer"));
-// Configure multer to store files in memory
+// Simpan file di memory
 const storage = multer_1.default.memoryStorage();
-// File filter to only allow images
+// Filter file yang diizinkan
 const fileFilter = (req, file, cb) => {
     const allowedTypes = [
+        // Images
         "image/jpeg",
         "image/png",
+        "image/gif",
+        // Videos
+        "video/mp4",
+        "video/mpeg",
+        "video/quicktime", // .mov
+        "video/x-msvideo", // .avi
+        "video/x-matroska", // .mkv
+        // Documents
         "application/pdf",
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -19,15 +28,15 @@ const fileFilter = (req, file, cb) => {
         cb(null, true);
     }
     else {
-        cb(new Error("File type not allowed!"));
+        cb(new Error("File type not allowed"));
     }
 };
-// Initialize multer with the configuration
+// Init multer
 const upload = (0, multer_1.default)({
-    storage: storage,
-    fileFilter: fileFilter,
+    storage,
+    fileFilter,
     limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB limit
+        fileSize: 50 * 1024 * 1024, // 50MB (video butuh besar)
     },
 });
 exports.default = upload;

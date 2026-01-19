@@ -6,15 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prisma_1 = __importDefault(require("../db/prisma"));
 const cloudinary_1 = require("../utils/cloudinary");
 class HeroSectionService {
-    async createHeroSection(judul, deskripsi, imageBuffer, status) {
+    async createHeroSection(urutan, 
+    // deskripsi: string,
+    imageBuffer, status) {
         try {
             // Upload image to Cloudinary
             const imageUrl = await (0, cloudinary_1.uploadToCloudinary)(imageBuffer);
             // Save to database
             const heroSection = await prisma_1.default.heroSection.create({
                 data: {
-                    judul: judul,
-                    deskripsi: deskripsi,
+                    urutan: urutan,
+                    // deskripsi: deskripsi,
                     image: imageUrl,
                     status: status,
                 },
@@ -26,17 +28,18 @@ class HeroSectionService {
             throw new Error("Failed to create hero section");
         }
     }
-    async update(id, judul, deskripsi, imageBuffer, status) {
+    async update(id, ururtan, 
+    // deskripsi?: string,
+    imageBuffer, status) {
         try {
             let imageUrl = undefined;
             if (imageBuffer) {
                 imageUrl = await (0, cloudinary_1.uploadToCloudinary)(imageBuffer);
             }
             const updateData = {};
-            if (judul !== undefined)
-                updateData.judul = judul;
-            if (deskripsi !== undefined)
-                updateData.deskripsi = deskripsi;
+            if (ururtan !== undefined)
+                updateData.ururtan = ururtan;
+            // if (deskripsi !== undefined) updateData.deskripsi = deskripsi;
             if (imageUrl)
                 updateData.image = imageUrl;
             if (status !== undefined)

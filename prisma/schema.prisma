@@ -22,9 +22,9 @@ datasource db {
 // Catatan: Hanya ada 1 record untuk halaman beranda
 model HeroSection {
   id                Int      @id @default(autoincrement())
-  judul             String
+  urutan            String?
   // subjudul          String?
-  deskripsi         String   
+  // deskripsi         String   
   // tombolTeks        String?  // "Pelajari Lebih Lanjut", "Daftar Sekarang", dst.
   // tombolLink        String?
   // backgroundImage   String?
