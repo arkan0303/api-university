@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 interface Matrikulasi {
   title: string;
   kategori: Prisma.JsonValue[];
-  foto: Express.Multer.File;
+  foto?: Express.Multer.File;
   type: string; // "mata kuliah", "persyaratan"
   waktu: string; // 4 minggu
   sks: string; // 24 SKS

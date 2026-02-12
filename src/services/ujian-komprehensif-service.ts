@@ -5,7 +5,7 @@ import { uploadToCloudinary } from "../utils/cloudinary";
 interface UjianKomprehensif {
   title: string;
   kategori: Prisma.JsonValue[];
-  foto: Express.Multer.File;
+  foto?: Express.Multer.File;
   type: string; // "persyaratan", "prosedur" atau "Ruang Lingkup Materi"
   waktu: string; // 2 Bulan Sebelum Ujian
   deskripsi: string;
@@ -29,7 +29,7 @@ class UjianKomprehensifService {
     return prisma.ujianKomprehensif.create({
       data: {
         ...data,
-        foto: fotoUrl || null,
+        foto: fotoUrl || undefined,
       },
     });
   }
@@ -87,7 +87,7 @@ class UjianKomprehensifService {
 
   async updateStatistikUjianKomprehensif(
     id: number,
-    data: StatistikUjianKomprehensif
+    data: StatistikUjianKomprehensif,
   ) {
     try {
       const updatedStatistikUjianKomprehensif =

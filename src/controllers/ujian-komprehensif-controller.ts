@@ -12,11 +12,12 @@ class UjianKomprehensifController {
     try {
       const { title, kategori, type, waktu, deskripsi } = req.body;
       const kategoriJson = JSON.parse(kategori);
+      const foto = req.files?.["foto"]?.[0];
       const ujianKomprehensif =
         await UjianKomprehensifService.createUjianKomprehensif({
           title,
           kategori: kategoriJson,
-          foto: req.files!["foto"]?.[0] || null,
+          foto,
           type,
           waktu,
           deskripsi,
@@ -69,7 +70,7 @@ class UjianKomprehensifController {
       const updatedUjianKomprehensif =
         await UjianKomprehensifService.updateUjianKomprehensif(
           Number(id),
-          updateData
+          updateData,
         );
       return res.status(200).json({
         success: true,
@@ -173,7 +174,7 @@ class UjianKomprehensifController {
             menitUjian,
             slogan,
             deskripsi,
-          }
+          },
         );
       return res.status(200).json({
         success: true,
@@ -194,7 +195,7 @@ class UjianKomprehensifController {
       const { id } = req.params;
       const deletedStatistikUjianKomprehensif =
         await UjianKomprehensifService.deleteStatistikUjianKomprehensif(
-          Number(id)
+          Number(id),
         );
       return res.status(200).json({
         success: true,

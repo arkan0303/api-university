@@ -10,13 +10,9 @@ interface MulterRequest extends Request {
 class KeteranganPendampingController {
   async createKeteranganPendampingIjazah(req: MulterRequest, res: Response) {
     try {
-      const { title, deskripsi, type, waktu } = req.body;
-      if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Foto harus diupload",
-        });
-      }
+      const { title, deskripsi, type, waktu, kategori } = req.body;
+      const foto = req.files?.["foto"]?.[0];
+      const kategoriJSON = JSON.parse(kategori);
       const keteranganPendampingIjazah =
         await keteranganPendampingIjazahService.createKeteranganPendampingIjazah(
           {
@@ -24,8 +20,9 @@ class KeteranganPendampingController {
             deskripsi,
             type,
             waktu,
-            foto: req.files?.["foto"][0],
-          }
+            foto,
+            kategori: kategoriJSON,
+          },
         );
       return res.status(201).json({
         success: true,
@@ -73,7 +70,7 @@ class KeteranganPendampingController {
       const updatedKeteranganPendampingIjazah =
         await keteranganPendampingIjazahService.updateKeteranganPendampingIjazah(
           Number(id), // Konversi id ke number
-          updateData
+          updateData,
         );
 
       return res.status(200).json({
@@ -91,7 +88,7 @@ class KeteranganPendampingController {
     try {
       const result =
         await keteranganPendampingIjazahService.deleteKeteranganPendampingIjazah(
-          Number(req.params.id)
+          Number(req.params.id),
         );
       return res.status(200).json({
         success: true,
@@ -123,7 +120,7 @@ class KeteranganPendampingController {
             mingguAktif,
             slogan,
             deskripsi,
-          }
+          },
         );
       return res.status(201).json({
         success: true,
@@ -133,7 +130,7 @@ class KeteranganPendampingController {
     } catch (error) {
       console.error(
         "Error in createStatistikKeteranganPendampingIjazah:",
-        error
+        error,
       );
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -173,7 +170,7 @@ class KeteranganPendampingController {
             mingguAktif,
             slogan,
             deskripsi,
-          }
+          },
         );
       return res.status(200).json({
         success: true,
@@ -183,7 +180,7 @@ class KeteranganPendampingController {
     } catch (error) {
       console.error(
         "Error in updateStatistikKeteranganPendampingIjazah:",
-        error
+        error,
       );
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -201,7 +198,7 @@ class KeteranganPendampingController {
     } catch (error) {
       console.error(
         "Error in deleteStatistikKeteranganPendampingIjazah:",
-        error
+        error,
       );
       res.status(500).json({ error: "Internal Server Error" });
     }

@@ -11,18 +11,13 @@ class SidangSkripsiController {
   async createSidangSkripsi(req: MulterRequest, res: Response) {
     try {
       const { title, kategori } = req.body;
-      if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Foto harus diupload",
-        });
-      }
+      const foto = req.files?.["foto"]?.[0];
 
       const kategoriJson = JSON.parse(kategori);
       const sidangSkripsi = await sidangSkripsiService.createSidangSkripsi({
         title,
         kategori: kategoriJson,
-        foto: req.files?.["foto"][0],
+        foto,
       });
       return res.status(201).json({
         success: true,
@@ -87,7 +82,7 @@ class SidangSkripsiController {
     try {
       const id = req.params.id;
       const deletedData = await sidangSkripsiService.deleteSidangSkripsi(
-        Number(id)
+        Number(id),
       );
       return res.status(200).json({
         success: true,
@@ -106,19 +101,14 @@ class SidangSkripsiController {
   async createProsedurSidangSkripsi(req: MulterRequest, res: Response) {
     try {
       const { title, tahapan, waktu, deskripsi } = req.body;
-      if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Foto harus diupload",
-        });
-      }
+      const foto = req.files?.["foto"]?.[0];
       const prosedurSidangSkripsi =
         await sidangSkripsiService.createProsedurSidangSkripsi({
           title,
           tahapan,
           waktu,
           deskripsi,
-          foto: req.files?.["foto"][0],
+          foto,
         });
       return res.status(201).json({
         success: true,
@@ -168,7 +158,7 @@ class SidangSkripsiController {
       const updatedProsedurSidangSkripsi =
         await sidangSkripsiService.updateProsedurSidangSkripsi(
           Number(id),
-          updateData
+          updateData,
         );
       return res.status(200).json({
         success: true,

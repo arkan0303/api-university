@@ -1,12 +1,14 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../db/prisma";
 import { uploadToCloudinary } from "../utils/cloudinary";
 
 interface KeteranganPendampingIjazah {
-  foto: Express.Multer.File;
+  foto?: Express.Multer.File;
   title: string;
   deskripsi: string;
   type: string; // "komponen", "prosedur"
   waktu?: string; //minggu 1
+  kategori: Prisma.JsonValue[];
 }
 
 interface StatistikKeteranganPendampingIjazah {
@@ -20,15 +22,19 @@ interface StatistikKeteranganPendampingIjazah {
 class KeteranganPendampingIjazahService {
   async createKeteranganPendampingIjazah(data: KeteranganPendampingIjazah) {
     try {
-      const fotoUrl = await uploadToCloudinary(data.foto.buffer);
+      let fotoUrl;
+      if (data.foto) {
+        fotoUrl = await uploadToCloudinary(data.foto.buffer);
+      }
       const keteranganPendampingIjazah =
         await prisma.keteranganPendampingIjazah.create({
           data: {
-            foto: fotoUrl,
+            foto: fotoUrl || null,
             title: data.title,
             deskripsi: data.deskripsi,
             type: data.type,
             waktu: data.waktu,
+            kategori: data.kategori,
           },
         });
       return keteranganPendampingIjazah;
@@ -51,7 +57,7 @@ class KeteranganPendampingIjazahService {
 
   async updateKeteranganPendampingIjazah(
     id: number,
-    data: KeteranganPendampingIjazah
+    data: KeteranganPendampingIjazah,
   ) {
     try {
       const updateData: any = {
@@ -104,7 +110,7 @@ class KeteranganPendampingIjazahService {
   }
 
   async updateStatistikKeteranganPendampingIjazah(
-    data: StatistikKeteranganPendampingIjazah
+    data: StatistikKeteranganPendampingIjazah,
   ) {
     try {
       const updatedStatistikKeteranganPendampingIjazah =
@@ -133,7 +139,7 @@ class KeteranganPendampingIjazahService {
   }
 
   async createStatistikKeteranganPendampingIjazah(
-    data: StatistikKeteranganPendampingIjazah
+    data: StatistikKeteranganPendampingIjazah,
   ) {
     try {
       const createdStatistikKeteranganPendampingIjazah =

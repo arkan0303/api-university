@@ -8,7 +8,10 @@ const cloudinary_1 = require("../utils/cloudinary");
 class SeminarProposalService {
     async createSeminarProposal(seminarProposal) {
         try {
-            const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(seminarProposal.foto.buffer);
+            let fotoUrl = null;
+            if (seminarProposal.foto) {
+                fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(seminarProposal.foto.buffer);
+            }
             const createdSeminarProposal = await prisma_1.default.seminarProposal.create({
                 data: {
                     title: seminarProposal.title,
@@ -67,16 +70,14 @@ class SeminarProposalService {
             throw error;
         }
     }
-    async createProsedurPelaksanaan(prosedurPelaksanaan) {
+    async createProsedurPelaksanaan(sopPendaftaran) {
         try {
-            const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(prosedurPelaksanaan.foto.buffer);
-            const createdProsedurPelaksanaan = await prisma_1.default.prosedurPelaksanaan.create({
+            const createdProsedurPelaksanaan = await prisma_1.default.soppendaftaran.create({
                 data: {
-                    title: prosedurPelaksanaan.title,
-                    tahapan: prosedurPelaksanaan.tahapan,
-                    waktu: prosedurPelaksanaan.waktu,
-                    deskripsi: prosedurPelaksanaan.deskripsi,
-                    foto: fotoUrl,
+                    tahapan: sopPendaftaran.tahapan,
+                    deskripsi: sopPendaftaran.deskripsi,
+                    updatedAt: new Date(),
+                    createdAt: new Date(),
                 },
             });
             return createdProsedurPelaksanaan;
@@ -88,7 +89,7 @@ class SeminarProposalService {
     }
     async getAllProsedurPelaksanaan() {
         try {
-            const prosedurPelaksanaan = await prisma_1.default.prosedurPelaksanaan.findMany();
+            const prosedurPelaksanaan = await prisma_1.default.soppendaftaran.findMany();
             return prosedurPelaksanaan;
         }
         catch (error) {
@@ -99,17 +100,10 @@ class SeminarProposalService {
     async updateProsedurPelaksanaan(id, data) {
         try {
             const updateData = {
-                title: data.title,
                 tahapan: data.tahapan,
-                waktu: data.waktu,
                 deskripsi: data.deskripsi,
-                foto: data.foto,
             };
-            if (data.foto) {
-                const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(data.foto.buffer);
-                updateData.foto = fotoUrl;
-            }
-            const updatedProsedurPelaksanaan = await prisma_1.default.prosedurPelaksanaan.update({
+            const updatedProsedurPelaksanaan = await prisma_1.default.soppendaftaran.update({
                 where: { id },
                 data: updateData,
             });
@@ -122,7 +116,7 @@ class SeminarProposalService {
     }
     async deleteProsedurPelaksanaan(id) {
         try {
-            const deletedProsedurPelaksanaan = await prisma_1.default.prosedurPelaksanaan.delete({
+            const deletedProsedurPelaksanaan = await prisma_1.default.soppendaftaran.delete({
                 where: { id },
             });
             return deletedProsedurPelaksanaan;

@@ -70,6 +70,8 @@ const mou_controller_1 = __importDefault(require("../controllers/mou-controller"
 const moa_controller_1 = __importDefault(require("../controllers/moa-controller"));
 const data_pkpa_controller_1 = __importDefault(require("../controllers/data-pkpa-controller"));
 const data_peradilan_semu_service_1 = __importDefault(require("../controllers/data-peradilan-semu-service"));
+const akreditasi_controller_1 = __importDefault(require("../controllers/akreditasi-controller"));
+const Testing_1 = __importDefault(require("../controllers/Testing"));
 const router = express_1.default.Router();
 const heroSectionController = new heroSectionController_1.default();
 // Apply the upload middleware to the route
@@ -1110,47 +1112,10 @@ router.put("/seminar-proposal/:id", multer_1.default.fields([{ name: "foto", max
     return seminar_proposal_controller_1.default.updateSeminarProposal(req, res);
 });
 router.delete("/seminar-proposal/:id", seminar_proposal_controller_1.default.deleteSeminarProposal.bind(seminar_proposal_controller_1.default));
-router.post("/prosedur-pelaksanaan", multer_1.default.fields([{ name: "foto", maxCount: 1 }]), (err, req, res, next) => {
-    if (err) {
-        return res.status(400).json({
-            success: false,
-            message: err.message || "File upload error",
-        });
-    }
-    next();
-}, (req, res, next) => {
-    const multerReq = req;
-    if (multerReq.fileValidationError) {
-        return res.status(400).json({
-            success: false,
-            message: multerReq.fileValidationError,
-        });
-    }
-    next();
-}, (req, res) => {
-    return seminar_proposal_controller_1.default.createProsedurPelaksanaan(req, res);
-});
+router.post("/prosedur-pelaksanaan", seminar_proposal_controller_1.default.createProsedurPelaksanaan.bind(seminar_proposal_controller_1.default));
 router.get("/prosedur-pelaksanaan", seminar_proposal_controller_1.default.getAllProsedurPelaksanaan.bind(seminar_proposal_controller_1.default));
-router.put("/prosedur-pelaksanaan/:id", multer_1.default.fields([{ name: "foto", maxCount: 1 }]), (err, req, res, next) => {
-    if (err) {
-        return res.status(400).json({
-            success: false,
-            message: err.message || "File upload error",
-        });
-    }
-    next();
-}, (req, res, next) => {
-    const multerReq = req;
-    if (multerReq.fileValidationError) {
-        return res.status(400).json({
-            success: false,
-            message: multerReq.fileValidationError,
-        });
-    }
-    next();
-}, (req, res) => {
-    return seminar_proposal_controller_1.default.updateProsedurPelaksanaan(req, res);
-});
+router.get("/testing", Testing_1.default.GetData.bind(Testing_1.default));
+router.put("/prosedur-pelaksanaan/:id", seminar_proposal_controller_1.default.updateProsedurPelaksanaan.bind(seminar_proposal_controller_1.default));
 router.delete("/prosedur-pelaksanaan/:id", seminar_proposal_controller_1.default.deleteProsedurPelaksanaan.bind(seminar_proposal_controller_1.default));
 router.post("/seminar-proposal/statistik", seminar_proposal_controller_1.default.createStatistikSeminarProposal.bind(seminar_proposal_controller_1.default));
 router.get("/seminar-proposal/statistik", seminar_proposal_controller_1.default.getAllStatistikSeminarProposal.bind(seminar_proposal_controller_1.default));
@@ -3372,4 +3337,46 @@ router.post("/statistik-peradilan-semu", data_peradilan_semu_service_1.default.c
 router.get("/statistik-peradilan-semu", data_peradilan_semu_service_1.default.getStatistikPeradilanSemu.bind(data_peradilan_semu_service_1.default));
 router.put("/statistik-peradilan-semu/:id", data_peradilan_semu_service_1.default.updateStatistikPeradilanSemu.bind(data_peradilan_semu_service_1.default));
 router.delete("/statistik-peradilan-semu/:id", data_peradilan_semu_service_1.default.deleteStatistikPeradilanSemu.bind(data_peradilan_semu_service_1.default));
+router.post("/akreditasi", multer_1.default.fields([{ name: "document", maxCount: 10 }]), (err, req, res, next) => {
+    if (err) {
+        return res.status(400).json({
+            success: false,
+            message: err.message || "File upload error",
+        });
+    }
+    next();
+}, (req, res, next) => {
+    const multerReq = req;
+    if (multerReq.fileValidationError) {
+        return res.status(400).json({
+            success: false,
+            message: multerReq.fileValidationError,
+        });
+    }
+    next();
+}, (req, res) => {
+    return akreditasi_controller_1.default.createDataAkreditasi(req, res);
+});
+router.get("/akreditasi", akreditasi_controller_1.default.getAllAkreditasii.bind(akreditasi_controller_1.default));
+router.put("/akreditasi/:id", multer_1.default.fields([{ name: "document", maxCount: 10 }]), (err, req, res, next) => {
+    if (err) {
+        return res.status(400).json({
+            success: false,
+            message: err.message || "File upload error",
+        });
+    }
+    next();
+}, (req, res, next) => {
+    const multerReq = req;
+    if (multerReq.fileValidationError) {
+        return res.status(400).json({
+            success: false,
+            message: multerReq.fileValidationError,
+        });
+    }
+    next();
+}, (req, res) => {
+    return akreditasi_controller_1.default.updateAkreditasi(req, res);
+});
+router.delete("/akreditasi/:id", akreditasi_controller_1.default.deleteAkreditasi.bind(akreditasi_controller_1.default));
 exports.default = router;

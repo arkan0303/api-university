@@ -11,19 +11,12 @@ class SeminarProposalController {
   async createSeminarProposal(req: MulterRequest, res: Response) {
     try {
       const { title, kategori } = req.body;
-      if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Foto harus diupload",
-        });
-      }
-
       const kategoriJson = JSON.parse(kategori);
       const seminarProposal =
         await seminarProposalService.createSeminarProposal({
           title,
           kategori: kategoriJson,
-          foto: req.files?.["foto"][0],
+          foto: req.files?.["foto"]?.[0],
         });
       return res.status(201).json({
         success: true,
@@ -72,7 +65,7 @@ class SeminarProposalController {
       const updatedSeminarProposal =
         await seminarProposalService.updateSeminarProposal(
           Number(id),
-          updateData
+          updateData,
         );
       return res.status(200).json({
         success: true,
@@ -92,7 +85,7 @@ class SeminarProposalController {
     try {
       const id = req.params.id;
       const deletedData = await seminarProposalService.deleteSeminarProposal(
-        Number(id)
+        Number(id),
       );
       return res.status(200).json({
         success: true,
@@ -108,22 +101,14 @@ class SeminarProposalController {
     }
   }
 
-  async createProsedurPelaksanaan(req: MulterRequest, res: Response) {
+  async createProsedurPelaksanaan(req: Request, res: Response) {
     try {
-      const { title, tahapan, waktu, deskripsi } = req.body;
-      if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Foto harus diupload",
-        });
-      }
+      const { tahapan, deskripsi } = req.body;
+
       const prosedurPelaksanaan =
         await seminarProposalService.createProsedurPelaksanaan({
-          title,
           tahapan,
-          waktu,
           deskripsi,
-          foto: req.files?.["foto"][0],
         });
       return res.status(201).json({
         success: true,
@@ -148,32 +133,29 @@ class SeminarProposalController {
         message: "Prosedur pelaksanaan berhasil diambil",
         data: prosedurPelaksanaan,
       });
-    } catch (error) {
-      console.error("Error in getAllProsedurPelaksanaan:", error);
+    } catch (error: any) {
+      console.error("ERROR PROSEDUR:", error);
+
       return res.status(500).json({
         success: false,
         message: "Gagal mengambil prosedur pelaksanaan",
+        error: error.message, // sementara buat debug
       });
     }
   }
 
-  async updateProsedurPelaksanaan(req: MulterRequest, res: Response) {
+  async updateProsedurPelaksanaan(req: Request, res: Response) {
     try {
-      const { title, tahapan, waktu, deskripsi } = req.body;
+      const { tahapan, deskripsi } = req.body;
       const id = req.params.id;
       const updateData: any = {
-        title,
         tahapan,
-        waktu,
         deskripsi,
       };
-      if (req.files?.["foto"]?.[0]) {
-        updateData.foto = req.files["foto"][0];
-      }
       const updatedProsedurPelaksanaan =
         await seminarProposalService.updateProsedurPelaksanaan(
           Number(id),
-          updateData
+          updateData,
         );
       return res.status(200).json({
         success: true,
@@ -280,7 +262,7 @@ class SeminarProposalController {
             timPenguji,
             slogan,
             deskripsi,
-          }
+          },
         );
       return res.status(200).json({
         success: true,

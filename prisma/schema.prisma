@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,679 +7,558 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-// ============================================
-// KONTEN BERANDA (HOME PAGE ONLY)
-// ============================================
-
-// Model: HeroSection
-// Fungsi: Menyimpan konten hero section di halaman BERANDA saja
-// Digunakan di menu: BERANDA/HOME (halaman utama)
-// Berisi: Judul besar, deskripsi, tombol CTA, background image/color
-// Catatan: Hanya ada 1 record untuk halaman beranda
 model HeroSection {
-  id                Int      @id @default(autoincrement())
-  urutan            String?
-  // subjudul          String?
-  // deskripsi         String   
-  // tombolTeks        String?  // "Pelajari Lebih Lanjut", "Daftar Sekarang", dst.
-  // tombolLink        String?
-  // backgroundImage   String?
-  // backgroundColor   String?  // Hex color
-  // textColor         String?  // Hex color
-  // aktif             Boolean  @default(true)
-  image             String
-  status             String?
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  urutan    String?
+  image     String
+  status    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("herosection")
 }
 
-// Model: StatistikBeranda
-// Fungsi: Menyimpan angka-angka statistik di halaman BERANDA
-// Digunakan di menu: BERANDA (bagian statistik)
-// Contoh: "1,234 Mahasiswa", "95% Tingkat Kelulusan"
 model StatistikBeranda {
-  id                Int      @id @default(autoincrement())
-  label             String   // "Total Mahasiswa", "Tingkat Kelulusan", dst.
-  nilai             String   // "1,234", "95%", dst.
-  ikon              String?  // Icon name atau URL
-  deskripsi         String?
-  urutan            Int      @default(0)
-  aktif             Boolean  @default(true)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  label     String
+  nilai     String
+  ikon      String?
+  deskripsi String?
+  urutan    Int      @default(0)
+  aktif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("statistikberanda")
 }
 
-// ============================================
-// KEPEGAWAIAN
-// ============================================
-
-// Model: Dosen
-// Fungsi: Menyimpan data dosen tetap dan tidak tetap
-// Digunakan di menu: Kepegawaian > Dosen
-// Berisi: Biodata, pendidikan, publikasi, keahlian
 model Dosen {
-  id                Int      @id @default(autoincrement())
-  nidn              String   @unique
-  nama              String
-  email             String
-  telepon           String
-  foto              String?
-  jabatan           String   // "Dosen Tetap", "Dosen Luar Biasa", dst.
-  pendidikan        String   // "S3 Hukum Pidana"
-  universitasAsal   String?
-  keahlian          Json // Array bidang keahlian
-  jumlahPublikasi   Int      @default(0)
-  biografi          String   
-  penghargaan       Json // Array penghargaan
-  minatPenelitian   Json // Array minat penelitian
-  mataKuliah        Json // Array mata kuliah yang diampu
-  scholar           String?  // Google Scholar URL
-  scopus            String?  // Scopus URL
-  sinta             String?  // SINTA URL
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  nidn            String   @unique
+  nama            String
+  email           String
+  telepon         String
+  foto            String?
+  jabatan         String
+  pendidikan      String
+  universitasAsal String?
+  keahlian        Json
+  jumlahPublikasi Int      @default(0)
+  biografi        String
+  penghargaan     Json
+  minatPenelitian Json
+  mataKuliah      Json
+  scholar         String?
+  scopus          String?
+  sinta           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@map("dosen")
 }
 
-
-
-
-// Model: Rekognisi
-// Fungsi: Menyimpan data rekognisi/penghargaan institusi
-// Digunakan di menu: Kemahasiswaan dan Alumni > Data Rekognisi
-// Berisi: Akreditasi, sertifikasi, penghargaan institusi
 model Rekognisi {
-  id                Int      @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
   judul             String
-  kategori          String   // "Akreditasi", "Sertifikasi", "Penghargaan", dst.
-  tingkat           String   // "Internasional", "Nasional", "Regional"
+  kategori          String
+  tingkat           String
   tahun             Int
   pemberi           String
-  deskripsi         String   
-  dampak            String   
-  kriteriaPenilaian Json // Array kriteria penilaian
-  manfaat           Json // Array manfaat
+  deskripsi         String
+  dampak            String
+  kriteriaPenilaian Json
+  manfaat           Json
   berlakuHingga     DateTime?
   foto              String?
   sertifikat        String?
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@map("rekognisi")
 }
 
-
-
-
-// Model: RekapitulasiSurvey
-// Fungsi: Menyimpan rekapitulasi pengisian survey tracer study
-// Digunakan di menu: Kemahasiswaan dan Alumni > Rekapitulasi Pengisian
-// Berisi: Tingkat partisipasi per angkatan
-// Relasi: Memiliki banyak KategoriRekapitulasi
 model RekapitulasiSurvey {
-  id                Int      @id @default(autoincrement())
-  programStudi      String   // "S1 Hukum"
-  angkatan          String   // "2021", "2022", dst.
-  totalMahasiswa    Int
-  totalResponden    Int
-  tingkatPartisipasi Float   // Persentase
-  
-  kategori          KategoriRekapitulasi[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 Int                    @id @default(autoincrement())
+  programStudi       String
+  angkatan           String
+  totalMahasiswa     Int
+  totalResponden     Int
+  tingkatPartisipasi Float
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  kategori           KategoriRekapitulasi[]
 
   @@map("rekapitulasisurvey")
 }
 
-// Model: KategoriRekapitulasi
-// Fungsi: Menyimpan detail kelengkapan per kategori survey
-// Digunakan di menu: Kemahasiswaan dan Alumni > Rekapitulasi Pengisian
-// Berisi: Kategori data (pribadi, akademik, dll) dan kelengkapannya
-// Relasi: Many-to-one dengan RekapitulasiSurvey
 model KategoriRekapitulasi {
-  id                Int      @id @default(autoincrement())
-  rekapitulasiId    Int
-  nama              String   // "Data Pribadi", "Data Akademik", dst.
-  totalField        Int
-  fieldTerisi       Int
-  tingkatKelengkapan Float   // Persentase
-  
-  rekapitulasi      RekapitulasiSurvey @relation(fields: [rekapitulasiId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 Int                @id @default(autoincrement())
+  rekapitulasiId     Int
+  nama               String
+  totalField         Int
+  fieldTerisi        Int
+  tingkatKelengkapan Float
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  rekapitulasi       RekapitulasiSurvey @relation(fields: [rekapitulasiId], references: [id], onDelete: Cascade)
 
   @@map("kategorirekapitulasi")
 }
 
-// ============================================
-// ARSIP - SURAT FAKULTAS
-// ============================================
-
-// Model: SuratMasuk
-// Fungsi: Menyimpan arsip surat masuk ke fakultas
-// Digunakan di menu: Arsip > Arsip Fakultas > Surat Masuk
-// Berisi: Nomor surat, pengirim, perihal, isi, lampiran, disposisi
 model SuratMasuk {
-  id                Int      @id @default(autoincrement())
-  nomorSurat        String   @unique
-  perihal           String
-  pengirim          String
-  instansiPengirim  String
-  tanggalDiterima   DateTime
-  prioritas         String   // "Tinggi", "Sedang", "Rendah"
-  status            String   @default("Baru") // "Baru", "Diproses", "Selesai"
-  kategori          String   // "Undangan", "Pemberitahuan", "Permohonan", dst.
-  isiSurat          String   
-  lampiran          Json // Array URL lampiran
-  disposisi         String?  
-  catatan           String?  
-  foto              String?
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  nomorSurat       String   @unique
+  perihal          String
+  pengirim         String
+  instansiPengirim String
+  tanggalDiterima  DateTime
+  prioritas        String
+  status           String   @default("Baru")
+  kategori         String
+  isiSurat         String
+  lampiran         Json
+  disposisi        String?
+  catatan          String?
+  foto             String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@map("suratmasuk")
 }
 
-// Model: SuratKeluar
-// Fungsi: Menyimpan arsip surat keluar dari fakultas
-// Digunakan di menu: Arsip > Arsip Fakultas > Surat Keluar
-// Berisi: Nomor surat, penerima, perihal, isi, lampiran, penandatangan
 model SuratKeluar {
-  id                Int      @id @default(autoincrement())
-  nomorSurat        String   @unique
-  perihal           String
-  penerima          String
-  instansiPenerima  String
-  tanggalKirim      DateTime
-  prioritas         String   // "Tinggi", "Sedang", "Rendah"
-  status            String   @default("Draft") // "Draft", "Proses", "Terkirim"
-  kategori          String   // "Undangan", "Pemberitahuan", "Permohonan", dst.
-  isiSurat          String   
-  lampiran          Json // Array URL lampiran
-  namaPengirim      String
-  jabatanPengirim   String
-  catatan           String?  
-  foto              String?
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  nomorSurat       String   @unique
+  perihal          String
+  penerima         String
+  instansiPenerima String
+  tanggalKirim     DateTime
+  prioritas        String
+  status           String   @default("Draft")
+  kategori         String
+  isiSurat         String
+  lampiran         Json
+  namaPengirim     String
+  jabatanPengirim  String
+  catatan          String?
+  foto             String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@map("suratkeluar")
 }
 
-// ============================================
-// KEKHUSUSAN (SPECIALIZATIONS)
-// ============================================
-
-// Model: Kekhususan
-// Fungsi: Menyimpan data program kekhususan hukum
-// Digunakan di menu: Kekhususan (Hukum Pidana, Hukum Perdata, Hukum Tata Negara)
-// Berisi: Nama kekhususan, deskripsi, total SKS, statistik
-// Relasi: Memiliki banyak MataKuliahKekhususan dan ProspekKarir
 model Kekhususan {
-  id                Int      @id @default(autoincrement())
-  nama              String   @unique // "Hukum Pidana", "Hukum Perdata", "Hukum Tata Negara"
-  slug              String   @unique // "pidana", "perdata", "tata-negara"
-  deskripsi         String   
-  totalSKS          Int      // 24 SKS
-  totalMahasiswa    Int
-  tingkatKelulusan  Float    // Persentase
-  
-  mataKuliah        MataKuliahKekhususan[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               Int                    @id @default(autoincrement())
+  nama             String                 @unique
+  slug             String                 @unique
+  deskripsi        String
+  totalSKS         Int
+  totalMahasiswa   Int
+  tingkatKelulusan Float
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  mataKuliah       MataKuliahKekhususan[]
 
   @@map("kekhususan")
 }
 
-// Model: MataKuliahKekhususan
-// Fungsi: Menyimpan data mata kuliah per kekhususan
-// Digunakan di menu: Kekhususan (detail mata kuliah di setiap kekhususan)
-// Berisi: Nama, kode, SKS, semester, topik bahasan
-// Relasi: Many-to-one dengan Kekhususan
 model MataKuliahKekhususan {
-  id                Int      @id @default(autoincrement())
-  kekhususanId      Int
-  nama              String
-  kode              String
-  semester          Int
-  sks               Int
-  deskripsi         String   
-  topikBahasan      Json // Array topik yang dibahas
-  foto              String?
-  
-  kekhususan        Kekhususan @relation(fields: [kekhususanId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id           Int        @id @default(autoincrement())
+  kekhususanId Int
+  nama         String
+  kode         String
+  semester     Int
+  sks          Int
+  deskripsi    String
+  topikBahasan Json
+  foto         String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  kekhususan   Kekhususan @relation(fields: [kekhususanId], references: [id], onDelete: Cascade)
 
   @@map("matakuliahkekhususan")
 }
 
-
-// ============================================
-// TENTANG (ABOUT)
-// ============================================
-
-// Model: Sejarah
-// Fungsi: Menyimpan timeline sejarah fakultas
-// Digunakan di menu: Tentang > Sejarah S1
-// Berisi: Tahun, judul, deskripsi peristiwa penting
 model Sejarah_S1 {
-  id                Int      @id @default(autoincrement())
-  judul             String
-  tahun             String?
-  deskripsi         String   
-  foto              String?
-  // urutan            Int      @default(0)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  judul     String
+  tahun     String?
+  deskripsi String
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sejarah_s1")
 }
+
 model SejarahS1 {
-  id                Int      @id @default(autoincrement())
-  banner            String?
-  konten            String? 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  banner    String?
+  konten    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sejarahs1")
 }
 
 model StatistikSejarahS1 {
-  id                Int      @id @default(autoincrement())
-  tahunPengalaman   String?
-  alumni            String?
-  akreditasi        String?
-  tingkatKelulusan  String?
-  slogan            String?
-  deskripsi         String?
+  id               Int     @id @default(autoincrement())
+  tahunPengalaman  String?
+  alumni           String?
+  akreditasi       String?
+  tingkatKelulusan String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistiksejarahs1")
 }
 
 model Sejarah_S2 {
-  id                Int      @id @default(autoincrement())
-  judul             String
-  tahun             String?
-  deskripsi         String   
-  foto              String?
-  // urutan            Int      @default(0)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  judul     String
+  tahun     String?
+  deskripsi String
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sejarah_s2")
 }
+
 model SejarahS2 {
-  id                Int      @id @default(autoincrement())
-  banner            String?
-  konten            String? 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  banner    String?
+  konten    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sejarahs2")
 }
 
 model StatistikSejarahS2 {
-  id                Int      @id @default(autoincrement())
-  tahunPengalaman   String?
-  alumni            String?
-  akreditasi        String?
-  tingkatKelulusan  String?
-  slogan            String?
-  deskripsi         String?
+  id               Int     @id @default(autoincrement())
+  tahunPengalaman  String?
+  alumni           String?
+  akreditasi       String?
+  tingkatKelulusan String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistiksejarahs2")
 }
 
 model SaranaPrasarana {
-  id                Int      @id @default(autoincrement())
-  judul             String
-  katagori          String?
-  deskripsi         String   
-  foto              Json?
+  id        Int     @id @default(autoincrement())
+  judul     String
+  katagori  String?
+  deskripsi String
+  foto      Json?
 
   @@map("saranaprasarana")
 }
 
 model SaranaPrasaranaBanner {
-  id                Int      @id @default(autoincrement())
-  banner            String?
-  konten            String? 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  banner    String?
+  konten    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("saranaprasaranabanner")
 }
 
 model StatistikSaranaPrasarana {
-  id                Int      @id @default(autoincrement())
-  ruangKuliah       String?
-  koleksiBuku       String?
-  unitKomputer      String?
-  lantaiGedung      String?
-  slogan            String?
-  deskripsi         String?
+  id           Int     @id @default(autoincrement())
+  ruangKuliah  String?
+  koleksiBuku  String?
+  unitKomputer String?
+  lantaiGedung String?
+  slogan       String?
+  deskripsi    String?
 
   @@map("statistiksaranaprasarana")
 }
 
-
 model RencanaStrategis {
-  id                Int      @id @default(autoincrement())
-  tahun             String?
-  judul             String
-  katagori          Json?
-  deskripsi         String   
-  foto              Json?
+  id        Int     @id @default(autoincrement())
+  tahun     String?
+  judul     String
+  katagori  Json?
+  deskripsi String
+  foto      Json?
 
   @@map("rencanastrategis")
 }
 
-model StatistikRencanaStrategis{
-  id                Int      @id @default(autoincrement())
-  tahunRencana      String?
-  targetStrategis   String?
-  programAksi       String?
-  targetAkreditas   String?
-  slogan            String?
-  deskripsi         String?
+model StatistikRencanaStrategis {
+  id              Int     @id @default(autoincrement())
+  tahunRencana    String?
+  targetStrategis String?
+  programAksi     String?
+  targetAkreditas String?
+  slogan          String?
+  deskripsi       String?
 
   @@map("statistikrencanastrategis")
 }
 
 model SenatFakultas {
-  id                Int      @id @default(autoincrement())
-  nama              String
-  jabatan           String
-  foto              String?
-  keahlian          String?
-  periode           String?
-  tugas             String?
-  deskripsi         String?
-  galeri            Json?
+  id        Int     @id @default(autoincrement())
+  nama      String
+  jabatan   String
+  foto      String?
+  keahlian  String?
+  periode   String?
+  tugas     String?
+  deskripsi String?
+  galeri    Json?
 
   @@map("senatfakultas")
 }
 
-model StatistikSenatFakultas{
-  id                Int      @id @default(autoincrement())
-  anggotaSenat      String?
-  tahunPeriode      String?
-  rapatPerTahun     String?
-  keputusan         String?
-  slogan            String?
-  deskripsi         String?
+model StatistikSenatFakultas {
+  id            Int     @id @default(autoincrement())
+  anggotaSenat  String?
+  tahunPeriode  String?
+  rapatPerTahun String?
+  keputusan     String?
+  slogan        String?
+  deskripsi     String?
 
   @@map("statistiksenatfakultas")
 }
 
-
-
-// Model: VisiMisi
-// Fungsi: Menyimpan visi, misi, dan nilai fakultas
-// Digunakan di menu: Tentang > Visi Misi
-// Berisi: Visi, array misi, array nilai
 model VisiMisi {
-  id          Int      @id @default(autoincrement())
-  type        String   // 'visi' atau 'misi'
-  title       String?
-  deskripsi   String?
-  gambar      String?
-  misi        Json?
-  tujuan      Json?
-  sasaran     Json?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  type      String
+  title     String?
+  deskripsi String?
+  gambar    String?
+  misi      Json?
+  tujuan    Json?
+  sasaran   Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("visimisi")
 }
-model StatistikVisiMisi{
-  id                Int      @id @default(autoincrement())
-  tahunPengalaman   String?
-  alumni            String?
-  dosenBerkualitas  String?
-  ProgramUnggula    String?
-  slogan            String?
-  deskripsi         String?
+
+model StatistikVisiMisi {
+  id               Int     @id @default(autoincrement())
+  tahunPengalaman  String?
+  alumni           String?
+  dosenBerkualitas String?
+  ProgramUnggula   String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikvisimisi")
 }
 
-
-
-// Model: StrukturOrganisasi
-// Fungsi: Menyimpan struktur organisasi fakultas
-// Digunakan di menu: Tentang > Struktur Organisasi
-// Berisi: Jabatan, nama, foto, hierarki
 model StrukturOrganisasi {
-  id                Int      @id @default(autoincrement())
-  jabatan           String
-  nama              String
-  foto              String?
-  note              String?
-  type              String?
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  jabatan   String
+  nama      String
+  foto      String?
+  note      String?
+  type      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("strukturorganisasi")
 }
-model StatistikStrukturOrganisasi{
-  id                Int      @id @default(autoincrement())
-  pimpinan          String?
-  bagianUtama       String?
-  tenagaPendidikan  String?
-  dosenTetap        String?
-  slogan            String?
-  deskripsi         String?
+
+model StatistikStrukturOrganisasi {
+  id               Int     @id @default(autoincrement())
+  pimpinan         String?
+  bagianUtama      String?
+  tenagaPendidikan String?
+  dosenTetap       String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikstrukturorganisasi")
 }
 
 model Pimpinan {
-  id                Int      @id @default(autoincrement())
-  nama              String
-  jabatan           String
-  foto              String?
-  pendidikan        Json?
-  keahlian          Json?
-  periode           String?
-  email             String?
-  kontak            String?
+  id         Int     @id @default(autoincrement())
+  nama       String
+  jabatan    String
+  foto       String?
+  pendidikan Json?
+  keahlian   Json?
+  periode    String?
+  email      String?
+  kontak     String?
 
   @@map("pimpinan")
 }
 
-model StatistikPimpinan{
-  id                Int      @id @default(autoincrement())
-  pimpinan          String?
-  tahunPengalaman   String?
-  publikasiIlmiah   String?
-  slogan            String?
-  deskripsi         String?
+model StatistikPimpinan {
+  id              Int     @id @default(autoincrement())
+  pimpinan        String?
+  tahunPengalaman String?
+  publikasiIlmiah String?
+  slogan          String?
+  deskripsi       String?
 
   @@map("statistikpimpinan")
 }
 
-
-
 model ProgramSarjanaHukum {
-  id                Int      @id @default(autoincrement())
-  mata_kuliah       String?
-  semester          String?
-  kode_matkul       String?
-  bobot             String?
-  dokumen_rps       String?
-  penyelenggara     String?
+  id            Int     @id @default(autoincrement())
+  mata_kuliah   String?
+  semester      String?
+  kode_matkul   String?
+  bobot         String?
+  dokumen_rps   String?
+  penyelenggara String?
 
   @@map("programsarjanahukum")
 }
 
-model StatistikProgramSarjanaHukum{
-  id                Int      @id @default(autoincrement())
-  semester          String?
-  sksTotal          String?
-  akreditasi        String?
-  alumni            String?
-  slogan            String?
-  deskripsi         String?
+model StatistikProgramSarjanaHukum {
+  id         Int     @id @default(autoincrement())
+  semester   String?
+  sksTotal   String?
+  akreditasi String?
+  alumni     String?
+  slogan     String?
+  deskripsi  String?
 
   @@map("statistikprogramsarjanahukum")
 }
 
 model prospekKarirSarjanaHukum {
-  id                Int      @id @default(autoincrement())
-  judul             String?
-  deskripsi         String?
+  id        Int     @id @default(autoincrement())
+  judul     String?
+  deskripsi String?
 
   @@map("prospekkarirsarjanahukum")
 }
 
-
 model ProgramMagisterHukum {
-  id                Int      @id @default(autoincrement())
-  image             Json?
-  semester          String?
-  judul             String?
-  deskripsi         String?
-  kategori          Json?
+  id        Int     @id @default(autoincrement())
+  image     Json?
+  semester  String?
+  judul     String?
+  deskripsi String?
+  kategori  Json?
 
   @@map("programmagisterhukum")
 }
 
-model StatistikProgramMagisterHukum{
-  id                Int      @id @default(autoincrement())
-  semester          String?
-  sksTotal          String?
-  akreditasi        String?
-  alumni            String?
-  slogan            String?
-  deskripsi         String?
+model StatistikProgramMagisterHukum {
+  id         Int     @id @default(autoincrement())
+  semester   String?
+  sksTotal   String?
+  akreditasi String?
+  alumni     String?
+  slogan     String?
+  deskripsi  String?
 
   @@map("statistikprogrammagisterhukum")
 }
 
 model prospekKarirMagisterHukum {
-  id                Int      @id @default(autoincrement())
-  judul             String?
-  deskripsi         String?
-  image             String?
+  id        Int     @id @default(autoincrement())
+  judul     String?
+  deskripsi String?
+  image     String?
 
   @@map("prospekkarirmagisterhukum")
 }
 
-
 model ArsipSuratMasuk {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  deskripsi         String?
-  pengirim          String?
-  penerima          String?
-  nomorSurat        String?
-  tanggalDiterima   String?
-  foto              String?
-  file              Json?
-  status            String? @default("Diterima")
+  id              Int     @id @default(autoincrement())
+  title           String?
+  deskripsi       String?
+  pengirim        String?
+  penerima        String?
+  nomorSurat      String?
+  tanggalDiterima String?
+  foto            String?
+  file            Json?
+  status          String? @default("Diterima")
 
   @@map("arsipsuratmasuk")
 }
 
-model StatistikArsipSuratMasuk{
-  id                Int      @id @default(autoincrement())
-  totalSurat        String?
-  suratBaru         String?
-  suratDalamProses  String?
-  suratSelesai      String?
-  slogan            String?
-  deskripsi         String?
+model StatistikArsipSuratMasuk {
+  id               Int     @id @default(autoincrement())
+  totalSurat       String?
+  suratBaru        String?
+  suratDalamProses String?
+  suratSelesai     String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikarsipsuratmasuk")
 }
 
 model ArsipSuratKeluar {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  deskripsi         String?
-  pengirim          String?
-  penerima          String?
-  nomorSurat        String?
-  tanggalKirim      String?
-  foto              String?
-  file              Json?
-  note              String?
-  status            String? @default("Diterima")
+  id           Int     @id @default(autoincrement())
+  title        String?
+  deskripsi    String?
+  pengirim     String?
+  penerima     String?
+  nomorSurat   String?
+  tanggalKirim String?
+  foto         String?
+  file         Json?
+  note         String?
+  status       String? @default("Diterima")
 
   @@map("arsipsuratkeluar")
 }
 
-model StatistikArsipSuratKeluar{
-  id                Int      @id @default(autoincrement())
-  totalSurat        String?
-  terkirim          String?
-  suratDalamProses  String?
-  draf              String?
-  slogan            String?
-  deskripsi         String?
+model StatistikArsipSuratKeluar {
+  id               Int     @id @default(autoincrement())
+  totalSurat       String?
+  terkirim         String?
+  suratDalamProses String?
+  draf             String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikarsipsuratkeluar")
 }
 
-
-
 model KeteranganAktifMahasiswa {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  nama              String?
-  nim               String?
-  jurusan           String?
-  semester          String?
-  status            String? @default("Aktif")
-  ipk               String?
-  keperluan         String? //keperluan beasiswa 
-  noSurat           String? //nomor surat
-  tanggalTerbit     String? //tanggal surat
-  tahunAkademik     String? //tahun akademik
-  diTerbitkan       String? //di terbitkan
-  note              String? //note
-  deskripsi         String?
+  id            Int     @id @default(autoincrement())
+  foto          String?
+  nama          String?
+  nim           String?
+  jurusan       String?
+  semester      String?
+  status        String? @default("Aktif")
+  ipk           String?
+  keperluan     String?
+  noSurat       String?
+  tanggalTerbit String?
+  tahunAkademik String?
+  diTerbitkan   String?
+  note          String?
+  deskripsi     String?
 
   @@map("keteranganaktifmahasiswa")
 }
 
-
-model StatistikKeteranganAktifMahasiswa{
-  id                Int      @id @default(autoincrement())
-  totalMahasiswa    String?
-  aktif             String?
-  tidakAktif        String?
-  selesai           String?
-  slogan            String?
-  deskripsi         String?
+model StatistikKeteranganAktifMahasiswa {
+  id             Int     @id @default(autoincrement())
+  totalMahasiswa String?
+  aktif          String?
+  tidakAktif     String?
+  selesai        String?
+  slogan         String?
+  deskripsi      String?
 
   @@map("statistikketeranganaktifmahasiswa")
 }
 
-
 model suratIjinPenelitian {
-  id                Int      @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   foto              String?
   file              Json?
   title             String?
@@ -701,21 +577,20 @@ model suratIjinPenelitian {
   @@map("suratijinpenelitian")
 }
 
-model StatistikSuratIjinPenelitian{
-  id                Int      @id @default(autoincrement())
-  totalSurat        String?
-  diterima          String?
-  ditolak           String?
-  selesai           String?
-  slogan            String?
-  deskripsi         String?
+model StatistikSuratIjinPenelitian {
+  id         Int     @id @default(autoincrement())
+  totalSurat String?
+  diterima   String?
+  ditolak    String?
+  selesai    String?
+  slogan     String?
+  deskripsi  String?
 
   @@map("statistiksuratijinpenelitian")
 }
 
-
 model SuratKeteranganKelakuanBaik {
-  id                Int      @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   idMahasiswa       Int
   deskripsi         String?
   catatanAkademik   String?
@@ -732,640 +607,617 @@ model SuratKeteranganKelakuanBaik {
   @@map("suratketerangankelakuanbaik")
 }
 
-model StatistikSuratKelakuanBaik{
-  id                Int      @id @default(autoincrement())
-  suratDiterbitkan  String?
-  tingkatPersetujuan      String?
-  waktuProses       String?
-  validasiTerjamin          String?
-  slogan            String?
-  deskripsi         String?
+model StatistikSuratKelakuanBaik {
+  id                 Int     @id @default(autoincrement())
+  suratDiterbitkan   String?
+  tingkatPersetujuan String?
+  waktuProses        String?
+  validasiTerjamin   String?
+  slogan             String?
+  deskripsi          String?
 
   @@map("statistiksuratkelakuanbaik")
 }
 
-
 model suratPengajuanBeasiswa {
-  id                Int      @id @default(autoincrement())
-  idMahasiswa       Int
-  beasiswa          String?
-  noSurat           String?
-  tanggalPengajuan  String?
-  provider          String? 
-  nominalPerSemester String?
-  alasanPengajuan   String?
-  prestasi          Json?
-  namaAyah          String?
-  namaIbu           String?
+  id                  Int     @id @default(autoincrement())
+  idMahasiswa         Int
+  beasiswa            String?
+  noSurat             String?
+  tanggalPengajuan    String?
+  provider            String?
+  nominalPerSemester  String?
+  alasanPengajuan     String?
+  prestasi            Json?
+  namaAyah            String?
+  namaIbu             String?
   penghasilanOrangtua String?
-  dokumen           Json?
-  alamat            String?
-  email             String?
-  kontak            String?
-  note              String?
-  status            String? @default("Disetujui")
+  dokumen             Json?
+  alamat              String?
+  email               String?
+  kontak              String?
+  note                String?
+  status              String? @default("Disetujui")
 
   @@map("suratpengajuanbeasiswa")
 }
 
-
-model StatistikSuratPengajuanBeasiswa{
-  id                Int      @id @default(autoincrement())
-  totalPengajuan    String?
-  disetujui         String?
-  menunggu          String?
-  ditolak           String?
-  slogan            String?
-  deskripsi         String?
+model StatistikSuratPengajuanBeasiswa {
+  id             Int     @id @default(autoincrement())
+  totalPengajuan String?
+  disetujui      String?
+  menunggu       String?
+  ditolak        String?
+  slogan         String?
+  deskripsi      String?
 
   @@map("statistiksuratpengajuanbeasiswa")
 }
 
-
-
 model SeminarProposal {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  kategori          Json?
-  foto              String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  kategori  Json?
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("seminarproposal")
 }
 
+model soppendaftaran {
+  id        Int      @id @default(autoincrement())
+  tahapan   String?
+  deskripsi String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-model ProsedurPelaksanaan {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  tahapan           String?
-  waktu             String? //minggu 1-2
-  deskripsi         String?
-  foto              String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  @@map("prosedurpelaksanaan")
+  @@map("soppendaftaran")
 }
 
-model StatistikSeminarProposal{
-  id                Int      @id @default(autoincrement())
-  seminarPerTahun   String?
-  tingkatKelulusan  String?
-  bulanPersiapan    String?
-  timPenguji        String?
-  slogan            String?
-  deskripsi         String?
+model StatistikSeminarProposal {
+  id               Int     @id @default(autoincrement())
+  seminarPerTahun  String?
+  tingkatKelulusan String?
+  bulanPersiapan   String?
+  timPenguji       String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikseminarproposal")
 }
 
-
 model SidangSkripsi {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  kategori          Json?
-  foto              String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  kategori  Json?
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sidangskripsi")
 }
 
 model ProsedurSidangSkripsi {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  tahapan           String? //1 , 2, 3, 4
-  deskripsi         String?
-  foto              String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  tahapan   String?
+  deskripsi String?
+  foto      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prosedursidangskripsi")
 }
+
 model KriteriaSidangSkripsi {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  kriteria          Json? 
-  skor              String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  kriteria  Json?
+  skor      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("kriteriasidangskripsi")
 }
 
-
-model StatistikSidangSkripsi{
-  id                Int      @id @default(autoincrement())
-  sidangPerTahun    String?
-  tingkatKelulusan  String?
-  durasiSidang      String?
-  timPenguji        String?
-  slogan            String?
-  deskripsi         String?
+model StatistikSidangSkripsi {
+  id               Int     @id @default(autoincrement())
+  sidangPerTahun   String?
+  tingkatKelulusan String?
+  durasiSidang     String?
+  timPenguji       String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistiksidangskripsi")
 }
 
 model KeteranganPendampingIjazah {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  deskripsi         String?
-  type              String? // "komponen", "prosedur"
-  waktu             String? //minggu 1
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  type      String?
+  waktu     String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("keteranganpendampingijazah")
 }
 
-model StatistikKeteranganPendampingIjazah{
-  id                Int      @id @default(autoincrement())
-  totalData        Int       // jumlah total data KeteranganPendampingIjazah
-  totalKomponen    Int       // jumlah data dengan type = "komponen"
-  totalProsedur    Int       // jumlah data dengan type = "prosedur"
-  mingguAktif      String?   // minggu paling aktif (misal: "minggu 3")
-  slogan            String?
-  deskripsi         String?
+model StatistikKeteranganPendampingIjazah {
+  id            Int     @id @default(autoincrement())
+  totalData     Int
+  totalKomponen Int
+  totalProsedur Int
+  mingguAktif   String?
+  slogan        String?
+  deskripsi     String?
 
   @@map("statistikketeranganpendampingijazah")
 }
 
-
 model UjianKomprehensif {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  kategori          Json?
-  foto              String?
-  type              String? // "persyaratan", "prosedur" atau "Ruang Lingkup Materi"
-  waktu             String? // 2 Bulan Sebelum Ujian
-  deskripsi         String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  kategori  Json?
+  foto      String?
+  type      String?
+  waktu     String?
+  deskripsi String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("ujiankomprehensif")
 }
 
-
 model StatistikUjianKomprehensif {
-  id                Int      @id @default(autoincrement())
-  perTahun          String?
-  tingkatKelulusan  String?
-  penguji           String?
-  menitUjian        String?
-  slogan            String?
-  deskripsi         String?
+  id               Int     @id @default(autoincrement())
+  perTahun         String?
+  tingkatKelulusan String?
+  penguji          String?
+  menitUjian       String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikujiankomprehensif")
 }
 
-
 model Matrikulasi {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  kategori          Json?
-  foto              String?
-  type              String? // "mata kuliah", "persyaratan"
-  waktu             String? // 4 minggu
-  sks               String? // 24 SKS
-  deskripsi         String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  kategori  Json?
+  foto      String?
+  type      String?
+  waktu     String?
+  sks       String?
+  deskripsi String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("matrikulasi")
 }
 
 model StatistikMatrikulasi {
-  id                Int      @id @default(autoincrement())
-  durasi            String?
-  sks               String?
-  totalMataKuliah   String?
-  kelulusan         String?
-  slogan            String?
-  deskripsi         String?
+  id              Int     @id @default(autoincrement())
+  durasi          String?
+  sks             String?
+  totalMataKuliah String?
+  kelulusan       String?
+  slogan          String?
+  deskripsi       String?
 
   @@map("statistikmatrikulasi")
 }
 
-
 model KelompokRiset {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  fokusPenelitian   Json?
-  foto              String?
-  namaMahasiswa     String?
-  anggota           String?
-  publikasi         String? // 2b publikasi
-  deskripsi         String?
-  status            String? // "Aktif", "Tidak Aktif"
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  title           String?
+  fokusPenelitian Json?
+  foto            String?
+  namaMahasiswa   String?
+  anggota         String?
+  publikasi       String?
+  deskripsi       String?
+  status          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@map("kelomporiset")
 }
 
 model StatistikKelompokRiset {
-  id                Int      @id @default(autoincrement())
-  total            String?
-  penelitianAktif            String?
+  id                  Int     @id @default(autoincrement())
+  total               String?
+  penelitianAktif     String?
   publikasiPerTahun   String?
-  jurnalTerAkreditasi         String?
-  slogan            String?
-  deskripsi         String?
+  jurnalTerAkreditasi String?
+  slogan              String?
+  deskripsi           String?
 
   @@map("statistikkelomporiset")
 }
 
 model sejarahLBKH {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  foto              Json?
-  deskripsi         String?
-  tahun             String? //1999
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  foto      Json?
+  deskripsi String?
+  tahun     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sejarahlbkh")
 }
 
 model StatistikSejarahLBKH {
-  id                Int      @id @default(autoincrement())
-  tahun            String?
-  kasus            String?
-  advokat          String?
+  id                 Int     @id @default(autoincrement())
+  tahun              String?
+  kasus              String?
+  advokat            String?
   hukumTerakreditasi String?
-  slogan            String?
-  deskripsi         String?
+  slogan             String?
+  deskripsi          String?
 
   @@map("statistiksejarahlbkh")
 }
 
-
 model VisiMisiLBKH {
-  id                Int      @id @default(autoincrement())
-  type              String? // "Visi", "Misi"
-  foto              String?
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  type      String?
+  foto      String?
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("visimisalbkh")
 }
 
 model StatistikVisiMisiLBKH {
-  id                Int      @id @default(autoincrement())
-  paralegaf            String?
-  kasusDitangani            String?
-  advokatAktif          String?
-  tingkatKepuasan   String?
-  slogan            String?
-  deskripsi         String?
+  id              Int     @id @default(autoincrement())
+  paralegaf       String?
+  kasusDitangani  String?
+  advokatAktif    String?
+  tingkatKepuasan String?
+  slogan          String?
+  deskripsi       String?
 
   @@map("statistikvisimisalbkh")
 }
 
-
 model PengurusLBKH {
-  id                Int      @id @default(autoincrement())
-  nama              String
-  foto              String?
-  deskripsi         String?
-  jabatan           String?
-  kategori          Json?
-  email             String?
-  noTelp            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  nama      String
+  foto      String?
+  deskripsi String?
+  jabatan   String?
+  kategori  Json?
+  email     String?
+  noTelp    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("penguruslbkh")
 }
 
 model StatistikPengurusLBKH {
-  id                Int      @id @default(autoincrement())
-  total            String?
-  kasusDitangani            String?
-  advokatAktif          String?
-  tahunPengalaman   String?
-  slogan            String?
-  deskripsi         String?
+  id              Int     @id @default(autoincrement())
+  total           String?
+  kasusDitangani  String?
+  advokatAktif    String?
+  tahunPengalaman String?
+  slogan          String?
+  deskripsi       String?
 
   @@map("statistikpenguruslbkh")
 }
 
 model AdvokatParalegal {
-  id                Int      @id @default(autoincrement())
-  type              String? // "Advokat", "Paralegal"
-  nama              String?
-  foto              String?
-  jabatan           String?
-  deskripsi         String?
-  kategori          Json?
-  email             String?
-  noTelp            String?
-  note              String? //250+ Kasus Ditangani , 150+ Kasus Ditangani
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  type      String?
+  nama      String?
+  foto      String?
+  jabatan   String?
+  deskripsi String?
+  kategori  Json?
+  email     String?
+  noTelp    String?
+  note      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("advokatparalegal")
 }
 
-
 model StatistikAdvokatParalegal {
-  id                Int      @id @default(autoincrement())
-  paralegal            String?
-  kasusDitangani            String?
-  advokatAktif          String?
-  tingkatKepuasan   String?
-  slogan            String?
-  deskripsi         String?
+  id              Int     @id @default(autoincrement())
+  paralegal       String?
+  kasusDitangani  String?
+  advokatAktif    String?
+  tingkatKepuasan String?
+  slogan          String?
+  deskripsi       String?
 
   @@map("statistikadvokatparalegal")
 }
 
-
 model KonsultasiHukum {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  waktu             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  waktu     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("konsultasihukum")
 }
 
-
 model ProsedurKonsultasi {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  deskripsi         String?
-  waktu             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  waktu     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prosedurkonsultasi")
 }
 
 model StatistikProsedurKonsultasi {
-  id                Int      @id @default(autoincrement())
-  konsultasiPerBulan  String?
-  tingkatKepuasan   String?
-  konsultasiAktif   String?
-  totalKonsultasi   String?
-  slogan            String?
-  deskripsi         String?
+  id                 Int     @id @default(autoincrement())
+  konsultasiPerBulan String?
+  tingkatKepuasan    String?
+  konsultasiAktif    String?
+  totalKonsultasi    String?
+  slogan             String?
+  deskripsi          String?
 
   @@map("statistikprosedurkonsultasi")
 }
 
-
 model PendampinganHukum {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  waktu             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  waktu     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("pendampinganhukum")
 }
 
 model ProsedurPendampinganHukum {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  deskripsi         String?
-  waktu             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  waktu     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prosedurpendampinganhukum")
 }
 
 model StatistikPendampinganHukum {
-  id                Int      @id @default(autoincrement())
-  kasusDidampingi  String?
-  tingkatKeberhasilan   String?
-  advokatBerpengalaman   String?
-  totalPendampingan   String?
-  slogan            String?
-  deskripsi         String?
+  id                   Int     @id @default(autoincrement())
+  kasusDidampingi      String?
+  tingkatKeberhasilan  String?
+  advokatBerpengalaman String?
+  totalPendampingan    String?
+  slogan               String?
+  deskripsi            String?
 
   @@map("statistikpendampinganhukum")
 }
 
 model PembuatanLegal {
-  id                Int      @id @default(autoincrement())
-   foto              String?
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  waktu             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  waktu     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("pembuatanlegal")
 }
 
 model ProsedurPembuatanLegal {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  deskripsi         String?
-  waktu             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  waktu     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prosedurpembuatanlegal")
 }
 
-
 model StatistikPembuatanLegal {
-  id                Int      @id @default(autoincrement())
-  legalOpinianPerTahun  String?
-  tingkatKepuasan   String?
-  ahliHukum   String?
-  totalPembuatan   String?
-  slogan            String?
-  deskripsi         String?
+  id                   Int     @id @default(autoincrement())
+  legalOpinianPerTahun String?
+  tingkatKepuasan      String?
+  ahliHukum            String?
+  totalPembuatan       String?
+  slogan               String?
+  deskripsi            String?
 
   @@map("statistikpembuatanlegal")
 }
 
-
-
 model SaksiAhli {
-  id                Int      @id @default(autoincrement())
-  nama              String
-  foto              String?
-  deskripsi         String?
-  keahlian          Json?
-  bidangKeahlian    String? //Hukum Pidana, Hukum Perdata, Hukum Kommerial, Hukum Perdata
-  kasusDitangani    String?
-  email             String?
-  noTelp            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  nama           String
+  foto           String?
+  deskripsi      String?
+  keahlian       Json?
+  bidangKeahlian String?
+  kasusDitangani String?
+  email          String?
+  noTelp         String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@map("saksiahli")
 }
 
-
 model ProsedurSaksiAhli {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  deskripsi         String?
-  waktu             String?//Fase 1 • Hari 1-2
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  waktu     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prosedursaksiahli")
 }
 
-
 model StatistikSaksiAhli {
-  id                Int      @id @default(autoincrement())
-  keteranganAhli  String?
-  tingkatPenerimaan   String?
-  ahliBerpengalaman   String?
-  profesional   String?
+  id                Int     @id @default(autoincrement())
+  keteranganAhli    String?
+  tingkatPenerimaan String?
+  ahliBerpengalaman String?
+  profesional       String?
   slogan            String?
   deskripsi         String?
 
   @@map("statistiksaksiahli")
 }
 
-
 model LayananMediasi {
-    id                Int      @id @default(autoincrement())
-    foto              String?
-    title             String?
-    waktu             String?
-    deskripsi         String?
-    kategori          Json?
-    type              String? // "Layanan", "Prosedur"
-    createdAt         DateTime @default(now())
-    updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  waktu     String?
+  deskripsi String?
+  kategori  Json?
+  type      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@map("layananmediasi")
+  @@map("layananmediasi")
 }
 
 model StatistikLayananMediasi {
-  id                Int      @id @default(autoincrement())
-  mediasiBerhasil  String?
+  id                   Int     @id @default(autoincrement())
+  mediasiBerhasil      String?
   tingkatKesepakatan   String?
-  mediatorBersetifikat   String?
-  totalMediasi   String?
-  slogan            String?
-  deskripsi         String?
+  mediatorBersetifikat String?
+  totalMediasi         String?
+  slogan               String?
+  deskripsi            String?
 
   @@map("statistiklayananmediasi")
 }
 
 model TimMediator {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  nama              String?
-  deskripsi         String?
-  kategori          Json?
-  kasusDitangani    String?
-  email             String?
-  noTelp            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  foto           String?
+  nama           String?
+  deskripsi      String?
+  kategori       Json?
+  kasusDitangani String?
+  email          String?
+  noTelp         String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@map("timmediator")
 }
 
 model LayananProBono {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  waktu             String?
-  deskripsi         String? 
-  kategori          Json?
-  type              String? // "Jenis Layanan", "Prosedur Pengajuan"
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  waktu     String?
+  deskripsi String?
+  kategori  Json?
+  type      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("layananprobono")
 }
 
 model StatistikLayananProbono {
-  id                Int      @id @default(autoincrement())
-  kasusProbono  String?
+  id                   Int     @id @default(autoincrement())
+  kasusProbono         String?
   tingkatKesepakatan   String?
-  mediatorBersetifikat   String?
-  totalMediasi   String?
-  slogan            String?
-  deskripsi         String?
+  mediatorBersetifikat String?
+  totalMediasi         String?
+  slogan               String?
+  deskripsi            String?
 
   @@map("statistiklayananprobono")
 }
 
 model KriteriaPenerima {
-  id                Int      @id @default(autoincrement()) 
-  foto              String?
-  title             String?
-  kategori          Json?
+  id       Int     @id @default(autoincrement())
+  foto     String?
+  title    String?
+  kategori Json?
 
   @@map("kriteriapenerima")
 }
 
 model PenyuluhanHukum {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  waktu             String?
-  deskripsi         String?
-  kategori          Json?
-  type              String? // "Program Penyuluhan", "Prosedur Penyuluhan"
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  waktu     String?
+  deskripsi String?
+  kategori  Json?
+  type      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("penyuluhanhukum")
 }
 
 model StatistikPenyuluhanHukum {
-  id                Int      @id @default(autoincrement())
-  kegiatanPenyuluhan  String?
-  pesertaTeredukasi   String?
-  institusiMitra   String?
-  totalPenyuluhan   String?
-  slogan            String?
-  deskripsi         String?
+  id                 Int     @id @default(autoincrement())
+  kegiatanPenyuluhan String?
+  pesertaTeredukasi  String?
+  institusiMitra     String?
+  totalPenyuluhan    String?
+  slogan             String?
+  deskripsi          String?
 
   @@map("statistikpenyuluhanhukum")
 }
+
 model SosialisasiPraturanUUD {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  waktu             String?
-  deskripsi         String?
-  kategori          Json?
-  type              String? // "Program Sosialisasi", "Prosedur Sosialisasi"
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  title     String?
+  waktu     String?
+  deskripsi String?
+  kategori  Json?
+  type      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sosialisasipraturanuud")
 }
 
 model StatistikSosialisasiPraturanUUD {
-  id                Int      @id @default(autoincrement())
-  kegiatanOrginsasi  String?
-  pesertaTeredukasi   String?
-  institusiMitra   String?
-  totalSosialisasi   String?
+  id                Int     @id @default(autoincrement())
+  kegiatanOrginsasi String?
+  pesertaTeredukasi String?
+  institusiMitra    String?
+  totalSosialisasi  String?
   slogan            String?
   deskripsi         String?
 
@@ -1373,32 +1225,32 @@ model StatistikSosialisasiPraturanUUD {
 }
 
 model KekhususanHukumPidana {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  semester          String?
-  sks               String?
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  semester  String?
+  sks       String?
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("kekhususanhukumpidana")
 }
 
 model ProspekKarir {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prospekkarir")
 }
 
 model StatistikKekhususanHukumPidana {
-  id                Int      @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   sks               String?
   mahasiswaAktif    String?
   tingkatKelulusan  String?
@@ -1409,34 +1261,33 @@ model StatistikKekhususanHukumPidana {
   @@map("statistikkekhususanhukumpidana")
 }
 
-
 model KekhususanHukumTataUsahaNegara {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  semester          String?
-  sks               String?
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  semester  String?
+  sks       String?
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("kekhususanhukumtatausahanegara")
 }
 
 model ProspekKarirTataUsahaNegara {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prospekkarirtatausahanegara")
 }
 
 model StatistikKekhususanHukumTataUsahaNegara {
-  id                Int      @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   sks               String?
   mahasiswaAktif    String?
   tingkatKelulusan  String?
@@ -1448,32 +1299,32 @@ model StatistikKekhususanHukumTataUsahaNegara {
 }
 
 model KekhususanHukumPerdata {
-    id                Int      @id @default(autoincrement())
-  foto              String?
-  semester          String?
-  sks               String?
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  foto      String?
+  semester  String?
+  sks       String?
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("kekhususanhukumperdata")
 }
 
 model ProspekKarirPerdata {
-  id                Int      @id @default(autoincrement())
-  title             String?
-  deskripsi         String?
-  kategori          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String?
+  deskripsi String?
+  kategori  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("prospekkarirperdata")
 }
 
 model StatistikKekhususanHukumPerdata {
-  id                Int      @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   sks               String?
   mahasiswaAktif    String?
   tingkatKelulusan  String?
@@ -1484,62 +1335,62 @@ model StatistikKekhususanHukumPerdata {
   @@map("statistikkekhususanhukumperdata")
 }
 
-model DaftarDosen{
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  nama              String?
-  jabatan           String?
-  nidn              String?
-  deskripsi         String?
-  riwayatPendidikan Json?
+model DaftarDosen {
+  id                 Int      @id @default(autoincrement())
+  foto               String?
+  nama               String?
+  jabatan            String?
+  nidn               String?
+  deskripsi          String?
+  riwayatPendidikan  Json?
   keahlian           Json?
-  prestasi          Json?
-  publikasi         Json?
-  email             String?
-  noTelp            String?
-  nuptk             String?
-  nik               String?
-  id_sinta          String?
-  tahun_publikasi   String?
-  ahli              String?
-  jabatan_akademik  String?
-  link_sinta        String?
-  link_ppdikti      String?
-  urutan            String?
-  jabatan_struktural      String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  prestasi           Json?
+  publikasi          Json?
+  email              String?
+  noTelp             String?
+  nuptk              String?
+  nik                String?
+  id_sinta           String?
+  tahun_publikasi    String?
+  ahli               String?
+  jabatan_akademik   String?
+  link_sinta         String?
+  link_ppdikti       String?
+  urutan             String?
+  jabatan_struktural String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   @@map("daftardosen")
 }
 
 model StatistikDaftarDosen {
-  id                Int      @id @default(autoincrement())
-  totalDosen        String?
-  profesor    String?
-  doktor  String?
+  id                 Int     @id @default(autoincrement())
+  totalDosen         String?
+  profesor           String?
+  doktor             String?
   publiikasiPerTahun String?
-  slogan            String?
-  deskripsi         String?
+  slogan             String?
+  deskripsi          String?
 
   @@map("statistikdaftardosen")
 }
 
-model TenagaKependidikan{
+model TenagaKependidikan {
   id                Int      @id @default(autoincrement())
   foto              String?
   nama              String?
   jabatan           String?
-  nip              String?
+  nip               String?
   deskripsi         String?
   riwayatPendidikan Json?
-  keahlian           Json?
+  keahlian          Json?
   tanggungJawab     Json?
   prestasi          Json?
   pelatihan         Json?
   email             String?
   noTelp            String?
-  pengalaman         Json?
+  pengalaman        Json?
   nik               String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -1548,491 +1399,476 @@ model TenagaKependidikan{
 }
 
 model StatistikTenagaKependidikan {
-  id                Int      @id @default(autoincrement())
-  totalTenagaKependidikan        String?
-  administrasi    String?
-  teknis  String?
-  pustakawan String?
-  slogan            String?
-  deskripsi         String?
+  id                      Int     @id @default(autoincrement())
+  totalTenagaKependidikan String?
+  administrasi            String?
+  teknis                  String?
+  pustakawan              String?
+  slogan                  String?
+  deskripsi               String?
 
   @@map("statistiktenagakependidikan")
 }
 
-
-
 model HimpunanMahasiswaProdiHukum {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  bidang            String?
-  jabatan           String? //ketua bidang
-  anggota           String? // 15 anggota aktif
-  tentang           String?
-  note              String?
-  namaKetua         String?
-  email             String?
-  noTelp            String?
-  programKerja      Json?
-  prestasi          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  foto         String?
+  bidang       String?
+  jabatan      String?
+  anggota      String?
+  tentang      String?
+  note         String?
+  namaKetua    String?
+  email        String?
+  noTelp       String?
+  programKerja Json?
+  prestasi     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("himpunanmahasiswaprodihukum")
 }
 
-
 model StatistikHimpunanMahasiswaProdiHukum {
-  id                Int      @id @default(autoincrement())
-  bidangOrganisasi        String?
-  anggotaAktif    String?
-  programKerja  String?
-  prestasi String?
-  slogan            String?
-  deskripsi         String?
+  id               Int     @id @default(autoincrement())
+  bidangOrganisasi String?
+  anggotaAktif     String?
+  programKerja     String?
+  prestasi         String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikhimpunanmahasiswaprodihukum")
 }
 
 model DewanPerwakilanMahasiswa {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  nama              String?
-  jabatan           String?
-  tugas             String?
-  visi              String?
-  misi              String?
-  programKerja      Json?
-  pencapaian        Json?
-  email             String?
-  noTelp            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  foto         String?
+  nama         String?
+  jabatan      String?
+  tugas        String?
+  visi         String?
+  misi         String?
+  programKerja Json?
+  pencapaian   Json?
+  email        String?
+  noTelp       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("dewanperwakilanmahasiswa")
 }
 
 model StatistikDewanPerwakilanMahasiswa {
-  id                Int      @id @default(autoincrement())
-  anggotaAktif        String?
-  aspirasiDitampung    String?
-  praturanDisusun  String?
-  akuntabel String?
+  id                Int     @id @default(autoincrement())
+  anggotaAktif      String?
+  aspirasiDitampung String?
+  praturanDisusun   String?
+  akuntabel         String?
   slogan            String?
   deskripsi         String?
 
   @@map("statistikdewanperwakilanmahasiswa")
 }
 
-
 model BadanEksikutifMahasiswa {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  nama              String?
-  jabatan           String?
-  tugas             String?
-  visi              String?
-  misi              String?
-  programKerja      Json?
-  pencapaian        Json?
-  email             String?
-  noTelp            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  foto         String?
+  nama         String?
+  jabatan      String?
+  tugas        String?
+  visi         String?
+  misi         String?
+  programKerja Json?
+  pencapaian   Json?
+  email        String?
+  noTelp       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("badaneksikutifmahasiswa")
 }
 
 model StatistikBadanEksikutifMahasiswa {
-  id                Int      @id @default(autoincrement())
-  pengurusInti        String?
-  programKerja    String?
-  mahasiswaTerlayani  String?
-  komitmen String?
-  slogan            String?
-  deskripsi         String?
+  id                 Int     @id @default(autoincrement())
+  pengurusInti       String?
+  programKerja       String?
+  mahasiswaTerlayani String?
+  komitmen           String?
+  slogan             String?
+  deskripsi          String?
 
   @@map("statistikbadaneksikutifmahasiswa")
 }
 
-
 model TrackerStudy {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  tugas             Json?
-  gajihRata         String?
-  persentasi        String?//25%
-  institusi         Json?
-  keahlian          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  foto       String?
+  title      String?
+  tugas      Json?
+  gajihRata  String?
+  persentasi String?
+  institusi  Json?
+  keahlian   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("trackerstudy")
 }
 
 model waktuTungguKerja {
-  id                Int      @id @default(autoincrement())
-  kategoriWaktu     String? // < 3 bulan
-  persentasi        String? // 25%
-  deskripsi         String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  kategoriWaktu String?
+  persentasi    String?
+  deskripsi     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("waktutunggukerja")
 }
 
 model StatistikTrackerStudy {
-  id                Int      @id @default(autoincrement())
-  tingkatKeterserapan        String?
-  rataGaji    String?
-  waktuTungguKerja  String?
-  kesesuaianBidang String?
-  slogan            String?
-  deskripsi         String?
+  id                  Int     @id @default(autoincrement())
+  tingkatKeterserapan String?
+  rataGaji            String?
+  waktuTungguKerja    String?
+  kesesuaianBidang    String?
+  slogan              String?
+  deskripsi           String?
 
   @@map("statistiktrackerstudy")
 }
 
 model TrackerStudyUnigal {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  tugas             Json?
-  gajihRata         String?
-  persentasi        String?//25%
-  institusi         Json?
-  keahlian          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  foto       String?
+  title      String?
+  tugas      Json?
+  gajihRata  String?
+  persentasi String?
+  institusi  Json?
+  keahlian   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("trackerstudyunigal")
 }
 
 model waktuTungguKerjaUnigal {
-  id                Int      @id @default(autoincrement())
-  kategoriWaktu     String? // < 3 bulan
-  persentasi        String? // 25%
-  deskripsi         String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  kategoriWaktu String?
+  persentasi    String?
+  deskripsi     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("waktutunggukerjaunigal")
 }
 
 model StatistikTrackerStudyUnigal {
-  id                Int      @id @default(autoincrement())
-  tingkatKeterserapan        String?
-  rataGaji    String?
-  waktuTungguKerja  String?
-  kesesuaianBidang String?
-  slogan            String?
-  deskripsi         String?
+  id                  Int     @id @default(autoincrement())
+  tingkatKeterserapan String?
+  rataGaji            String?
+  waktuTungguKerja    String?
+  kesesuaianBidang    String?
+  slogan              String?
+  deskripsi           String?
 
   @@map("statistiktrackerstudyunigal")
 }
 
-
 model RekapitulasiPengisian {
-  id                Int      @id @default(autoincrement())
-  programNama       String?
-  angkatan          String?
-  totalMahasiswa    String?
-  jumlahResponden   String?
-  kategori          Json?
-  persentasi        String?  //(otomatis: jumlah_responden / total_mahasiswa * 100)
+  id              Int     @id @default(autoincrement())
+  programNama     String?
+  angkatan        String?
+  totalMahasiswa  String?
+  jumlahResponden String?
+  kategori        Json?
+  persentasi      String?
 
   @@map("rekapitulasipengisian")
 }
+
 model RekapitulasiPerKategori {
-  id                Int      @id @default(autoincrement())
-  programNama       String?
-  totalMahasiswa    String?
-  jumlahResponden   String?
-  persentasi        String?  //(otomatis: jumlah_responden / total_mahasiswa * 100)
+  id              Int     @id @default(autoincrement())
+  programNama     String?
+  totalMahasiswa  String?
+  jumlahResponden String?
+  persentasi      String?
 
   @@map("rekapitulasiperkategori")
 }
 
 model StatistikRekapitulasiPerKategori {
-  id                Int      @id @default(autoincrement())
-  totalResponden        String?
-  tingkatPartisipasi    String?
-  formulirLengkap  String?
-  dalamProses String?
-  slogan            String?
-  deskripsi         String?
+  id                 Int     @id @default(autoincrement())
+  totalResponden     String?
+  tingkatPartisipasi String?
+  formulirLengkap    String?
+  dalamProses        String?
+  slogan             String?
+  deskripsi          String?
 
   @@map("statistikrekapitulasiperkategori")
 }
 
 model BeasiswaIndonesia {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  oleh              Json? //Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi
-  nominal           String?
-  waktu             String? // 4 tahun
-  sebanyak          String?  // 100
-  tentang           String?
-  persyaratan       Json?
-  manfaat           Json?
-  batasWaktu        String? // 30 Juni 2025
-  email             String?
-  noTelp            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  foto        String?
+  title       String?
+  oleh        Json?
+  nominal     String?
+  waktu       String?
+  sebanyak    String?
+  tentang     String?
+  persyaratan Json?
+  manfaat     Json?
+  batasWaktu  String?
+  email       String?
+  noTelp      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("beasiswaindonesia")
 }
 
 model StatistikBeasiswaIndonesia {
-  id                Int      @id @default(autoincrement())
-  totalPenerima     String?        // Total penerima beasiswa (misal: 1200 orang sejak 2020)
-  durasiBeasiswa    String?     // Durasi program beasiswa secara ringkas (misal: "4 tahun" atau "2 semester")
-  tingkatKompetitif String?     // Tingkat kesulitan beasiswa (misal: "Sangat Kompetitif", "Mudah Diakses")
-  pendaftarTahunan  String?        // Jumlah rata-rata pendaftar setiap tahun (misal: 5000 pendaftar)
+  id                Int     @id @default(autoincrement())
+  totalPenerima     String?
+  durasiBeasiswa    String?
+  tingkatKompetitif String?
+  pendaftarTahunan  String?
   slogan            String?
   deskripsi         String?
 
   @@map("statistikbeasiswaindonesia")
 }
 
-
-
-model BeasiswaBri{
-  id                Int      @id @default(autoincrement())
-  tentangProgram    String?
-  manfaat           Json?
-  judulPersyaratan  String?
-  persyaratan       Json?
+model BeasiswaBri {
+  id               Int     @id @default(autoincrement())
+  tentangProgram   String?
+  manfaat          Json?
+  judulPersyaratan String?
+  persyaratan      Json?
 
   @@map("beasiswabri")
 }
 
-
-model TimelineBeasiswaBri{
-  id                Int      @id @default(autoincrement())
-  title             String?
-  waktu             String? // 1 Mei - 30 Juni 2025
-  deskripsi         String?
+model TimelineBeasiswaBri {
+  id        Int     @id @default(autoincrement())
+  title     String?
+  waktu     String?
+  deskripsi String?
 
   @@map("timelinebeasiswabri")
 }
 
-
 model StatistikBeasiswaBri {
-  id                Int      @id @default(autoincrement())
-  nilaiBeasiswa        String?
-  durasi    String?
-  kuota  String?
-  deadline String?
-  slogan            String?
-  deskripsi         String?
+  id            Int     @id @default(autoincrement())
+  nilaiBeasiswa String?
+  durasi        String?
+  kuota         String?
+  deadline      String?
+  slogan        String?
+  deskripsi     String?
 
   @@map("statistikbeasiswabri")
 }
 
-
-model BeasiswaKIPKemendiksaintek{
-  id                Int      @id @default(autoincrement())
-  manfaat           Json?
-  judulPersyaratan  String?
-  persyaratan       Json?
+model BeasiswaKIPKemendiksaintek {
+  id               Int     @id @default(autoincrement())
+  manfaat          Json?
+  judulPersyaratan String?
+  persyaratan      Json?
 
   @@map("beasiswakipkemendiksaintek")
 }
-model TimelineBeasiswaKIPKemendiksaintek{
-  id                Int      @id @default(autoincrement())
-  title             String?
-  waktu             String? // 1 Mei - 30 Juni 2025
-  deskripsi         String?
+
+model TimelineBeasiswaKIPKemendiksaintek {
+  id        Int     @id @default(autoincrement())
+  title     String?
+  waktu     String?
+  deskripsi String?
 
   @@map("timelinebeasiswakipkemendiksaintek")
 }
 
 model StatistikBeasiswaKIPKemendiksaintek {
-  id                Int      @id @default(autoincrement())
-  nilaiBeasiswa        String?
-  durasi    String?
-  kuota  String?
-  deadline String?
-  slogan            String?
-  deskripsi         String?
+  id            Int     @id @default(autoincrement())
+  nilaiBeasiswa String?
+  durasi        String?
+  kuota         String?
+  deadline      String?
+  slogan        String?
+  deskripsi     String?
 
   @@map("statistikbeasiswakipkemendiksaintek")
 }
 
-
 model PrestasiMahasiswaNonDikti {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  juara             String? //Juara 1, Juara 2, Juara 3
-  namaMahasiswa     String?
-  kategori          Json? //Debat Hukum , Nasional
-  deskripsi         String?
-  dampak            String?
-  keahlian          Json?
-  penghargaan       Json?
-  waktuKompetisi    String?
-  alamat            String?
-  penyelenggara     String?
+  id             Int     @id @default(autoincrement())
+  foto           String?
+  title          String?
+  juara          String?
+  namaMahasiswa  String?
+  kategori       Json?
+  deskripsi      String?
+  dampak         String?
+  keahlian       Json?
+  penghargaan    Json?
+  waktuKompetisi String?
+  alamat         String?
+  penyelenggara  String?
 
   @@map("prestasimahasiswanondikti")
 }
 
-
 model StatistikPrestasiMahasiswaNonDikti {
-  id                Int      @id @default(autoincrement())
+  id                   Int     @id @default(autoincrement())
   totalPrestasi        String?
-  tingkatInternasional    String?
-  tingkatNasional  String?
-  tingkatRegional String?
-  slogan            String?
-  deskripsi         String?
+  tingkatInternasional String?
+  tingkatNasional      String?
+  tingkatRegional      String?
+  slogan               String?
+  deskripsi            String?
 
   @@map("statistikprestasimahasiswanondikti")
 }
 
-
 model DataRekognisi {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  tema              String? // Akreditasi , Pascakelulusan, 
-  tingkat           String? // Nasional, Internasional
-  tahun             String?
-  deskripsi         String?
-  dampak            String?
+  id                 Int     @id @default(autoincrement())
+  foto               String?
+  title              String?
+  tema               String?
+  tingkat            String?
+  tahun              String?
+  deskripsi          String?
+  dampak             String?
   kriteriaPenelitian Json?
-  manfaat           Json?
-  provider          String?
-  masaBerlaku       String?
+  manfaat            Json?
+  provider           String?
+  masaBerlaku        String?
 
   @@map("datarekognisi")
 }
 
-
 model StatistikDataRekognisi {
-  id                Int      @id @default(autoincrement())
-  penghargaan        String?
-  sertifikasi    String?
-  akreditasi  String?
+  id                     Int     @id @default(autoincrement())
+  penghargaan            String?
+  sertifikasi            String?
+  akreditasi             String?
   rekognasiInternasional String?
-  slogan            String?
-  deskripsi         String?
+  slogan                 String?
+  deskripsi              String?
 
   @@map("statistikdatarekognisi")
 }
-  
 
 model DataSeminarMahasiswa {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  terkait           String? // hukun perdata , hukum pidana
-  deskripsiSeminar  String?
+  id                 Int     @id @default(autoincrement())
+  foto               String?
+  title              String?
+  terkait            String?
+  deskripsiSeminar   String?
   tujuanPembelajaran Json?
-  materiDibahas     Json?
-  hasilDIharapkan   Json?
-  tanggalSeminar    String?
-  waktuSeminar      String? //09:00 - 12:00 WIB
-  lokasi            String?
-  peserta           String? //150
-  namaNarasumber    String?
-  tentangNarasumber String?
-  emailNarasumber   String?
-  noTelpNarasumber  String?
+  materiDibahas      Json?
+  hasilDIharapkan    Json?
+  tanggalSeminar     String?
+  waktuSeminar       String?
+  lokasi             String?
+  peserta            String?
+  namaNarasumber     String?
+  tentangNarasumber  String?
+  emailNarasumber    String?
+  noTelpNarasumber   String?
 
   @@map("dataseminarmahasiswa")
 }
 
 model StatistikDataSeminarMahasiswa {
-  id                Int      @id @default(autoincrement())
-  totalSeminar       String?
-  totalPeserta       String?
-  totalNarasumber    String?
-  tingkatKepuasan    String?
-  slogan            String?
-  deskripsi         String?
+  id              Int     @id @default(autoincrement())
+  totalSeminar    String?
+  totalPeserta    String?
+  totalNarasumber String?
+  tingkatKepuasan String?
+  slogan          String?
+  deskripsi       String?
 
   @@map("statistikdataseminarmahasiswa")
 }
 
 model dataMahasiswaMagang {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  terkait           String? // Legal & Compliance , Legal Division
-  tentangMagang     String?
-  tanggungJawab     Json?
-  keahlian          Json?
-  pencapaian        Json?
-  perusahaanMagang  String?
-  posisiMagang      String?
-  periodeMagang     String?
-  lokasiMagang      String?
-  superVisorMagang  String?
+  id                    Int     @id @default(autoincrement())
+  foto                  String?
+  title                 String?
+  terkait               String?
+  tentangMagang         String?
+  tanggungJawab         Json?
+  keahlian              Json?
+  pencapaian            Json?
+  perusahaanMagang      String?
+  posisiMagang          String?
+  periodeMagang         String?
+  lokasiMagang          String?
+  superVisorMagang      String?
   emailSuperVisorMagang String?
 
   @@map("datamahasiswamagang")
 }
 
 model StatistikDataMahasiswaMagang {
-  id                Int      @id @default(autoincrement())
-  totalMagang       String?
-  mitraInstitusi    String?
-  rataDurasiMagang  String?
-  tingkatKepuasan   String?
-  slogan            String?
-  deskripsi         String?
+  id               Int     @id @default(autoincrement())
+  totalMagang      String?
+  mitraInstitusi   String?
+  rataDurasiMagang String?
+  tingkatKepuasan  String?
+  slogan           String?
+  deskripsi        String?
 
   @@map("statistikdatamahasiswamagang")
 }
 
 model DataMahasiswaBerwirausaha {
-  id                Int      @id @default(autoincrement())
-  foto              String?
-  title             String?
-  namaMahasiswa     String?
-  nimMahasiswa      String?
-  tentangBisnis     String?
-  produkLayanan     Json?
-  pencapaian        Json?
-  tantangan         String?
-  rencanaMasaDeoan  String?
-  kategori          String?
-  tahunBerdiri      String?
-  jumlahKaryawan    String?
-  pendapatan        String?
-  lokasi            String?
-  noTelp            String?
-  email             String?
-  lokasiMahasiswa   String?
+  id               Int     @id @default(autoincrement())
+  foto             String?
+  title            String?
+  namaMahasiswa    String?
+  nimMahasiswa     String?
+  tentangBisnis    String?
+  produkLayanan    Json?
+  pencapaian       Json?
+  tantangan        String?
+  rencanaMasaDeoan String?
+  kategori         String?
+  tahunBerdiri     String?
+  jumlahKaryawan   String?
+  pendapatan       String?
+  lokasi           String?
+  noTelp           String?
+  email            String?
+  lokasiMahasiswa  String?
 
   @@map("datamahasiswaberwirausaha")
 }
 
-
 model StatistikDataMahasiswaBerwirausaha {
-  id                Int      @id @default(autoincrement())
-  totalMahasiswaBerwirausaha       String?
-  lapanganKerja     String?
-  tingkatKeberhasilan  String?
-  bisnisAktif       String?
-  slogan            String?
-  deskripsi         String?
+  id                         Int     @id @default(autoincrement())
+  totalMahasiswaBerwirausaha String?
+  lapanganKerja              String?
+  tingkatKeberhasilan        String?
+  bisnisAktif                String?
+  slogan                     String?
+  deskripsi                  String?
 
   @@map("statistikdatamahasiswaberwirausaha")
 }
 
 model LowonganKerja {
-  id                Int      @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   foto              String?
-  title             String? //Legal Officer
+  title             String?
   perusahaan        String?
   lokasi            String?
-  tipePekerjaan     String? // Full Time, Part Time
+  tipePekerjaan     String?
   gaji              String?
   pengalaman        String?
   pendidikan        String?
@@ -2050,11 +1886,11 @@ model LowonganKerja {
 }
 
 model StatistikLowonganKerja {
-  id                Int      @id @default(autoincrement())
-  lowonganAktif       String?
-  partner     String?
-  tingkatPenempatan       String?
-  gajihRata       String?
+  id                Int     @id @default(autoincrement())
+  lowonganAktif     String?
+  partner           String?
+  tingkatPenempatan String?
+  gajihRata         String?
   slogan            String?
   deskripsi         String?
 
@@ -2062,134 +1898,133 @@ model StatistikLowonganKerja {
 }
 
 model AlumniBerPrestasi {
-    id                Int      @id @default(autoincrement())
-    foto              String?
-    nama              String?
-    nim               String?
-    lulusan           String? //2023
-    posisi            String?
-    perusahaan        String?
-    ipk               String?
-    gaji              String?
-    waktuTunggu       String?
-    email             String?
-    noTelp            String?
-    linkedin          String?
-    instagram         String?
-    testimonial       String?
-    perjalananKarir   Json?
-    keahlian          Json?
-    pencapaian        Json?
-    bidang            String? //korporat, pemerintahan, swasta
+  id              Int     @id @default(autoincrement())
+  foto            String?
+  nama            String?
+  nim             String?
+  lulusan         String?
+  posisi          String?
+  perusahaan      String?
+  ipk             String?
+  gaji            String?
+  waktuTunggu     String?
+  email           String?
+  noTelp          String?
+  linkedin        String?
+  instagram       String?
+  testimonial     String?
+  perjalananKarir Json?
+  keahlian        Json?
+  pencapaian      Json?
+  bidang          String?
 
-    @@map("alumniberprestasi")
+  @@map("alumniberprestasi")
 }
 
 model StatistikAlumniBerprestasi {
-  id                Int      @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   totalAlumni       String?
   tingkatPenempatan String?
   rataGajih         String?
-  WaktuTunggu   String?
+  WaktuTunggu       String?
   slogan            String?
   deskripsi         String?
 
   @@map("statistikalumniberprestasi")
 }
 
-
 model DataMahasiswaAktif {
-   id                Int      @id @default(autoincrement())
-   foto              String?
-   title             String?
-   deskripsi         String?
-   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+  id        Int     @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  jumlah    String?
 
-   @@map("datamahasiswaaktif")
+  @@map("datamahasiswaaktif")
 }
 
 model statistikMahasiswaAktif {
-  id                Int      @id @default(autoincrement())
-  mahasiswaAktif      String?
-  tingkatKehadiran    String?
-  ipkRataRata       String?
+  id                   Int     @id @default(autoincrement())
+  mahasiswaAktif       String?
+  tingkatKehadiran     String?
+  ipkRataRata          String?
   mahasiswaBerprestasi String?
 
   @@map("statistikmahasiswaaktif")
 }
 
-
 model DataMahasiswaNonAktif {
-   id                Int      @id @default(autoincrement())
-   foto              String?
-   title             String?
-   deskripsi         String?
-   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+  id        Int     @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  jumlah    String?
 
-   @@map("datamahasiswanonaktif")
+  @@map("datamahasiswanonaktif")
 }
 
 model statistikMahasiswaNonAktif {
-  id                Int      @id @default(autoincrement())
-  mahasiswaNonAktif      String?
-  tingkatKehadiran    String?
-  ipkRataRata       String?
+  id                   Int     @id @default(autoincrement())
+  mahasiswaNonAktif    String?
+  tingkatKehadiran     String?
+  ipkRataRata          String?
   mahasiswaBerprestasi String?
 
   @@map("statistikmahasiswanonaktif")
 }
 
 model DataLulusanPertahun {
-   id                Int      @id @default(autoincrement())
-   foto              String?
-   title             String?
-   deskripsi         String?
-   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+  id        Int     @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  jumlah    String?
 
-   @@map("datalulusanpertahun")
+  @@map("datalulusanpertahun")
 }
 
 model statistikLulusanPertahun {
-  id                Int      @id @default(autoincrement())
-  totalLulusan      String?
-  tahun1    String?
-  tahun2       String?
+  id               Int     @id @default(autoincrement())
+  totalLulusan     String?
+  tahun1           String?
+  tahun2           String?
   tingkatKelulusan String?
 
   @@map("statistiklulusanpertahun")
 }
 
-model MoU{
- id                Int      @id @default(autoincrement())
- title             String?
- partnerInstitution String?
- partnerType       String?
- signingDate       String?
- expiryDate        String?
- mouNumber         String?
- scope             String?
- status            String?
- duration          String?
- objectives        String?
- contactPerson     String?
- description       String?
- implementation    String?
- benefits          String?
+model MoU {
+  id                 Int     @id @default(autoincrement())
+  title              String?
+  partnerInstitution String?
+  partnerType        String?
+  signingDate        String?
+  expiryDate         String?
+  mouNumber          String?
+  scope              String?
+  status             String?
+  duration           String?
+  objectives         String?
+  contactPerson      String?
+  description        String?
+  implementation     String?
+  benefits           String?
 
- @@map("mou")
+  @@map("mou")
 }
 
 model statistikMoU {
-  id                Int      @id @default(autoincrement())
-  totalMoU      String?
-  aktif         String?
-  dalamProses   String?
-  tidakAktif    String?
+  id          Int     @id @default(autoincrement())
+  totalMoU    String?
+  aktif       String?
+  dalamProses String?
+  tidakAktif  String?
 
   @@map("statistikmou")
 }
-model MoA{
-  id                Int      @id @default(autoincrement())
+
+model MoA {
+  id                Int     @id @default(autoincrement())
   title             String?
   agreementNumber   String?
   parties           String?
@@ -2209,140 +2044,112 @@ model MoA{
 
   @@map("moa")
 }
+
 model statistikMoA {
-    id                Int      @id @default(autoincrement())
-    totalMoA      String?
-    aktif         String?
-    dalamProses   String?
-    tidakAktif    String?
+  id          Int     @id @default(autoincrement())
+  totalMoA    String?
+  aktif       String?
+  dalamProses String?
+  tidakAktif  String?
 
-    @@map("statistikmoa")
+  @@map("statistikmoa")
 }
-model DataPKPA {
-   id                Int      @id @default(autoincrement())
-   foto              String?
-   title             String?
-   deskripsi         String?
-   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
 
-   @@map("datapkpa")
+model DataPKPA {
+  id        Int     @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  jumlah    String?
+
+  @@map("datapkpa")
 }
 
 model statistikPKPA {
-  id                Int      @id @default(autoincrement())
+  id               Int     @id @default(autoincrement())
   pesertaPKPA      String?
   angkatan         String?
-  tingkatKelulusan   String?
-  mitraHukum    String?
+  tingkatKelulusan String?
+  mitraHukum       String?
 
   @@map("statistikpkpa")
 }
 
-
 model DataPeradilanSemu {
-   id                Int      @id @default(autoincrement())
-   foto              String?
-   title             String?
-   deskripsi         String?
-   jumlah            String?  //3,847 Mahasiswa, 94.2% Kehadiran
+  id        Int     @id @default(autoincrement())
+  foto      String?
+  title     String?
+  deskripsi String?
+  jumlah    String?
 
-   @@map("dataperadilansemu")
+  @@map("dataperadilansemu")
 }
 
 model statistikPeradilanSemu {
-  id                Int      @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
   sidangSemu      String?
   peserta         String?
-  tingkatKepuasan   String?
-  kasusSimulasi    String?
+  tingkatKepuasan String?
+  kasusSimulasi   String?
 
   @@map("statistikperadilansemu")
 }
 
+model Akreditasi {
+  id       Int     @id @default(autoincrement())
+  type     String?
+  title    String?
+  document Json?
 
+  @@map("akreditasi")
+}
 
-
-
-
-
-
-
-
-
-
-
-
-// ============================================
-// BERITA & PENGUMUMAN
-// ============================================
-
-// Model: Berita
-// Fungsi: Menyimpan artikel berita fakultas
-// Digunakan di menu: Beranda (untuk menampilkan berita terbaru)
-// Berisi: Judul, konten, kategori, penulis, galeri foto
 model Berita {
-  id                Int      @id @default(autoincrement())
-  judul             String?  
-  konten            String ?  
-  kategori          String ?   // "Akademik", "Kemahasiswaan", "Penelitian", dst.
-  penulis           String ?
-  tanggalPublikasi  DateTime ?
-  foto              String ?
-  galeri            Json ? 
-  aktif             Boolean  @default(true)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               Int       @id @default(autoincrement())
+  judul            String?
+  konten           String?
+  kategori         String?
+  penulis          String?
+  tanggalPublikasi DateTime?
+  foto             String?
+  galeri           Json?
+  aktif            Boolean   @default(true)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   @@map("berita")
 }
 
-// Model: Pengumuman
-// Fungsi: Menyimpan pengumuman penting fakultas
-// Digunakan di menu: Beranda (untuk menampilkan pengumuman)
-// Berisi: Judul, konten, kategori, prioritas, masa berlaku
 model Pengumuman {
-  id                Int      @id @default(autoincrement())
-  judul             String
-  konten            String   
-  kategori          String   // "Penting", "Akademik", "Kemahasiswaan", dst.
-  prioritas         String   // "Tinggi", "Sedang", "Rendah"
-  tanggalMulai      DateTime
-  tanggalBerakhir   DateTime?
-  lampiran          Json // Array URL lampiran
-  aktif             Boolean  @default(true)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id              Int       @id @default(autoincrement())
+  judul           String
+  konten          String
+  kategori        String
+  prioritas       String
+  tanggalMulai    DateTime
+  tanggalBerakhir DateTime?
+  lampiran        Json
+  aktif           Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@map("pengumuman")
 }
 
-
-
-// ============================================
-// TESTIMONI & FAQ
-// ============================================
-
-// Model: Testimoni
-// Fungsi: Menyimpan testimoni dari mahasiswa/alumni
-// Digunakan di menu: Beranda (untuk menampilkan testimoni)
-// Berisi: Nama, jabatan, foto, konten testimoni, rating
 model Testimoni {
-  id                Int      @id @default(autoincrement())
-  judul             String?
-  nama              String?
-  jabatan           String?   // "Alumni 2020", "Mahasiswa Aktif", dst.
-  foto              String?
-  galeri            Json? // Array URL foto
-  konten            String?   
-  kategori          String?
-  note              String?   
-  tanggalPublikasi  String?   
-  aktif             Boolean  @default(true)
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  judul            String?
+  nama             String?
+  jabatan          String?
+  foto             String?
+  galeri           Json?
+  konten           String?
+  kategori         String?
+  note             String?
+  tanggalPublikasi String?
+  aktif            Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@map("testimoni")
 }

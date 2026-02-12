@@ -11,12 +11,7 @@ class MatrikulasiController {
   async createMatrikulasi(req: MulterRequest, res: Response) {
     try {
       const { title, kategori, deskripsi, type, waktu, sks } = req.body;
-      if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Foto harus diupload",
-        });
-      }
+      const foto = req.files?.["foto"]?.[0];
       const kategoriJSON = JSON.parse(kategori);
       const matrikulasi = await matrikulasiService.create({
         title,
@@ -25,7 +20,7 @@ class MatrikulasiController {
         waktu,
         sks,
         kategori: kategoriJSON,
-        foto: req.files?.["foto"][0],
+        foto,
       });
       return res.status(201).json({
         success: true,
@@ -69,7 +64,7 @@ class MatrikulasiController {
       }
       const updatedMatrikulasi = await matrikulasiService.updateMatrikulasi(
         Number(id),
-        updateData
+        updateData,
       );
       return res.status(200).json({
         success: true,
@@ -86,7 +81,7 @@ class MatrikulasiController {
     try {
       const id = req.params.id;
       const deletedMatrikulasi = await matrikulasiService.deleteMatrikulasi(
-        Number(id)
+        Number(id),
       );
       return res.status(200).json({
         success: true,
@@ -153,7 +148,7 @@ class MatrikulasiController {
       const updatedStatistikMatrikulasi =
         await matrikulasiService.updateStatistikMatrikulasi(
           Number(id),
-          updateData
+          updateData,
         );
       return res.status(200).json({
         success: true,

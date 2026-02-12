@@ -66,6 +66,8 @@ import mouController from "../controllers/mou-controller";
 import moaController from "../controllers/moa-controller";
 import dataPkpaController from "../controllers/data-pkpa-controller";
 import dataPeradilanSemuController from "../controllers/data-peradilan-semu-service";
+import akreditasiController from "../controllers/akreditasi-controller";
+import testingController from "../controllers/Testing";
 
 type MulterRequest = Request & {
   file?: Express.Multer.File;
@@ -82,22 +84,22 @@ const heroSectionController = new HeroSectionController();
 router.post(
   "/hero-section",
   HeroSectionController.uploadImage(),
-  heroSectionController.createHeroSection.bind(heroSectionController)
+  heroSectionController.createHeroSection.bind(heroSectionController),
 );
 
 router.get(
   "/hero-section",
-  heroSectionController.getDataHeroSection.bind(heroSectionController)
+  heroSectionController.getDataHeroSection.bind(heroSectionController),
 );
 router.delete(
   "/hero-section/:id",
-  heroSectionController.delete.bind(heroSectionController)
+  heroSectionController.delete.bind(heroSectionController),
 );
 
 router.put(
   "/hero-section/:id",
   HeroSectionController.uploadImage(),
-  heroSectionController.update.bind(heroSectionController)
+  heroSectionController.update.bind(heroSectionController),
 );
 
 router.post(
@@ -127,7 +129,7 @@ router.post(
   },
   (req: Request, res: Response) => {
     return BeritaController.createBerita(req as unknown as MulterRequest, res);
-  }
+  },
 );
 
 router.get("/berita", BeritaController.getAllBerita.bind(BeritaController));
@@ -159,12 +161,12 @@ router.put(
   },
   (req: Request, res: Response) => {
     return BeritaController.updateBerita(req as unknown as MulterRequest, res);
-  }
+  },
 );
 
 router.delete(
   "/berita/:id",
-  BeritaController.deleteDataBerita.bind(BeritaController)
+  BeritaController.deleteDataBerita.bind(BeritaController),
 );
 
 router.post(
@@ -195,19 +197,19 @@ router.post(
   (req: Request, res: Response) => {
     return TestimoniController.createTestimoni(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/testimoni",
-  TestimoniController.getAllTestimoni.bind(TestimoniController)
+  TestimoniController.getAllTestimoni.bind(TestimoniController),
 );
 
 router.delete(
   "/testimoni/:id",
-  TestimoniController.deleteTestimoni.bind(TestimoniController)
+  TestimoniController.deleteTestimoni.bind(TestimoniController),
 );
 router.put(
   "/testimoni/:id",
@@ -236,7 +238,7 @@ router.put(
   },
   (req: Request, res: Response) => {
     return TestimoniController.update(req as unknown as MulterRequest, res);
-  }
+  },
 );
 
 router.post(
@@ -264,14 +266,14 @@ router.post(
   (req: Request, res: Response) => {
     return sejarahS1Controller.createSejarahS1(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/sejarah-s1",
-  sejarahS1Controller.getAllSejarahS1.bind(sejarahS1Controller)
+  sejarahS1Controller.getAllSejarahS1.bind(sejarahS1Controller),
 );
 
 router.put(
@@ -299,14 +301,14 @@ router.put(
   (req: Request, res: Response) => {
     return sejarahS1Controller.updateSejarahS1(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sejarah-s1/:id",
-  sejarahS1Controller.deleteData.bind(sejarahS1Controller)
+  sejarahS1Controller.deleteData.bind(sejarahS1Controller),
 );
 
 router.post(
@@ -334,9 +336,9 @@ router.post(
   (req: Request, res: Response) => {
     return sejarahS1Controller.createSejarahS1Banner(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.put(
@@ -364,39 +366,39 @@ router.put(
   (req: Request, res: Response) => {
     return sejarahS1Controller.updateSejarahS1Banner(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sejarah-s1/banner/:id",
-  sejarahS1Controller.deleteBanner.bind(sejarahS1Controller)
+  sejarahS1Controller.deleteBanner.bind(sejarahS1Controller),
 );
 
 router.get(
   "/sejarah-s1/banner",
-  sejarahS1Controller.getDataBanner.bind(sejarahS1Controller)
+  sejarahS1Controller.getDataBanner.bind(sejarahS1Controller),
 );
 
 router.post(
   "/sejarah-s1/statistik",
-  sejarahS1Controller.createStatistikSejarahS1.bind(sejarahS1Controller)
+  sejarahS1Controller.createStatistikSejarahS1.bind(sejarahS1Controller),
 );
 
 router.put(
   "/sejarah-s1/statistik/:id",
-  sejarahS1Controller.updateStatistikSejarahS1.bind(sejarahS1Controller)
+  sejarahS1Controller.updateStatistikSejarahS1.bind(sejarahS1Controller),
 );
 
 router.delete(
   "/sejarah-s1/statistik/:id",
-  sejarahS1Controller.deleteStatistikSejarahS1.bind(sejarahS1Controller)
+  sejarahS1Controller.deleteStatistikSejarahS1.bind(sejarahS1Controller),
 );
 
 router.get(
   "/sejarah-s1/statistik",
-  sejarahS1Controller.getAllStatistikSejarahS1.bind(sejarahS1Controller)
+  sejarahS1Controller.getAllStatistikSejarahS1.bind(sejarahS1Controller),
 );
 
 router.post(
@@ -424,16 +426,16 @@ router.post(
   (req: Request, res: Response) => {
     return saranaPrasaranaController.createSaranaPrasarana(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/sarana-prasarana",
   saranaPrasaranaController.getAllSaranaPrasarana.bind(
-    saranaPrasaranaController
-  )
+    saranaPrasaranaController,
+  ),
 );
 
 router.put(
@@ -461,16 +463,16 @@ router.put(
   (req: Request, res: Response) => {
     return saranaPrasaranaController.updateSaranaPrasarana(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sarana-prasarana/:id",
   saranaPrasaranaController.deleteSaranaPrasarana.bind(
-    saranaPrasaranaController
-  )
+    saranaPrasaranaController,
+  ),
 );
 
 router.post(
@@ -498,9 +500,9 @@ router.post(
   (req: Request, res: Response) => {
     return saranaPrasaranaController.createBannerSaranaPrasarana(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.put(
@@ -528,49 +530,49 @@ router.put(
   (req: Request, res: Response) => {
     return saranaPrasaranaController.updateBannerSaranaPrasarana(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sarana-prasarana/banner/:id",
   saranaPrasaranaController.deleteBannerSaranaPrasarana.bind(
-    saranaPrasaranaController
-  )
+    saranaPrasaranaController,
+  ),
 );
 
 router.get(
   "/sarana-prasarana/banner",
-  saranaPrasaranaController.getDataBanner.bind(saranaPrasaranaController)
+  saranaPrasaranaController.getDataBanner.bind(saranaPrasaranaController),
 );
 
 router.post(
   "/sarana-prasarana/statistik",
   saranaPrasaranaController.createStatistikSaranaPrasarana.bind(
-    saranaPrasaranaController
-  )
+    saranaPrasaranaController,
+  ),
 );
 
 router.put(
   "/sarana-prasarana/statistik/:id",
   saranaPrasaranaController.updateStatistikSaranaPrasarana.bind(
-    saranaPrasaranaController
-  )
+    saranaPrasaranaController,
+  ),
 );
 
 router.delete(
   "/sarana-prasarana/statistik/:id",
   saranaPrasaranaController.deleteStatistikSaranaPrasarana.bind(
-    saranaPrasaranaController
-  )
+    saranaPrasaranaController,
+  ),
 );
 
 router.get(
   "/sarana-prasarana/statistik",
   saranaPrasaranaController.getAllStatistikSaranaPrasarana.bind(
-    saranaPrasaranaController
-  )
+    saranaPrasaranaController,
+  ),
 );
 
 router.post(
@@ -598,16 +600,16 @@ router.post(
   (req: Request, res: Response) => {
     return RencanaStrategisController.createRencanaStrategis(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/rencana-strategis/:id",
   RencanaStrategisController.deleteRencanaStrategis.bind(
-    RencanaStrategisController
-  )
+    RencanaStrategisController,
+  ),
 );
 
 router.put(
@@ -635,44 +637,44 @@ router.put(
   (req: Request, res: Response) => {
     return RencanaStrategisController.updateRencanaStrategis(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/rencana-strategis",
   RencanaStrategisController.getAllRencanaStrategis.bind(
-    RencanaStrategisController
-  )
+    RencanaStrategisController,
+  ),
 );
 
 router.post(
   "/rencana-strategis/statistik",
   RencanaStrategisController.createStatistikStrategis.bind(
-    RencanaStrategisController
-  )
+    RencanaStrategisController,
+  ),
 );
 
 router.put(
   "/rencana-strategis/statistik/:id",
   RencanaStrategisController.updateStatistikStrategis.bind(
-    RencanaStrategisController
-  )
+    RencanaStrategisController,
+  ),
 );
 
 router.delete(
   "/rencana-strategis/statistik/:id",
   RencanaStrategisController.deleteStatistikStrategis.bind(
-    RencanaStrategisController
-  )
+    RencanaStrategisController,
+  ),
 );
 
 router.get(
   "/rencana-strategis/statistik",
   RencanaStrategisController.getAllStatistikStrategis.bind(
-    RencanaStrategisController
-  )
+    RencanaStrategisController,
+  ),
 );
 
 router.post(
@@ -703,14 +705,14 @@ router.post(
   (req: Request, res: Response) => {
     return senatFakultasController.createSenatFakultas(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/senat-fakultas",
-  senatFakultasController.getAllSenatFakultas.bind(senatFakultasController)
+  senatFakultasController.getAllSenatFakultas.bind(senatFakultasController),
 );
 
 router.put(
@@ -741,42 +743,42 @@ router.put(
   (req: Request, res: Response) => {
     return senatFakultasController.updateSenatFakultas(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/senat-fakultas/:id",
-  senatFakultasController.deleteSenatFakultas.bind(senatFakultasController)
+  senatFakultasController.deleteSenatFakultas.bind(senatFakultasController),
 );
 
 router.post(
   "/senat-fakultas/statistik",
   senatFakultasController.createStatistikSenatFakultas.bind(
-    senatFakultasController
-  )
+    senatFakultasController,
+  ),
 );
 
 router.put(
   "/senat-fakultas/statistik/:id",
   senatFakultasController.updateStatistikSenatFakultas.bind(
-    senatFakultasController
-  )
+    senatFakultasController,
+  ),
 );
 
 router.delete(
   "/senat-fakultas/statistik/:id",
   senatFakultasController.deleteStatistikSenatFakultas.bind(
-    senatFakultasController
-  )
+    senatFakultasController,
+  ),
 );
 
 router.get(
   "/senat-fakultas/statistik",
   senatFakultasController.getAllStatistikSenatFakultas.bind(
-    senatFakultasController
-  )
+    senatFakultasController,
+  ),
 );
 
 router.post(
@@ -804,14 +806,14 @@ router.post(
   (req: Request, res: Response) => {
     return sejarahS2Controller.createSejarahS2(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/sejarah-s2",
-  sejarahS2Controller.getAllSejarahS2.bind(sejarahS2Controller)
+  sejarahS2Controller.getAllSejarahS2.bind(sejarahS2Controller),
 );
 
 router.put(
@@ -839,34 +841,34 @@ router.put(
   (req: Request, res: Response) => {
     return sejarahS2Controller.updateSejarahS2(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sejarah-s2/:id",
-  sejarahS2Controller.deleteData.bind(sejarahS2Controller)
+  sejarahS2Controller.deleteData.bind(sejarahS2Controller),
 );
 
 router.post(
   "/sejarah-s2/statistik",
-  sejarahS2Controller.createStatistikSejarahS2.bind(sejarahS2Controller)
+  sejarahS2Controller.createStatistikSejarahS2.bind(sejarahS2Controller),
 );
 
 router.put(
   "/sejarah-s2/statistik/:id",
-  sejarahS2Controller.updateStatistikSejarahS2.bind(sejarahS2Controller)
+  sejarahS2Controller.updateStatistikSejarahS2.bind(sejarahS2Controller),
 );
 
 router.delete(
   "/sejarah-s2/statistik/:id",
-  sejarahS2Controller.deleteStatistikSejarahS2.bind(sejarahS2Controller)
+  sejarahS2Controller.deleteStatistikSejarahS2.bind(sejarahS2Controller),
 );
 
 router.get(
   "/sejarah-s2/statistik",
-  sejarahS2Controller.getAllStatistikSejarahS2.bind(sejarahS2Controller)
+  sejarahS2Controller.getAllStatistikSejarahS2.bind(sejarahS2Controller),
 );
 
 router.post(
@@ -894,9 +896,9 @@ router.post(
   (req: Request, res: Response) => {
     return sejarahS2Controller.createSejarahS2Banner(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.put(
@@ -924,19 +926,19 @@ router.put(
   (req: Request, res: Response) => {
     return sejarahS2Controller.updateSejarahS2Banner(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sejarah-s2/banner/:id",
-  sejarahS2Controller.deleteSejarahS2Banner.bind(sejarahS2Controller)
+  sejarahS2Controller.deleteSejarahS2Banner.bind(sejarahS2Controller),
 );
 
 router.get(
   "/sejarah-s2/banner",
-  sejarahS2Controller.getDataBanner.bind(sejarahS2Controller)
+  sejarahS2Controller.getDataBanner.bind(sejarahS2Controller),
 );
 
 router.post(
@@ -964,14 +966,14 @@ router.post(
   (req: Request, res: Response) => {
     return VisMisiController.createVisMisi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/visi-misi",
-  VisMisiController.getAllVisMisi.bind(VisMisiController)
+  VisMisiController.getAllVisMisi.bind(VisMisiController),
 );
 
 router.put(
@@ -999,34 +1001,34 @@ router.put(
   (req: Request, res: Response) => {
     return VisMisiController.updateVisMisi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/visi-misi/:id",
-  VisMisiController.deleteVisMisi.bind(VisMisiController)
+  VisMisiController.deleteVisMisi.bind(VisMisiController),
 );
 
 router.post(
   "/visi-misi/statistik",
-  VisMisiController.createStatistikVisiMisi.bind(VisMisiController)
+  VisMisiController.createStatistikVisiMisi.bind(VisMisiController),
 );
 
 router.put(
   "/visi-misi/statistik/:id",
-  VisMisiController.updateStatistikVisiMisi.bind(VisMisiController)
+  VisMisiController.updateStatistikVisiMisi.bind(VisMisiController),
 );
 
 router.delete(
   "/visi-misi/statistik/:id",
-  VisMisiController.deleteStatistikVisiMisi.bind(VisMisiController)
+  VisMisiController.deleteStatistikVisiMisi.bind(VisMisiController),
 );
 
 router.get(
   "/visi-misi/statistik",
-  VisMisiController.getAllStatistikVisiMisi.bind(VisMisiController)
+  VisMisiController.getAllStatistikVisiMisi.bind(VisMisiController),
 );
 
 router.post(
@@ -1054,16 +1056,16 @@ router.post(
   (req: Request, res: Response) => {
     return strukturOrganisasiController.createStrukturOrganisasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/struktur-organisasi",
   strukturOrganisasiController.getAllStrukturOrganisasi.bind(
-    strukturOrganisasiController
-  )
+    strukturOrganisasiController,
+  ),
 );
 
 router.put(
@@ -1091,44 +1093,44 @@ router.put(
   (req: Request, res: Response) => {
     return strukturOrganisasiController.updateStrukturOrganisasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/struktur-organisasi/:id",
   strukturOrganisasiController.deleteStrukturOrganisasi.bind(
-    strukturOrganisasiController
-  )
+    strukturOrganisasiController,
+  ),
 );
 
 router.post(
   "/struktur-organisasi/statistik",
   strukturOrganisasiController.createStatistikStrukturOrganisasi.bind(
-    strukturOrganisasiController
-  )
+    strukturOrganisasiController,
+  ),
 );
 
 router.put(
   "/struktur-organisasi/statistik/:id",
   strukturOrganisasiController.updateStatistikStrukturOrganisasi.bind(
-    strukturOrganisasiController
-  )
+    strukturOrganisasiController,
+  ),
 );
 
 router.delete(
   "/struktur-organisasi/statistik/:id",
   strukturOrganisasiController.deleteStatistikStrukturOrganisasi.bind(
-    strukturOrganisasiController
-  )
+    strukturOrganisasiController,
+  ),
 );
 
 router.get(
   "/struktur-organisasi/statistik",
   strukturOrganisasiController.getAllStatistikStrukturOrganisasi.bind(
-    strukturOrganisasiController
-  )
+    strukturOrganisasiController,
+  ),
 );
 
 router.post(
@@ -1156,14 +1158,14 @@ router.post(
   (req: Request, res: Response) => {
     return pimpinanController.createPimpinan(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/pimpinan",
-  pimpinanController.getAllPimpinan.bind(pimpinanController)
+  pimpinanController.getAllPimpinan.bind(pimpinanController),
 );
 
 router.put(
@@ -1191,34 +1193,34 @@ router.put(
   (req: Request, res: Response) => {
     return pimpinanController.updatePimpinan(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/pimpinan/:id",
-  pimpinanController.deletePimpinan.bind(pimpinanController)
+  pimpinanController.deletePimpinan.bind(pimpinanController),
 );
 
 router.post(
   "/pimpinan/statistik",
-  pimpinanController.createStatistikPimpinan.bind(pimpinanController)
+  pimpinanController.createStatistikPimpinan.bind(pimpinanController),
 );
 
 router.put(
   "/pimpinan/statistik/:id",
-  pimpinanController.updateStatistikPimpinan.bind(pimpinanController)
+  pimpinanController.updateStatistikPimpinan.bind(pimpinanController),
 );
 
 router.delete(
   "/pimpinan/statistik/:id",
-  pimpinanController.deleteStatistikPimpinan.bind(pimpinanController)
+  pimpinanController.deleteStatistikPimpinan.bind(pimpinanController),
 );
 
 router.get(
   "/pimpinan/statistik",
-  pimpinanController.getAllStatistikPimpinan.bind(pimpinanController)
+  pimpinanController.getAllStatistikPimpinan.bind(pimpinanController),
 );
 
 router.post(
@@ -1246,16 +1248,16 @@ router.post(
   (req: Request, res: Response) => {
     return programSarjanaHukumController.createProgramSarjanaHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/program-sarjana-hukum",
   programSarjanaHukumController.getAllProgramSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.put(
@@ -1283,72 +1285,72 @@ router.put(
   (req: Request, res: Response) => {
     return programSarjanaHukumController.updateProgramSarjanaHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/program-sarjana-hukum/:id",
   programSarjanaHukumController.deleteProgramSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.post(
   "/program-sarjana-hukum/statistik",
   programSarjanaHukumController.createStatistikProgramSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.put(
   "/program-sarjana-hukum/statistik/:id",
   programSarjanaHukumController.updateStatistikProgramSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.delete(
   "/program-sarjana-hukum/statistik/:id",
   programSarjanaHukumController.deleteStatistikProgramSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.get(
   "/program-sarjana-hukum/statistik",
   programSarjanaHukumController.getAllStatistikProgramSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.post(
   "/program-sarjana-hukum/prospek-karir",
   programSarjanaHukumController.createProspekKarirSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.put(
   "/program-sarjana-hukum/prospek-karir/:id",
   programSarjanaHukumController.updateProspekKarirSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.delete(
   "/program-sarjana-hukum/prospek-karir/:id",
   programSarjanaHukumController.deleteProspekKarirSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.get(
   "/program-sarjana-hukum/prospek-karir",
   programSarjanaHukumController.getAllProspekKarirSarjanaHukum.bind(
-    programSarjanaHukumController
-  )
+    programSarjanaHukumController,
+  ),
 );
 
 router.post(
@@ -1376,16 +1378,16 @@ router.post(
   (req: Request, res: Response) => {
     return programMasgisterHukumController.createProgramMagisterHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/program-magister-hukum",
   programMasgisterHukumController.getAllProgramMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.put(
@@ -1413,44 +1415,44 @@ router.put(
   (req: Request, res: Response) => {
     return programMasgisterHukumController.updateProgramMagisterHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/program-magister-hukum/:id",
   programMasgisterHukumController.deleteProgramMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.post(
   "/program-magister-hukum/statistik",
   programMasgisterHukumController.createStatistikProgramMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.get(
   "/program-magister-hukum/statistik",
   programMasgisterHukumController.getAllStatistikProgramMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.put(
   "/program-magister-hukum/statistik/:id",
   programMasgisterHukumController.updateStatistikProgramMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.delete(
   "/program-magister-hukum/statistik/:id",
   programMasgisterHukumController.deleteStatistikProgramMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.post(
@@ -1478,9 +1480,9 @@ router.post(
   (req: Request, res: Response) => {
     return programMasgisterHukumController.createProspekKarirMagisterHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.put(
@@ -1508,23 +1510,23 @@ router.put(
   (req: Request, res: Response) => {
     return programMasgisterHukumController.updateProspekKarirMagisterHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/program-magister-hukum/prospek-karir/:id",
   programMasgisterHukumController.deleteProspekKarirMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.get(
   "/program-magister-hukum/prospek-karir",
   programMasgisterHukumController.getAllProspekKarirMagisterHukum.bind(
-    programMasgisterHukumController
-  )
+    programMasgisterHukumController,
+  ),
 );
 
 router.post(
@@ -1555,14 +1557,14 @@ router.post(
   (req: Request, res: Response) => {
     return SuratMasukController.createSuratMasuk(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/surat-masuk",
-  SuratMasukController.getAllSuratMasuk.bind(SuratMasukController)
+  SuratMasukController.getAllSuratMasuk.bind(SuratMasukController),
 );
 
 router.put(
@@ -1593,34 +1595,42 @@ router.put(
   (req: Request, res: Response) => {
     return SuratMasukController.updateSuratMasuk(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/surat-masuk/:id",
-  SuratMasukController.deleteSuratMasuk.bind(SuratMasukController)
+  SuratMasukController.deleteSuratMasuk.bind(SuratMasukController),
 );
 
 router.post(
   "/surat-masuk/statistik",
-  SuratMasukController.createStatistikArsipSuratMasuk.bind(SuratMasukController)
+  SuratMasukController.createStatistikArsipSuratMasuk.bind(
+    SuratMasukController,
+  ),
 );
 
 router.get(
   "/surat-masuk/statistik",
-  SuratMasukController.getAllStatistikArsipSuratMasuk.bind(SuratMasukController)
+  SuratMasukController.getAllStatistikArsipSuratMasuk.bind(
+    SuratMasukController,
+  ),
 );
 
 router.put(
   "/surat-masuk/statistik/:id",
-  SuratMasukController.updateStatistikArsipSuratMasuk.bind(SuratMasukController)
+  SuratMasukController.updateStatistikArsipSuratMasuk.bind(
+    SuratMasukController,
+  ),
 );
 
 router.delete(
   "/surat-masuk/statistik/:id",
-  SuratMasukController.deleteStatistikArsipSuratMasuk.bind(SuratMasukController)
+  SuratMasukController.deleteStatistikArsipSuratMasuk.bind(
+    SuratMasukController,
+  ),
 );
 
 router.post(
@@ -1651,14 +1661,14 @@ router.post(
   (req: Request, res: Response) => {
     return SuratKeluarController.createSuratKeluar(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/surat-keluar",
-  SuratKeluarController.getAllSuratKeluar.bind(SuratKeluarController)
+  SuratKeluarController.getAllSuratKeluar.bind(SuratKeluarController),
 );
 
 router.put(
@@ -1689,42 +1699,42 @@ router.put(
   (req: Request, res: Response) => {
     return SuratKeluarController.updateSuratKeluar(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/surat-keluar/:id",
-  SuratKeluarController.deleteSuratKeluar.bind(SuratKeluarController)
+  SuratKeluarController.deleteSuratKeluar.bind(SuratKeluarController),
 );
 
 router.post(
   "/surat-keluar/statistik",
   SuratKeluarController.createStatistikArsipSuratKeluar.bind(
-    SuratKeluarController
-  )
+    SuratKeluarController,
+  ),
 );
 
 router.get(
   "/surat-keluar/statistik",
   SuratKeluarController.getAllStatistikArsipSuratKeluar.bind(
-    SuratKeluarController
-  )
+    SuratKeluarController,
+  ),
 );
 
 router.put(
   "/surat-keluar/statistik/:id",
   SuratKeluarController.updateStatistikArsipSuratKeluar.bind(
-    SuratKeluarController
-  )
+    SuratKeluarController,
+  ),
 );
 
 router.delete(
   "/surat-keluar/statistik/:id",
   SuratKeluarController.deleteStatistikArsipSuratKeluar.bind(
-    SuratKeluarController
-  )
+    SuratKeluarController,
+  ),
 );
 
 router.post(
@@ -1752,16 +1762,16 @@ router.post(
   (req: Request, res: Response) => {
     return KeteranganAktifMahasiswaController.createKeteranganAktifMahasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/keterangan-aktif-mhs",
   KeteranganAktifMahasiswaController.getAllKeteranganAktifMahasiswa.bind(
-    KeteranganAktifMahasiswaController
-  )
+    KeteranganAktifMahasiswaController,
+  ),
 );
 
 router.put(
@@ -1789,44 +1799,44 @@ router.put(
   (req: Request, res: Response) => {
     return KeteranganAktifMahasiswaController.updateKeteranganAktifMahasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/keterangan-aktif-mhs/:id",
   KeteranganAktifMahasiswaController.deleteKeteranganAktifMahasiswa.bind(
-    KeteranganAktifMahasiswaController
-  )
+    KeteranganAktifMahasiswaController,
+  ),
 );
 
 router.post(
   "/keterangan-aktif-mhs/statistik",
   KeteranganAktifMahasiswaController.createStatistikKeteranganAktifMahasiswa.bind(
-    KeteranganAktifMahasiswaController
-  )
+    KeteranganAktifMahasiswaController,
+  ),
 );
 
 router.get(
   "/keterangan-aktif-mhs/statistik",
   KeteranganAktifMahasiswaController.getAllStatistikKeteranganAktifMahasiswa.bind(
-    KeteranganAktifMahasiswaController
-  )
+    KeteranganAktifMahasiswaController,
+  ),
 );
 
 router.put(
   "/keterangan-aktif-mhs/statistik/:id",
   KeteranganAktifMahasiswaController.updateStatistikKeteranganAktifMahasiswa.bind(
-    KeteranganAktifMahasiswaController
-  )
+    KeteranganAktifMahasiswaController,
+  ),
 );
 
 router.delete(
   "/keterangan-aktif-mhs/statistik/:id",
   KeteranganAktifMahasiswaController.deleteStatistikKeteranganAktifMahasiswa.bind(
-    KeteranganAktifMahasiswaController
-  )
+    KeteranganAktifMahasiswaController,
+  ),
 );
 
 router.post(
@@ -1857,16 +1867,16 @@ router.post(
   (req: Request, res: Response) => {
     return SuratIjinPenelitianController.createSuratIjinPenelitian(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/surat-ijin-penelitian",
   SuratIjinPenelitianController.getAllSuratIjinPenelitian.bind(
-    SuratIjinPenelitianController
-  )
+    SuratIjinPenelitianController,
+  ),
 );
 
 router.put(
@@ -1897,107 +1907,107 @@ router.put(
   (req: Request, res: Response) => {
     return SuratIjinPenelitianController.updateSuratIjinPenelitian(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/surat-ijin-penelitian/:id",
   SuratIjinPenelitianController.deleteSuratIjinPenelitian.bind(
-    SuratIjinPenelitianController
-  )
+    SuratIjinPenelitianController,
+  ),
 );
 
 router.get(
   "/keterangan-aktif-mhs/data",
   KeteranganAktifMahasiswaController.getAllDataKeteranganAktifMahasiswa.bind(
-    KeteranganAktifMahasiswaController
-  )
+    KeteranganAktifMahasiswaController,
+  ),
 );
 
 router.post(
   "/surat-ijin-penelitian/statistik",
   SuratIjinPenelitianController.createStatistikSuratIjinPenelitian.bind(
-    SuratIjinPenelitianController
-  )
+    SuratIjinPenelitianController,
+  ),
 );
 
 router.get(
   "/surat-ijin-penelitian/statistik",
   SuratIjinPenelitianController.getStatistikSuratIjinPenelitian.bind(
-    SuratIjinPenelitianController
-  )
+    SuratIjinPenelitianController,
+  ),
 );
 
 router.put(
   "/surat-ijin-penelitian/statistik/:id",
   SuratIjinPenelitianController.updateStatistikSuratIjinPenelitian.bind(
-    SuratIjinPenelitianController
-  )
+    SuratIjinPenelitianController,
+  ),
 );
 
 router.delete(
   "/surat-ijin-penelitian/statistik/:id",
   SuratIjinPenelitianController.deleteStatistikSuratIjinPenelitian.bind(
-    SuratIjinPenelitianController
-  )
+    SuratIjinPenelitianController,
+  ),
 );
 
 router.post(
   "/surat-kelakuan-baik",
   suratKelakuanBaikController.createSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.get(
   "/surat-kelakuan-baik",
   suratKelakuanBaikController.getAllSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.put(
   "/surat-kelakuan-baik/:id",
   suratKelakuanBaikController.updateSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.delete(
   "/surat-kelakuan-baik/:id",
   suratKelakuanBaikController.deleteSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.get(
   "/surat-kelakuan-baik/statistik",
   suratKelakuanBaikController.getStatistikSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.put(
   "/surat-kelakuan-baik/statistik/:id",
   suratKelakuanBaikController.updateStatistikSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.delete(
   "/surat-kelakuan-baik/statistik/:id",
   suratKelakuanBaikController.deleteStatistikSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.post(
   "/surat-kelakuan-baik/statistik",
   suratKelakuanBaikController.createStatistikSuratKelakuanBaik.bind(
-    suratKelakuanBaikController
-  )
+    suratKelakuanBaikController,
+  ),
 );
 
 router.post(
@@ -2025,16 +2035,16 @@ router.post(
   (req: Request, res: Response) => {
     return suratPengajuanBeasiswaController.createSuratPengajuanBeasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/surat-pengajuan-beasiswa",
   suratPengajuanBeasiswaController.getAllSuratPengajuanBeasiswa.bind(
-    suratPengajuanBeasiswaController
-  )
+    suratPengajuanBeasiswaController,
+  ),
 );
 
 router.put(
@@ -2062,44 +2072,44 @@ router.put(
   (req: Request, res: Response) => {
     return suratPengajuanBeasiswaController.updateSuratPengajuanBeasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/surat-pengajuan-beasiswa/:id",
   suratPengajuanBeasiswaController.deleteSuratPengajuanBeasiswa.bind(
-    suratPengajuanBeasiswaController
-  )
+    suratPengajuanBeasiswaController,
+  ),
 );
 
 router.get(
   "/surat-pengajuan-beasiswa/statistik",
   suratPengajuanBeasiswaController.getStatistikSuratPengajuanBeasiswa.bind(
-    suratPengajuanBeasiswaController
-  )
+    suratPengajuanBeasiswaController,
+  ),
 );
 
 router.put(
   "/surat-pengajuan-beasiswa/statistik/:id",
   suratPengajuanBeasiswaController.updateStatistikSuratPengajuanBeasiswa.bind(
-    suratPengajuanBeasiswaController
-  )
+    suratPengajuanBeasiswaController,
+  ),
 );
 
 router.delete(
   "/surat-pengajuan-beasiswa/statistik/:id",
   suratPengajuanBeasiswaController.deleteStatistikSuratPengajuanBeasiswa.bind(
-    suratPengajuanBeasiswaController
-  )
+    suratPengajuanBeasiswaController,
+  ),
 );
 
 router.post(
   "/surat-pengajuan-beasiswa/statistik",
   suratPengajuanBeasiswaController.createStatistikSuratPengajuanBeasiswa.bind(
-    suratPengajuanBeasiswaController
-  )
+    suratPengajuanBeasiswaController,
+  ),
 );
 
 router.post(
@@ -2127,16 +2137,16 @@ router.post(
   (req: Request, res: Response) => {
     return seminarProposalController.createSeminarProposal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/seminar-proposal",
   seminarProposalController.getAllSeminarProposal.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
 
 router.put(
@@ -2164,118 +2174,74 @@ router.put(
   (req: Request, res: Response) => {
     return seminarProposalController.updateSeminarProposal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/seminar-proposal/:id",
   seminarProposalController.deleteSeminarProposal.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
 
 router.post(
   "/prosedur-pelaksanaan",
-  upload.fields([{ name: "foto", maxCount: 1 }]),
-  (err: any, req: Request, res: Response, next: Function) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: err.message || "File upload error",
-      });
-    }
-    next();
-  },
-  (req: Request, res: Response, next: Function) => {
-    const multerReq = req as unknown as MulterRequest;
-    if (multerReq.fileValidationError) {
-      return res.status(400).json({
-        success: false,
-        message: multerReq.fileValidationError,
-      });
-    }
-    next();
-  },
-  (req: Request, res: Response) => {
-    return seminarProposalController.createProsedurPelaksanaan(
-      req as unknown as MulterRequest,
-      res
-    );
-  }
+  seminarProposalController.createProsedurPelaksanaan.bind(
+    seminarProposalController,
+  ),
 );
 
 router.get(
   "/prosedur-pelaksanaan",
   seminarProposalController.getAllProsedurPelaksanaan.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
+
+router.get("/testing", testingController.GetData.bind(testingController));
 
 router.put(
   "/prosedur-pelaksanaan/:id",
-  upload.fields([{ name: "foto", maxCount: 1 }]),
-  (err: any, req: Request, res: Response, next: Function) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: err.message || "File upload error",
-      });
-    }
-    next();
-  },
-  (req: Request, res: Response, next: Function) => {
-    const multerReq = req as unknown as MulterRequest;
-    if (multerReq.fileValidationError) {
-      return res.status(400).json({
-        success: false,
-        message: multerReq.fileValidationError,
-      });
-    }
-    next();
-  },
-  (req: Request, res: Response) => {
-    return seminarProposalController.updateProsedurPelaksanaan(
-      req as unknown as MulterRequest,
-      res
-    );
-  }
+  seminarProposalController.updateProsedurPelaksanaan.bind(
+    seminarProposalController,
+  ),
 );
 
 router.delete(
   "/prosedur-pelaksanaan/:id",
   seminarProposalController.deleteProsedurPelaksanaan.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
 
 router.post(
   "/seminar-proposal/statistik",
   seminarProposalController.createStatistikSeminarProposal.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
 
 router.get(
   "/seminar-proposal/statistik",
   seminarProposalController.getAllStatistikSeminarProposal.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
 
 router.put(
   "/seminar-proposal/statistik/:id",
   seminarProposalController.updateStatistikSeminarProposal.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
 
 router.delete(
   "/seminar-proposal/statistik/:id",
   seminarProposalController.deleteStatistikSeminarProposal.bind(
-    seminarProposalController
-  )
+    seminarProposalController,
+  ),
 );
 
 router.post(
@@ -2303,14 +2269,14 @@ router.post(
   (req: Request, res: Response) => {
     return sidangSkripsiController.createSidangSkripsi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/sidang-skripsi",
-  sidangSkripsiController.getAllSidangSkripsi.bind(sidangSkripsiController)
+  sidangSkripsiController.getAllSidangSkripsi.bind(sidangSkripsiController),
 );
 
 router.put(
@@ -2338,21 +2304,21 @@ router.put(
   (req: Request, res: Response) => {
     return sidangSkripsiController.updateSidangSkripsi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sidang-skripsi/:id",
-  sidangSkripsiController.deleteSidangSkripsi.bind(sidangSkripsiController)
+  sidangSkripsiController.deleteSidangSkripsi.bind(sidangSkripsiController),
 );
 
 router.get(
   "/prosedur-sidang-skripsi",
   sidangSkripsiController.getAllProsedurSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.post(
@@ -2380,9 +2346,9 @@ router.post(
   (req: Request, res: Response) => {
     return sidangSkripsiController.createProsedurSidangSkripsi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.put(
@@ -2410,72 +2376,72 @@ router.put(
   (req: Request, res: Response) => {
     return sidangSkripsiController.updateProsedurSidangSkripsi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/prosedur-sidang-skripsi/:id",
   sidangSkripsiController.deleteProsedurSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.post(
   "/sidang-skripsi/statistik",
   sidangSkripsiController.createStatistikSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.get(
   "/sidang-skripsi/statistik",
   sidangSkripsiController.getAllStatistikSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.put(
   "/sidang-skripsi/statistik/:id",
   sidangSkripsiController.updateStatistikSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.delete(
   "/sidang-skripsi/statistik/:id",
   sidangSkripsiController.deleteStatistikSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.post(
   "/sidang-skripsi/kriteria",
   sidangSkripsiController.createKriteriaSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.get(
   "/sidang-skripsi/kriteria",
   sidangSkripsiController.getAllKriteriaSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.put(
   "/sidang-skripsi/kriteria/:id",
   sidangSkripsiController.updateKriteriaSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.delete(
   "/sidang-skripsi/kriteria/:id",
   sidangSkripsiController.deleteKriteriaSidangSkripsi.bind(
-    sidangSkripsiController
-  )
+    sidangSkripsiController,
+  ),
 );
 
 router.post(
@@ -2503,16 +2469,16 @@ router.post(
   (req: Request, res: Response) => {
     return keteranganPendampingController.createKeteranganPendampingIjazah(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/keterangan-pendamping-ijazah",
   keteranganPendampingController.getAllKeteranganPendampingIjazah.bind(
-    keteranganPendampingController
-  )
+    keteranganPendampingController,
+  ),
 );
 
 router.put(
@@ -2540,44 +2506,44 @@ router.put(
   (req: Request, res: Response) => {
     return keteranganPendampingController.updateKeteranganPendampingIjazah(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/keterangan-pendamping-ijazah/:id",
   keteranganPendampingController.deleteKeteranganPendampingIjazah.bind(
-    keteranganPendampingController
-  )
+    keteranganPendampingController,
+  ),
 );
 
 router.post(
   "/keterangan-pendamping-ijazah/statistik",
   keteranganPendampingController.createStatistikKeteranganPendampingIjazah.bind(
-    keteranganPendampingController
-  )
+    keteranganPendampingController,
+  ),
 );
 
 router.get(
   "/keterangan-pendamping-ijazah/statistik",
   keteranganPendampingController.getStatistikKeteranganPendampingIjazah.bind(
-    keteranganPendampingController
-  )
+    keteranganPendampingController,
+  ),
 );
 
 router.put(
   "/keterangan-pendamping-ijazah/statistik/:id",
   keteranganPendampingController.updateStatistikKeteranganPendampingIjazah.bind(
-    keteranganPendampingController
-  )
+    keteranganPendampingController,
+  ),
 );
 
 router.delete(
   "/keterangan-pendamping-ijazah/statistik/:id",
   keteranganPendampingController.deleteStatistikKeteranganPendampingIjazah.bind(
-    keteranganPendampingController
-  )
+    keteranganPendampingController,
+  ),
 );
 
 router.post(
@@ -2605,16 +2571,16 @@ router.post(
   (req: Request, res: Response) => {
     return ujianKomprehensifController.createUjianKomprehensif(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/ujian-komprehensif",
   ujianKomprehensifController.getAllUjianKomprehensif.bind(
-    ujianKomprehensifController
-  )
+    ujianKomprehensifController,
+  ),
 );
 
 router.put(
@@ -2642,44 +2608,44 @@ router.put(
   (req: Request, res: Response) => {
     return ujianKomprehensifController.updateUjianKomprehensif(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/ujian-komprehensif/:id",
   ujianKomprehensifController.deleteUjianKomprehensif.bind(
-    ujianKomprehensifController
-  )
+    ujianKomprehensifController,
+  ),
 );
 
 router.post(
   "/ujian-komprehensif/statistik",
   ujianKomprehensifController.createStatistikUjianKomprehensif.bind(
-    ujianKomprehensifController
-  )
+    ujianKomprehensifController,
+  ),
 );
 
 router.get(
   "/ujian-komprehensif/statistik",
   ujianKomprehensifController.getAllStatistikUjianKomprehensif.bind(
-    ujianKomprehensifController
-  )
+    ujianKomprehensifController,
+  ),
 );
 
 router.put(
   "/ujian-komprehensif/statistik/:id",
   ujianKomprehensifController.updateStatistikUjianKomprehensif.bind(
-    ujianKomprehensifController
-  )
+    ujianKomprehensifController,
+  ),
 );
 
 router.delete(
   "/ujian-komprehensif/statistik/:id",
   ujianKomprehensifController.deleteStatistikUjianKomprehensif.bind(
-    ujianKomprehensifController
-  )
+    ujianKomprehensifController,
+  ),
 );
 
 router.post(
@@ -2707,14 +2673,14 @@ router.post(
   (req: Request, res: Response) => {
     return matrikulasiController.createMatrikulasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/matrikulasi",
-  matrikulasiController.getAllMatrikulasi.bind(matrikulasiController)
+  matrikulasiController.getAllMatrikulasi.bind(matrikulasiController),
 );
 
 router.put(
@@ -2742,34 +2708,34 @@ router.put(
   (req: Request, res: Response) => {
     return matrikulasiController.updateMatrikulasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/matrikulasi/:id",
-  matrikulasiController.deleteMatrikulasi.bind(matrikulasiController)
+  matrikulasiController.deleteMatrikulasi.bind(matrikulasiController),
 );
 
 router.post(
   "/matrikulasi/statistik",
-  matrikulasiController.createStatistikMatrikulasi.bind(matrikulasiController)
+  matrikulasiController.createStatistikMatrikulasi.bind(matrikulasiController),
 );
 
 router.get(
   "/matrikulasi/statistik",
-  matrikulasiController.getAllStatistikMatrikulasi.bind(matrikulasiController)
+  matrikulasiController.getAllStatistikMatrikulasi.bind(matrikulasiController),
 );
 
 router.put(
   "/matrikulasi/statistik/:id",
-  matrikulasiController.updateStatistikMatrikulasi.bind(matrikulasiController)
+  matrikulasiController.updateStatistikMatrikulasi.bind(matrikulasiController),
 );
 
 router.delete(
   "/matrikulasi/statistik/:id",
-  matrikulasiController.deleteStatistikMatrikulasi.bind(matrikulasiController)
+  matrikulasiController.deleteStatistikMatrikulasi.bind(matrikulasiController),
 );
 
 router.post(
@@ -2797,14 +2763,14 @@ router.post(
   (req: Request, res: Response) => {
     return kelompokRisetController.createKelompokRiset(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/kelompok-riset",
-  kelompokRisetController.getAllKelompokRiset.bind(kelompokRisetController)
+  kelompokRisetController.getAllKelompokRiset.bind(kelompokRisetController),
 );
 router.put(
   "/kelompok-riset/:id",
@@ -2831,41 +2797,41 @@ router.put(
   (req: Request, res: Response) => {
     return kelompokRisetController.updateKelompokRiset(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 router.delete(
   "/kelompok-riset/:id",
-  kelompokRisetController.deleteKelompokRiset.bind(kelompokRisetController)
+  kelompokRisetController.deleteKelompokRiset.bind(kelompokRisetController),
 );
 
 router.post(
   "/kelompok-riset/statistik",
   kelompokRisetController.createStatistikKelompokRiset.bind(
-    kelompokRisetController
-  )
+    kelompokRisetController,
+  ),
 );
 
 router.get(
   "/kelompok-riset/statistik",
   kelompokRisetController.getAllStatistikKelompokRiset.bind(
-    kelompokRisetController
-  )
+    kelompokRisetController,
+  ),
 );
 
 router.put(
   "/kelompok-riset/statistik/:id",
   kelompokRisetController.updateStatistikKelompokRiset.bind(
-    kelompokRisetController
-  )
+    kelompokRisetController,
+  ),
 );
 
 router.delete(
   "/kelompok-riset/statistik/:id",
   kelompokRisetController.deleteStatistikKelompokRiset.bind(
-    kelompokRisetController
-  )
+    kelompokRisetController,
+  ),
 );
 
 router.post(
@@ -2893,9 +2859,9 @@ router.post(
   (req: Request, res: Response) => {
     return sejarahLbkhController.createSejarahLBKH(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.put(
@@ -2923,39 +2889,39 @@ router.put(
   (req: Request, res: Response) => {
     return sejarahLbkhController.updateSejarahLBKH(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sejarah-lbkh/:id",
-  sejarahLbkhController.deleteSejarahLBKH.bind(sejarahLbkhController)
+  sejarahLbkhController.deleteSejarahLBKH.bind(sejarahLbkhController),
 );
 
 router.get(
   "/sejarah-lbkh",
-  sejarahLbkhController.getAllSejarahLBKH.bind(sejarahLbkhController)
+  sejarahLbkhController.getAllSejarahLBKH.bind(sejarahLbkhController),
 );
 
 router.post(
   "/sejarah-lbkh/statistik",
-  sejarahLbkhController.createStatistik.bind(sejarahLbkhController)
+  sejarahLbkhController.createStatistik.bind(sejarahLbkhController),
 );
 
 router.get(
   "/sejarah-lbkh/statistik",
-  sejarahLbkhController.getAllStatistik.bind(sejarahLbkhController)
+  sejarahLbkhController.getAllStatistik.bind(sejarahLbkhController),
 );
 
 router.put(
   "/sejarah-lbkh/statistik/:id",
-  sejarahLbkhController.updateStatistik.bind(sejarahLbkhController)
+  sejarahLbkhController.updateStatistik.bind(sejarahLbkhController),
 );
 
 router.delete(
   "/sejarah-lbkh/statistik/:id",
-  sejarahLbkhController.deleteStatistik.bind(sejarahLbkhController)
+  sejarahLbkhController.deleteStatistik.bind(sejarahLbkhController),
 );
 
 router.post(
@@ -2983,14 +2949,14 @@ router.post(
   (req: Request, res: Response) => {
     return visiMisiLbkhController.createVisiMisiLBKH(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/visi-misi-lbkh",
-  visiMisiLbkhController.getAllVisiMisiLBKH.bind(visiMisiLbkhController)
+  visiMisiLbkhController.getAllVisiMisiLBKH.bind(visiMisiLbkhController),
 );
 
 router.put(
@@ -3018,42 +2984,42 @@ router.put(
   (req: Request, res: Response) => {
     return visiMisiLbkhController.updateVisiMisiLBKH(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/visi-misi-lbkh/:id",
-  visiMisiLbkhController.deleteVisiMisiLBKH.bind(visiMisiLbkhController)
+  visiMisiLbkhController.deleteVisiMisiLBKH.bind(visiMisiLbkhController),
 );
 
 router.post(
   "/visi-misi-lbkh/statistik",
   visiMisiLbkhController.createStatistikVisiMisiLBKH.bind(
-    visiMisiLbkhController
-  )
+    visiMisiLbkhController,
+  ),
 );
 
 router.get(
   "/visi-misi-lbkh/statistik",
   visiMisiLbkhController.getAllStatistikVisiMisiLBKH.bind(
-    visiMisiLbkhController
-  )
+    visiMisiLbkhController,
+  ),
 );
 
 router.put(
   "/visi-misi-lbkh/statistik/:id",
   visiMisiLbkhController.updateStatistikVisiMisiLBKH.bind(
-    visiMisiLbkhController
-  )
+    visiMisiLbkhController,
+  ),
 );
 
 router.delete(
   "/visi-misi-lbkh/statistik/:id",
   visiMisiLbkhController.deleteStatistikVisiMisiLBKH.bind(
-    visiMisiLbkhController
-  )
+    visiMisiLbkhController,
+  ),
 );
 
 router.post(
@@ -3081,14 +3047,14 @@ router.post(
   (req: Request, res: Response) => {
     return pengurusLbkhController.createPengurusLbkh(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/pengurus-lbkh",
-  pengurusLbkhController.getAllPengurusLbkh.bind(pengurusLbkhController)
+  pengurusLbkhController.getAllPengurusLbkh.bind(pengurusLbkhController),
 );
 
 router.put(
@@ -3116,42 +3082,42 @@ router.put(
   (req: Request, res: Response) => {
     return pengurusLbkhController.updatePengurusLbkh(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/pengurus-lbkh/:id",
-  pengurusLbkhController.deletePengurusLbkh.bind(pengurusLbkhController)
+  pengurusLbkhController.deletePengurusLbkh.bind(pengurusLbkhController),
 );
 
 router.post(
   "/pengurus-lbkh/statistik",
   pengurusLbkhController.createStatistikPengurusLBKH.bind(
-    pengurusLbkhController
-  )
+    pengurusLbkhController,
+  ),
 );
 
 router.get(
   "/pengurus-lbkh/statistik",
   pengurusLbkhController.getAllStatistikPengurusLBKH.bind(
-    pengurusLbkhController
-  )
+    pengurusLbkhController,
+  ),
 );
 
 router.put(
   "/pengurus-lbkh/statistik/:id",
   pengurusLbkhController.updateStatistikPengurusLBKH.bind(
-    pengurusLbkhController
-  )
+    pengurusLbkhController,
+  ),
 );
 
 router.delete(
   "/pengurus-lbkh/statistik/:id",
   pengurusLbkhController.deleteStatistikPengurusLBKH.bind(
-    pengurusLbkhController
-  )
+    pengurusLbkhController,
+  ),
 );
 
 router.post(
@@ -3179,16 +3145,16 @@ router.post(
   (req: Request, res: Response) => {
     return AdvokatParalegalController.createAdvokatParalegal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/advokat-paralegal",
   AdvokatParalegalController.getAllAdvokatParalegal.bind(
-    AdvokatParalegalController
-  )
+    AdvokatParalegalController,
+  ),
 );
 
 router.put(
@@ -3216,44 +3182,44 @@ router.put(
   (req: Request, res: Response) => {
     return AdvokatParalegalController.updateAdvokatParalegal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/advokat-paralegal/:id",
   AdvokatParalegalController.deleteAdvokatParalegal.bind(
-    AdvokatParalegalController
-  )
+    AdvokatParalegalController,
+  ),
 );
 
 router.post(
   "/advokat-paralegal/statistik",
   AdvokatParalegalController.createStatistikAdvokatParalegal.bind(
-    AdvokatParalegalController
-  )
+    AdvokatParalegalController,
+  ),
 );
 
 router.get(
   "/advokat-paralegal/statistik",
   AdvokatParalegalController.getAllStatistikAdvokatParalegal.bind(
-    AdvokatParalegalController
-  )
+    AdvokatParalegalController,
+  ),
 );
 
 router.put(
   "/advokat-paralegal/statistik/:id",
   AdvokatParalegalController.updateStatistikAdvokatParalegal.bind(
-    AdvokatParalegalController
-  )
+    AdvokatParalegalController,
+  ),
 );
 
 router.delete(
   "/advokat-paralegal/statistik/:id",
   AdvokatParalegalController.deleteStatistikAdvokatParalegal.bind(
-    AdvokatParalegalController
-  )
+    AdvokatParalegalController,
+  ),
 );
 
 router.post(
@@ -3281,16 +3247,16 @@ router.post(
   (req: Request, res: Response) => {
     return konsultasiHukumController.createKonsultasiHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/konsultasi-hukum",
   konsultasiHukumController.getAllKonsultasiHukum.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 
 router.put(
@@ -3318,16 +3284,16 @@ router.put(
   (req: Request, res: Response) => {
     return konsultasiHukumController.updateKonsultasiHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/konsultasi-hukum/:id",
   konsultasiHukumController.deleteKonsultasiHukum.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 
 router.post(
@@ -3355,16 +3321,16 @@ router.post(
   (req: Request, res: Response) => {
     return konsultasiHukumController.createProsedurKonsultasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/prosedur-konsultasi",
   konsultasiHukumController.getAllProsedurKonsultasi.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 
 router.put(
@@ -3392,44 +3358,44 @@ router.put(
   (req: Request, res: Response) => {
     return konsultasiHukumController.updateProsedurKonsultasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/prosedur-konsultasi/:id",
   konsultasiHukumController.deleteProsedurKonsultasi.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 
 router.post(
   "/prosedur-konsultasi/statistik",
   konsultasiHukumController.createStatistikProsedurKonsultasi.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 
 router.get(
   "/prosedur-konsultasi/statistik",
   konsultasiHukumController.getAllStatistikProsedurKonsultasi.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 
 router.put(
   "/prosedur-konsultasi/statistik/:id",
   konsultasiHukumController.updateStatistikProsedurKonsultasi.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 
 router.delete(
   "/prosedur-konsultasi/statistik/:id",
   konsultasiHukumController.deleteStatistikProsedurKonsultasi.bind(
-    konsultasiHukumController
-  )
+    konsultasiHukumController,
+  ),
 );
 router.post(
   "/pendampingan-hukum",
@@ -3456,16 +3422,16 @@ router.post(
   (req: Request, res: Response) => {
     return pendampinganHukumController.createPendampinganHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/pendampingan-hukum",
   pendampinganHukumController.getAllPendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 
 router.put(
@@ -3493,16 +3459,16 @@ router.put(
   (req: Request, res: Response) => {
     return pendampinganHukumController.updatePendampinganHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/pendampingan-hukum/:id",
   pendampinganHukumController.deletePendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 
 router.post(
@@ -3530,16 +3496,16 @@ router.post(
   (req: Request, res: Response) => {
     return pendampinganHukumController.createProsedurPendampinganHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/prosedur-pendampingan-hukum",
   pendampinganHukumController.getAllProsedurPendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 
 router.put(
@@ -3567,44 +3533,44 @@ router.put(
   (req: Request, res: Response) => {
     return pendampinganHukumController.updateProsedurPendampinganHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/prosedur-pendampingan-hukum/:id",
   pendampinganHukumController.deleteProsedurPendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 
 router.post(
   "/prosedur-pendampingan-hukum/statistik",
   pendampinganHukumController.createStatistikProsedurPendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 
 router.get(
   "/prosedur-pendampingan-hukum/statistik",
   pendampinganHukumController.getAllStatistikProsedurPendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 
 router.put(
   "/prosedur-pendampingan-hukum/statistik/:id",
   pendampinganHukumController.updateStatistikProsedurPendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 
 router.delete(
   "/prosedur-pendampingan-hukum/statistik/:id",
   pendampinganHukumController.deleteStatistikProsedurPendampinganHukum.bind(
-    pendampinganHukumController
-  )
+    pendampinganHukumController,
+  ),
 );
 router.post(
   "/pembuatan-legal",
@@ -3631,14 +3597,14 @@ router.post(
   (req: Request, res: Response) => {
     return pembuatanLegalController.createPembuatanLegal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/pembuatan-legal",
-  pembuatanLegalController.getAllPembuatanLegal.bind(pembuatanLegalController)
+  pembuatanLegalController.getAllPembuatanLegal.bind(pembuatanLegalController),
 );
 
 router.put(
@@ -3666,14 +3632,14 @@ router.put(
   (req: Request, res: Response) => {
     return pembuatanLegalController.updatePembuatanLegal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/pembuatan-legal/:id",
-  pembuatanLegalController.deletePembuatanLegal.bind(pembuatanLegalController)
+  pembuatanLegalController.deletePembuatanLegal.bind(pembuatanLegalController),
 );
 
 router.post(
@@ -3701,16 +3667,16 @@ router.post(
   (req: Request, res: Response) => {
     return pembuatanLegalController.createProsedurPembuatanLegal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/prosedur-pembuatan-legal",
   pembuatanLegalController.getAllProsedurPembuatanLegal.bind(
-    pembuatanLegalController
-  )
+    pembuatanLegalController,
+  ),
 );
 
 router.put(
@@ -3738,44 +3704,44 @@ router.put(
   (req: Request, res: Response) => {
     return pembuatanLegalController.updateProsedurPembuatanLegal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/prosedur-pembuatan-legal/:id",
   pembuatanLegalController.deleteProsedurPembuatanLegal.bind(
-    pembuatanLegalController
-  )
+    pembuatanLegalController,
+  ),
 );
 
 router.post(
   "/prosedur-pembuatan-legal/statistik",
   pembuatanLegalController.createStatistikProsedurPembuatanLegal.bind(
-    pembuatanLegalController
-  )
+    pembuatanLegalController,
+  ),
 );
 
 router.get(
   "/prosedur-pembuatan-legal/statistik",
   pembuatanLegalController.getAllStatistikProsedurPembuatanLegal.bind(
-    pembuatanLegalController
-  )
+    pembuatanLegalController,
+  ),
 );
 
 router.put(
   "/prosedur-pembuatan-legal/statistik/:id",
   pembuatanLegalController.updateStatistikProsedurPembuatanLegal.bind(
-    pembuatanLegalController
-  )
+    pembuatanLegalController,
+  ),
 );
 
 router.delete(
   "/prosedur-pembuatan-legal/statistik/:id",
   pembuatanLegalController.deleteStatistikProsedurPembuatanLegal.bind(
-    pembuatanLegalController
-  )
+    pembuatanLegalController,
+  ),
 );
 
 router.post(
@@ -3803,14 +3769,14 @@ router.post(
   (req: Request, res: Response) => {
     return saksiAhliController.createSaksiAhli(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/saksi-ahli",
-  saksiAhliController.getAllSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.getAllSaksiAhli.bind(saksiAhliController),
 );
 
 router.put(
@@ -3838,14 +3804,14 @@ router.put(
   (req: Request, res: Response) => {
     return saksiAhliController.updateSaksiAhli(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/saksi-ahli/:id",
-  saksiAhliController.deleteSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.deleteSaksiAhli.bind(saksiAhliController),
 );
 
 router.post(
@@ -3873,14 +3839,14 @@ router.post(
   (req: Request, res: Response) => {
     return saksiAhliController.createProsedurSaksiAhli(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/prosedur-saksi-ahli",
-  saksiAhliController.getProsedurSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.getProsedurSaksiAhli.bind(saksiAhliController),
 );
 
 router.put(
@@ -3908,34 +3874,34 @@ router.put(
   (req: Request, res: Response) => {
     return saksiAhliController.updateProsedurSaksiAhli(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/prosedur-saksi-ahli/:id",
-  saksiAhliController.deleteProsedurSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.deleteProsedurSaksiAhli.bind(saksiAhliController),
 );
 
 router.post(
   "/prosedur-saksi-ahli/statistik",
-  saksiAhliController.createStatistikSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.createStatistikSaksiAhli.bind(saksiAhliController),
 );
 
 router.get(
   "/prosedur-saksi-ahli/statistik",
-  saksiAhliController.getAllStatistikSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.getAllStatistikSaksiAhli.bind(saksiAhliController),
 );
 
 router.put(
   "/prosedur-saksi-ahli/statistik/:id",
-  saksiAhliController.updateStatistikSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.updateStatistikSaksiAhli.bind(saksiAhliController),
 );
 
 router.delete(
   "/prosedur-saksi-ahli/statistik/:id",
-  saksiAhliController.deleteStatistikSaksiAhli.bind(saksiAhliController)
+  saksiAhliController.deleteStatistikSaksiAhli.bind(saksiAhliController),
 );
 
 router.post(
@@ -3963,14 +3929,14 @@ router.post(
   (req: Request, res: Response) => {
     return layananMediasiController.createLayananMediasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/layanan-mediasi",
-  layananMediasiController.getAllLayananMediasi.bind(layananMediasiController)
+  layananMediasiController.getAllLayananMediasi.bind(layananMediasiController),
 );
 
 router.put(
@@ -3998,42 +3964,42 @@ router.put(
   (req: Request, res: Response) => {
     return layananMediasiController.updateLayananMediasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/layanan-mediasi/:id",
-  layananMediasiController.deleteLayananMediasi.bind(layananMediasiController)
+  layananMediasiController.deleteLayananMediasi.bind(layananMediasiController),
 );
 
 router.post(
   "/layanan-mediasi/statistik",
   layananMediasiController.createStatistikLayananMediasi.bind(
-    layananMediasiController
-  )
+    layananMediasiController,
+  ),
 );
 
 router.get(
   "/layanan-mediasi/statistik",
   layananMediasiController.getAllStatistikLayananMediasi.bind(
-    layananMediasiController
-  )
+    layananMediasiController,
+  ),
 );
 
 router.put(
   "/layanan-mediasi/statistik/:id",
   layananMediasiController.updateStatistikLayananMediasi.bind(
-    layananMediasiController
-  )
+    layananMediasiController,
+  ),
 );
 
 router.delete(
   "/layanan-mediasi/statistik/:id",
   layananMediasiController.deleteStatistikLayananMediasi.bind(
-    layananMediasiController
-  )
+    layananMediasiController,
+  ),
 );
 
 router.post(
@@ -4061,14 +4027,14 @@ router.post(
   (req: Request, res: Response) => {
     return layananMediasiController.createTimMediator(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/tim-mediator",
-  layananMediasiController.getAllTimMediator.bind(layananMediasiController)
+  layananMediasiController.getAllTimMediator.bind(layananMediasiController),
 );
 
 router.put(
@@ -4096,14 +4062,14 @@ router.put(
   (req: Request, res: Response) => {
     return layananMediasiController.updateTimMediator(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/tim-mediator/:id",
-  layananMediasiController.deleteTimMediator.bind(layananMediasiController)
+  layananMediasiController.deleteTimMediator.bind(layananMediasiController),
 );
 
 router.post(
@@ -4131,14 +4097,14 @@ router.post(
   (req: Request, res: Response) => {
     return layananProbonoController.createLayananProbono(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/layanan-probono",
-  layananProbonoController.getAllLayananProbono.bind(layananProbonoController)
+  layananProbonoController.getAllLayananProbono.bind(layananProbonoController),
 );
 
 router.put(
@@ -4166,42 +4132,42 @@ router.put(
   (req: Request, res: Response) => {
     return layananProbonoController.updateLayananProbono(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/layanan-probono/:id",
-  layananProbonoController.deleteLayananProbono.bind(layananProbonoController)
+  layananProbonoController.deleteLayananProbono.bind(layananProbonoController),
 );
 
 router.post(
   "/layanan-probono/statistik",
   layananProbonoController.createStatistikLayananProbono.bind(
-    layananProbonoController
-  )
+    layananProbonoController,
+  ),
 );
 
 router.get(
   "/layanan-probono/statistik",
   layananProbonoController.getAllStatistikLayananProbono.bind(
-    layananProbonoController
-  )
+    layananProbonoController,
+  ),
 );
 
 router.put(
   "/layanan-probono/statistik/:id",
   layananProbonoController.updateStatistikLayananProbono.bind(
-    layananProbonoController
-  )
+    layananProbonoController,
+  ),
 );
 
 router.delete(
   "/layanan-probono/statistik/:id",
   layananProbonoController.deleteStatistikLayananProbono.bind(
-    layananProbonoController
-  )
+    layananProbonoController,
+  ),
 );
 
 router.post(
@@ -4229,14 +4195,16 @@ router.post(
   (req: Request, res: Response) => {
     return layananProbonoController.createKriteriaPenerima(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/layanan-probono/kriteria-penerima",
-  layananProbonoController.getAllKriteriaPenerima.bind(layananProbonoController)
+  layananProbonoController.getAllKriteriaPenerima.bind(
+    layananProbonoController,
+  ),
 );
 
 router.put(
@@ -4264,14 +4232,16 @@ router.put(
   (req: Request, res: Response) => {
     return layananProbonoController.updateKriteriaPenerima(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/layanan-probono/kriteria-penerima/:id",
-  layananProbonoController.deleteKriteriaPenerima.bind(layananProbonoController)
+  layananProbonoController.deleteKriteriaPenerima.bind(
+    layananProbonoController,
+  ),
 );
 
 router.post(
@@ -4299,16 +4269,16 @@ router.post(
   (req: Request, res: Response) => {
     return penyukuhanHukumController.createPenyukuhanHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/penyukuhan-hukum",
   penyukuhanHukumController.getAllPenyukuhanHukum.bind(
-    penyukuhanHukumController
-  )
+    penyukuhanHukumController,
+  ),
 );
 
 router.put(
@@ -4336,44 +4306,44 @@ router.put(
   (req: Request, res: Response) => {
     return penyukuhanHukumController.updatePenyukuhanHukumById(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/penyukuhan-hukum/:id",
   penyukuhanHukumController.deletePenyukuhanHukumById.bind(
-    penyukuhanHukumController
-  )
+    penyukuhanHukumController,
+  ),
 );
 
 router.post(
   "/penyukuhan-hukum/statistik",
   penyukuhanHukumController.createStatistikPenyuluhanHukum.bind(
-    penyukuhanHukumController
-  )
+    penyukuhanHukumController,
+  ),
 );
 
 router.get(
   "/penyukuhan-hukum/statistik",
   penyukuhanHukumController.getAllStatistikPenyuluhanHukum.bind(
-    penyukuhanHukumController
-  )
+    penyukuhanHukumController,
+  ),
 );
 
 router.put(
   "/penyukuhan-hukum/statistik/:id",
   penyukuhanHukumController.updateStatistikPenyuluhanHukumById.bind(
-    penyukuhanHukumController
-  )
+    penyukuhanHukumController,
+  ),
 );
 
 router.delete(
   "/penyukuhan-hukum/statistik/:id",
   penyukuhanHukumController.deleteStatistikPenyuluhanHukumById.bind(
-    penyukuhanHukumController
-  )
+    penyukuhanHukumController,
+  ),
 );
 
 router.post(
@@ -4401,16 +4371,16 @@ router.post(
   (req: Request, res: Response) => {
     return sosialisasiPraturanUUDController.createSosialisasiPraturanUUD(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/sosialisasi-praturan-uud",
   sosialisasiPraturanUUDController.getAllSosialisasiPraturanUUD.bind(
-    sosialisasiPraturanUUDController
-  )
+    sosialisasiPraturanUUDController,
+  ),
 );
 
 router.put(
@@ -4438,44 +4408,44 @@ router.put(
   (req: Request, res: Response) => {
     return sosialisasiPraturanUUDController.updateSosialisasiPraturanUUDById(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/sosialisasi-praturan-uud/:id",
   sosialisasiPraturanUUDController.deleteSosialisasiPraturanUUDById.bind(
-    sosialisasiPraturanUUDController
-  )
+    sosialisasiPraturanUUDController,
+  ),
 );
 
 router.post(
   "/sosialisasi-praturan-uud/statistik",
   sosialisasiPraturanUUDController.createStatistikSosialisasiPraturanUUD.bind(
-    sosialisasiPraturanUUDController
-  )
+    sosialisasiPraturanUUDController,
+  ),
 );
 
 router.get(
   "/sosialisasi-praturan-uud/statistik",
   sosialisasiPraturanUUDController.getAllStatistikSosialisasiPraturanUUD.bind(
-    sosialisasiPraturanUUDController
-  )
+    sosialisasiPraturanUUDController,
+  ),
 );
 
 router.put(
   "/sosialisasi-praturan-uud/statistik/:id",
   sosialisasiPraturanUUDController.updateStatistikSosialisasiPraturanUUDById.bind(
-    sosialisasiPraturanUUDController
-  )
+    sosialisasiPraturanUUDController,
+  ),
 );
 
 router.delete(
   "/sosialisasi-praturan-uud/statistik/:id",
   sosialisasiPraturanUUDController.deleteStatistikSosialisasiPraturanUUDById.bind(
-    sosialisasiPraturanUUDController
-  )
+    sosialisasiPraturanUUDController,
+  ),
 );
 
 router.post(
@@ -4503,16 +4473,16 @@ router.post(
   (req: Request, res: Response) => {
     return kekhususanHukumPidanaController.createKekhususanHukumPidana(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/kekhususan-hukum-pidana",
   kekhususanHukumPidanaController.getAllKekhususanHukumPidana.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.put(
@@ -4540,72 +4510,72 @@ router.put(
   (req: Request, res: Response) => {
     return kekhususanHukumPidanaController.updateKekhususanHukumPidana(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/kekhususan-hukum-pidana/:id",
   kekhususanHukumPidanaController.deleteKekhususanHukumPidana.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.post(
   "/kekhususan-hukum-pidana/prospek-karir",
   kekhususanHukumPidanaController.createProspekKarir.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.get(
   "/kekhususan-hukum-pidana/prospek-karir",
   kekhususanHukumPidanaController.getAllProspekKarir.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.put(
   "/kekhususan-hukum-pidana/prospek-karir/:id",
   kekhususanHukumPidanaController.updateProspekKarir.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.delete(
   "/kekhususan-hukum-pidana/prospek-karir/:id",
   kekhususanHukumPidanaController.deleteProspekKarir.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.post(
   "/kekhususan-hukum-pidana/statistik",
   kekhususanHukumPidanaController.createStatistikKekhususanHukumPidana.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.get(
   "/kekhususan-hukum-pidana/statistik",
   kekhususanHukumPidanaController.getAllStatistikKekhususanHukumPidana.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.put(
   "/kekhususan-hukum-pidana/statistik/:id",
   kekhususanHukumPidanaController.updateStatistikKekhususanHukumPidana.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.delete(
   "/kekhususan-hukum-pidana/statistik/:id",
   kekhususanHukumPidanaController.deleteStatistikKekhususanHukumPidana.bind(
-    kekhususanHukumPidanaController
-  )
+    kekhususanHukumPidanaController,
+  ),
 );
 
 router.post(
@@ -4633,15 +4603,15 @@ router.post(
   (req: Request, res: Response) => {
     return KekhususanHukumTatausahaController.createKekhususanHukumTatausaha(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 router.get(
   "/kekhususan-hukum-tata-usaha-negara",
   KekhususanHukumTatausahaController.getAllKekhususanHukumTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.put(
@@ -4669,72 +4639,72 @@ router.put(
   (req: Request, res: Response) => {
     return KekhususanHukumTatausahaController.updateKekhususanHukumTataUsahaNegara(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/kekhususan-hukum-tata-usaha-negara/:id",
   KekhususanHukumTatausahaController.deleteKekhususanHukumTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.post(
   "/kekhususan-hukum-tata-usaha-negara/prospek-karir",
   KekhususanHukumTatausahaController.createProspekKarirTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.get(
   "/kekhususan-hukum-tata-usaha-negara/prospek-karir",
   KekhususanHukumTatausahaController.getAllProspekKarirTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.put(
   "/kekhususan-hukum-tata-usaha-negara/prospek-karir/:id",
   KekhususanHukumTatausahaController.updateProspekKarirTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.delete(
   "/kekhususan-hukum-tata-usaha-negara/prospek-karir/:id",
   KekhususanHukumTatausahaController.deleteProspekKarirTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.post(
   "/kekhususan-hukum-tata-usaha-negara/statistik",
   KekhususanHukumTatausahaController.createStatistikKekhususanHukumTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.get(
   "/kekhususan-hukum-tata-usaha-negara/statistik",
   KekhususanHukumTatausahaController.getAllStatistikKekhususanHukumTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.put(
   "/kekhususan-hukum-tata-usaha-negara/statistik/:id",
   KekhususanHukumTatausahaController.updateStatistikKekhususanHukumTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.delete(
   "/kekhususan-hukum-tata-usaha-negara/statistik/:id",
   KekhususanHukumTatausahaController.deleteStatistikKekhususanHukumTataUsahaNegara.bind(
-    KekhususanHukumTatausahaController
-  )
+    KekhususanHukumTatausahaController,
+  ),
 );
 
 router.post(
@@ -4762,16 +4732,16 @@ router.post(
   (req: Request, res: Response) => {
     return kekhususanHukumPerdataController.createKekhususanHukumPerdata(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/kekhususan-hukum-perdata",
   kekhususanHukumPerdataController.getAllKekhususanHukumPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.put(
@@ -4799,72 +4769,72 @@ router.put(
   (req: Request, res: Response) => {
     return kekhususanHukumPerdataController.updateKekhususanHukumPerdata(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/kekhususan-hukum-perdata/:id",
   kekhususanHukumPerdataController.deleteKekhususanHukumPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.post(
   "/kekhususan-hukum-perdata/prospek-karir",
   kekhususanHukumPerdataController.createProspekKarirPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.get(
   "/kekhususan-hukum-perdata/prospek-karir",
   kekhususanHukumPerdataController.getAllProspekKarirPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.put(
   "/kekhususan-hukum-perdata/prospek-karir/:id",
   kekhususanHukumPerdataController.updateProspekKarirPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.delete(
   "/kekhususan-hukum-perdata/prospek-karir/:id",
   kekhususanHukumPerdataController.deleteProspekKarirPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.post(
   "/kekhususan-hukum-perdata/statistik",
   kekhususanHukumPerdataController.createStatistikKekhususanHukumPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.get(
   "/kekhususan-hukum-perdata/statistik",
   kekhususanHukumPerdataController.getAllStatistikKekhususanHukumPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.put(
   "/kekhususan-hukum-perdata/statistik/:id",
   kekhususanHukumPerdataController.updateStatistikKekhususanHukumPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.delete(
   "/kekhususan-hukum-perdata/statistik/:id",
   kekhususanHukumPerdataController.deleteStatistikKekhususanHukumPerdata.bind(
-    kekhususanHukumPerdataController
-  )
+    kekhususanHukumPerdataController,
+  ),
 );
 
 router.post(
@@ -4895,14 +4865,14 @@ router.post(
   (req: Request, res: Response) => {
     return daftarDosenController.createDaftarDosen(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/daftar-dosen",
-  daftarDosenController.getAllDaftarDosen.bind(daftarDosenController)
+  daftarDosenController.getAllDaftarDosen.bind(daftarDosenController),
 );
 
 router.put(
@@ -4933,34 +4903,34 @@ router.put(
   (req: Request, res: Response) => {
     return daftarDosenController.updateDaftarDosen(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/daftar-dosen/:id",
-  daftarDosenController.deleteDaftarDosen.bind(daftarDosenController)
+  daftarDosenController.deleteDaftarDosen.bind(daftarDosenController),
 );
 
 router.post(
   "/daftar-dosen/statistik",
-  daftarDosenController.createStatistikDaftarDosen.bind(daftarDosenController)
+  daftarDosenController.createStatistikDaftarDosen.bind(daftarDosenController),
 );
 
 router.get(
   "/daftar-dosen/statistik",
-  daftarDosenController.getStatistikDaftarDosen.bind(daftarDosenController)
+  daftarDosenController.getStatistikDaftarDosen.bind(daftarDosenController),
 );
 
 router.put(
   "/daftar-dosen/statistik/:id",
-  daftarDosenController.updateStatistikDaftarDosen.bind(daftarDosenController)
+  daftarDosenController.updateStatistikDaftarDosen.bind(daftarDosenController),
 );
 
 router.delete(
   "/daftar-dosen/statistik/:id",
-  daftarDosenController.deleteStatistikDaftarDosen.bind(daftarDosenController)
+  daftarDosenController.deleteStatistikDaftarDosen.bind(daftarDosenController),
 );
 
 router.post(
@@ -4988,16 +4958,16 @@ router.post(
   (req: Request, res: Response) => {
     return daftarKependidikanController.createDaftarKependidikan(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/daftar-kependidikan",
   daftarKependidikanController.getAllDaftarKependidikan.bind(
-    daftarKependidikanController
-  )
+    daftarKependidikanController,
+  ),
 );
 
 router.put(
@@ -5025,44 +4995,44 @@ router.put(
   (req: Request, res: Response) => {
     return daftarKependidikanController.updateDaftarKependidikan(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/daftar-kependidikan/:id",
   daftarKependidikanController.deleteDaftarKependidikan.bind(
-    daftarKependidikanController
-  )
+    daftarKependidikanController,
+  ),
 );
 
 router.post(
   "/daftar-kependidikan/statistik",
   daftarKependidikanController.createStatistikTenagaKependidikan.bind(
-    daftarKependidikanController
-  )
+    daftarKependidikanController,
+  ),
 );
 
 router.get(
   "/daftar-kependidikan/statistik",
   daftarKependidikanController.getStatistikDaftarKependidikan.bind(
-    daftarKependidikanController
-  )
+    daftarKependidikanController,
+  ),
 );
 
 router.put(
   "/daftar-kependidikan/statistik/:id",
   daftarKependidikanController.updateStatistikTenagaKependidikan.bind(
-    daftarKependidikanController
-  )
+    daftarKependidikanController,
+  ),
 );
 
 router.delete(
   "/daftar-kependidikan/statistik/:id",
   daftarKependidikanController.deleteStatistikTenagaKependidikan.bind(
-    daftarKependidikanController
-  )
+    daftarKependidikanController,
+  ),
 );
 
 router.post(
@@ -5090,16 +5060,16 @@ router.post(
   (req: Request, res: Response) => {
     return himpunanMahasiswaProdiHukumController.CreateHimpunanMahasiswaProdiHukum(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/himpunan-mahasiswa-prodi-hukum",
   himpunanMahasiswaProdiHukumController.getAllHimpunanMahasiswaProdiHukum.bind(
-    himpunanMahasiswaProdiHukumController
-  )
+    himpunanMahasiswaProdiHukumController,
+  ),
 );
 
 router.put(
@@ -5127,44 +5097,44 @@ router.put(
   (req: Request, res: Response) => {
     return himpunanMahasiswaProdiHukumController.updateHimpunan(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/himpunan-mahasiswa-prodi-hukum/:id",
   himpunanMahasiswaProdiHukumController.deleteHimpunan.bind(
-    himpunanMahasiswaProdiHukumController
-  )
+    himpunanMahasiswaProdiHukumController,
+  ),
 );
 
 router.post(
   "/himpunan-mahasiswa-prodi-hukum/statistik",
   himpunanMahasiswaProdiHukumController.createStatistik.bind(
-    himpunanMahasiswaProdiHukumController
-  )
+    himpunanMahasiswaProdiHukumController,
+  ),
 );
 
 router.get(
   "/himpunan-mahasiswa-prodi-hukum/statistik",
   himpunanMahasiswaProdiHukumController.getAllStatistik.bind(
-    himpunanMahasiswaProdiHukumController
-  )
+    himpunanMahasiswaProdiHukumController,
+  ),
 );
 
 router.put(
   "/himpunan-mahasiswa-prodi-hukum/statistik/:id",
   himpunanMahasiswaProdiHukumController.updateStatistik.bind(
-    himpunanMahasiswaProdiHukumController
-  )
+    himpunanMahasiswaProdiHukumController,
+  ),
 );
 
 router.delete(
   "/himpunan-mahasiswa-prodi-hukum/statistik/:id",
   himpunanMahasiswaProdiHukumController.deleteStatistik.bind(
-    himpunanMahasiswaProdiHukumController
-  )
+    himpunanMahasiswaProdiHukumController,
+  ),
 );
 
 router.post(
@@ -5192,16 +5162,16 @@ router.post(
   (req: Request, res: Response) => {
     return dewanPerwakilanMahasiswaController.createDewanPerwakilan(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/dewan-perwakilan-mahasiswa",
   dewanPerwakilanMahasiswaController.getAllDewanPerwakilanMahasiswa.bind(
-    dewanPerwakilanMahasiswaController
-  )
+    dewanPerwakilanMahasiswaController,
+  ),
 );
 
 router.put(
@@ -5229,44 +5199,44 @@ router.put(
   (req: Request, res: Response) => {
     return dewanPerwakilanMahasiswaController.updateDewanPerwakilan(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/dewan-perwakilan-mahasiswa/:id",
   dewanPerwakilanMahasiswaController.deleteDewanPerwakilan.bind(
-    dewanPerwakilanMahasiswaController
-  )
+    dewanPerwakilanMahasiswaController,
+  ),
 );
 
 router.post(
   "/dewan-perwakilan-mahasiswa/statistik",
   dewanPerwakilanMahasiswaController.createStatistik.bind(
-    dewanPerwakilanMahasiswaController
-  )
+    dewanPerwakilanMahasiswaController,
+  ),
 );
 
 router.get(
   "/dewan-perwakilan-mahasiswa/statistik",
   dewanPerwakilanMahasiswaController.getAllStatistik.bind(
-    dewanPerwakilanMahasiswaController
-  )
+    dewanPerwakilanMahasiswaController,
+  ),
 );
 
 router.put(
   "/dewan-perwakilan-mahasiswa/statistik/:id",
   dewanPerwakilanMahasiswaController.updateStatistik.bind(
-    dewanPerwakilanMahasiswaController
-  )
+    dewanPerwakilanMahasiswaController,
+  ),
 );
 
 router.delete(
   "/dewan-perwakilan-mahasiswa/statistik/:id",
   dewanPerwakilanMahasiswaController.deleteStatistik.bind(
-    dewanPerwakilanMahasiswaController
-  )
+    dewanPerwakilanMahasiswaController,
+  ),
 );
 
 router.post(
@@ -5294,16 +5264,16 @@ router.post(
   (req: Request, res: Response) => {
     return badanEksikutifMahasiswaController.createBEM(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/badan-eksekutif-mahasiswa",
   badanEksikutifMahasiswaController.getAllBEM.bind(
-    badanEksikutifMahasiswaController
-  )
+    badanEksikutifMahasiswaController,
+  ),
 );
 
 router.put(
@@ -5331,44 +5301,44 @@ router.put(
   (req: Request, res: Response) => {
     return badanEksikutifMahasiswaController.updateBEM(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/badan-eksekutif-mahasiswa/:id",
   badanEksikutifMahasiswaController.deleteBEM.bind(
-    badanEksikutifMahasiswaController
-  )
+    badanEksikutifMahasiswaController,
+  ),
 );
 
 router.post(
   "/badan-eksekutif-mahasiswa/statistik",
   badanEksikutifMahasiswaController.createStatistik.bind(
-    badanEksikutifMahasiswaController
-  )
+    badanEksikutifMahasiswaController,
+  ),
 );
 
 router.get(
   "/badan-eksekutif-mahasiswa/statistik",
   badanEksikutifMahasiswaController.getAllStatistik.bind(
-    badanEksikutifMahasiswaController
-  )
+    badanEksikutifMahasiswaController,
+  ),
 );
 
 router.put(
   "/badan-eksekutif-mahasiswa/statistik/:id",
   badanEksikutifMahasiswaController.updateStatistik.bind(
-    badanEksikutifMahasiswaController
-  )
+    badanEksikutifMahasiswaController,
+  ),
 );
 
 router.delete(
   "/badan-eksekutif-mahasiswa/statistik/:id",
   badanEksikutifMahasiswaController.deleteStatistik.bind(
-    badanEksikutifMahasiswaController
-  )
+    badanEksikutifMahasiswaController,
+  ),
 );
 
 router.post(
@@ -5396,14 +5366,14 @@ router.post(
   (req: Request, res: Response) => {
     return trackerStudyController.createTrackerStudy(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/tracker-study",
-  trackerStudyController.getAllTrackerStudy.bind(trackerStudyController)
+  trackerStudyController.getAllTrackerStudy.bind(trackerStudyController),
 );
 
 router.put(
@@ -5431,62 +5401,62 @@ router.put(
   (req: Request, res: Response) => {
     return trackerStudyController.updateTrackerStudy(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/tracker-study/:id",
-  trackerStudyController.deleteTrackerStudy.bind(trackerStudyController)
+  trackerStudyController.deleteTrackerStudy.bind(trackerStudyController),
 );
 
 router.post(
   "/waktu-tunggu-kerja",
-  trackerStudyController.createWaktuTungguKerja.bind(trackerStudyController)
+  trackerStudyController.createWaktuTungguKerja.bind(trackerStudyController),
 );
 
 router.get(
   "/waktu-tunggu-kerja",
-  trackerStudyController.getAllWaktuTungguKerja.bind(trackerStudyController)
+  trackerStudyController.getAllWaktuTungguKerja.bind(trackerStudyController),
 );
 
 router.put(
   "/waktu-tunggu-kerja/:id",
-  trackerStudyController.updateWaktuTungguKerja.bind(trackerStudyController)
+  trackerStudyController.updateWaktuTungguKerja.bind(trackerStudyController),
 );
 
 router.delete(
   "/waktu-tunggu-kerja/:id",
-  trackerStudyController.deleteWaktuTungguKerja.bind(trackerStudyController)
+  trackerStudyController.deleteWaktuTungguKerja.bind(trackerStudyController),
 );
 
 router.post(
   "/statistik-tracker-study",
   trackerStudyController.createStatistikTrackerStudy.bind(
-    trackerStudyController
-  )
+    trackerStudyController,
+  ),
 );
 
 router.get(
   "/statistik-tracker-study",
   trackerStudyController.getAllStatistikTrackerStudy.bind(
-    trackerStudyController
-  )
+    trackerStudyController,
+  ),
 );
 
 router.put(
   "/statistik-tracker-study/:id",
   trackerStudyController.updateStatistikTrackerStudy.bind(
-    trackerStudyController
-  )
+    trackerStudyController,
+  ),
 );
 
 router.delete(
   "/statistik-tracker-study/:id",
   trackerStudyController.deleteStatistikTrackerStudy.bind(
-    trackerStudyController
-  )
+    trackerStudyController,
+  ),
 );
 
 router.post(
@@ -5514,16 +5484,16 @@ router.post(
   (req: Request, res: Response) => {
     return trackerStudyUnigalController.createTrackerStudyUnigal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/tracker-study-unigal",
   trackerStudyUnigalController.getAllTrackerStudyUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.put(
@@ -5551,156 +5521,156 @@ router.put(
   (req: Request, res: Response) => {
     return trackerStudyUnigalController.updateTrackerStudyUnigal(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/tracker-study-unigal/:id",
   trackerStudyUnigalController.deleteTrackerStudyUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.post(
   "/waktu-tunggu-kerja-unigal",
   trackerStudyUnigalController.createWaktuTungguKerja.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.get(
   "/waktu-tunggu-kerja-unigal",
   trackerStudyUnigalController.getAllWaktuTungguKerja.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.put(
   "/waktu-tunggu-kerja-unigal/:id",
   trackerStudyUnigalController.updateWaktuTungguKerjaUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.delete(
   "/waktu-tunggu-kerja-unigal/:id",
   trackerStudyUnigalController.deleteWaktuTungguKerjaUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.post(
   "/statistik-tracker-study-unigal",
   trackerStudyUnigalController.createStatistikTrackerStudyUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.get(
   "/statistik-tracker-study-unigal",
   trackerStudyUnigalController.getAllStatistikTrackerStudyUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.put(
   "/statistik-tracker-study-unigal/:id",
   trackerStudyUnigalController.updateStatistikTrackerStudyUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.delete(
   "/statistik-tracker-study-unigal/:id",
   trackerStudyUnigalController.deleteStatistikTrackerStudyUnigal.bind(
-    trackerStudyUnigalController
-  )
+    trackerStudyUnigalController,
+  ),
 );
 
 router.post(
   "/rekapitulasi-pengisian",
   rekapitulasiPengisianController.createRekapitulasiPengisian.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.get(
   "/rekapitulasi-pengisian",
   rekapitulasiPengisianController.getAllRekapitulasiPengisian.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.put(
   "/rekapitulasi-pengisian/:id",
   rekapitulasiPengisianController.updateRekapitulasiPengisian.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.delete(
   "/rekapitulasi-pengisian/:id",
   rekapitulasiPengisianController.deleteRekapitulasiPengisian.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.post(
   "/rekapitulasi-pengisian-per-kategori",
   rekapitulasiPengisianController.createRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.get(
   "/rekapitulasi-pengisian-per-kategori",
   rekapitulasiPengisianController.getAllRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.put(
   "/rekapitulasi-pengisian-per-kategori/:id",
   rekapitulasiPengisianController.updateRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.delete(
   "/rekapitulasi-pengisian-per-kategori/:id",
   rekapitulasiPengisianController.deleteRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.post(
   "/statistik-rekapitulasi-per-kategori",
   rekapitulasiPengisianController.createStatistikRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.get(
   "/statistik-rekapitulasi-per-kategori",
   rekapitulasiPengisianController.getAllStatistikRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.put(
   "/statistik-rekapitulasi-per-kategori/:id",
   rekapitulasiPengisianController.updateStatistikRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.delete(
   "/statistik-rekapitulasi-per-kategori/:id",
   rekapitulasiPengisianController.deleteStatistikRekapitulasiPerKategori.bind(
-    rekapitulasiPengisianController
-  )
+    rekapitulasiPengisianController,
+  ),
 );
 
 router.post(
@@ -5728,16 +5698,16 @@ router.post(
   (req: Request, res: Response) => {
     return beasiswaIndonesiaController.createBeasiswaIndonesia(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/beasiswa-indonesia",
   beasiswaIndonesiaController.getAllBeasiswaIndonesia.bind(
-    beasiswaIndonesiaController
-  )
+    beasiswaIndonesiaController,
+  ),
 );
 
 router.put(
@@ -5765,164 +5735,164 @@ router.put(
   (req: Request, res: Response) => {
     return beasiswaIndonesiaController.updateBeasiswaIndonesia(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/beasiswa-indonesia/:id",
   beasiswaIndonesiaController.deleteBeasiswaIndonesia.bind(
-    beasiswaIndonesiaController
-  )
+    beasiswaIndonesiaController,
+  ),
 );
 
 router.post(
   "/statistik-beasiswa-indonesia",
   beasiswaIndonesiaController.createStatistikBeasiswaIndonesia.bind(
-    beasiswaIndonesiaController
-  )
+    beasiswaIndonesiaController,
+  ),
 );
 
 router.get(
   "/statistik-beasiswa-indonesia",
   beasiswaIndonesiaController.getAllStatistikBeasiswaIndonesia.bind(
-    beasiswaIndonesiaController
-  )
+    beasiswaIndonesiaController,
+  ),
 );
 
 router.put(
   "/statistik-beasiswa-indonesia/:id",
   beasiswaIndonesiaController.updateStatistikBeasiswaIndonesia.bind(
-    beasiswaIndonesiaController
-  )
+    beasiswaIndonesiaController,
+  ),
 );
 
 router.delete(
   "/statistik-beasiswa-indonesia/:id",
   beasiswaIndonesiaController.deleteStatistikBeasiswaIndonesia.bind(
-    beasiswaIndonesiaController
-  )
+    beasiswaIndonesiaController,
+  ),
 );
 
 router.post(
   "/beasiswa-bri",
-  beasiswaBriController.createBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.createBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.get(
   "/beasiswa-bri",
-  beasiswaBriController.getAllBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.getAllBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.put(
   "/beasiswa-bri/:id",
-  beasiswaBriController.updateBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.updateBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.delete(
   "/beasiswa-bri/:id",
-  beasiswaBriController.deleteBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.deleteBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.post(
   "/timeline-beasiswa-bri",
-  beasiswaBriController.createTimelineBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.createTimelineBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.get(
   "/timeline-beasiswa-bri",
-  beasiswaBriController.getAllTimelineBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.getAllTimelineBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.put(
   "/timeline-beasiswa-bri/:id",
-  beasiswaBriController.updateTimelineBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.updateTimelineBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.delete(
   "/timeline-beasiswa-bri/:id",
-  beasiswaBriController.deleteTimelineBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.deleteTimelineBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.post(
   "/statistik-beasiswa-bri",
-  beasiswaBriController.createStatistikBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.createStatistikBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.get(
   "/statistik-beasiswa-bri",
-  beasiswaBriController.getAllStatistikBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.getAllStatistikBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.put(
   "/statistik-beasiswa-bri/:id",
-  beasiswaBriController.updateStatistikBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.updateStatistikBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.delete(
   "/statistik-beasiswa-bri/:id",
-  beasiswaBriController.deleteStatistikBeasiswaBri.bind(beasiswaBriController)
+  beasiswaBriController.deleteStatistikBeasiswaBri.bind(beasiswaBriController),
 );
 
 router.post(
   "/beasiswa-kpi",
-  beasiswaKpiController.createBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.createBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.get(
   "/beasiswa-kpi",
-  beasiswaKpiController.getAllBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.getAllBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.put(
   "/beasiswa-kpi/:id",
-  beasiswaKpiController.updateBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.updateBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.delete(
   "/beasiswa-kpi/:id",
-  beasiswaKpiController.deleteBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.deleteBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.post(
   "/timeline-beasiswa-kpi",
-  beasiswaKpiController.createTimelineBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.createTimelineBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.get(
   "/timeline-beasiswa-kpi",
-  beasiswaKpiController.getAllTimelineBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.getAllTimelineBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.put(
   "/timeline-beasiswa-kpi/:id",
-  beasiswaKpiController.updateTimelineBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.updateTimelineBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.delete(
   "/timeline-beasiswa-kpi/:id",
-  beasiswaKpiController.deleteTimelineBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.deleteTimelineBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.post(
   "/statistik-beasiswa-kpi",
-  beasiswaKpiController.createStatistikBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.createStatistikBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.get(
   "/statistik-beasiswa-kpi",
-  beasiswaKpiController.getAllStatistikBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.getAllStatistikBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.put(
   "/statistik-beasiswa-kpi/:id",
-  beasiswaKpiController.updateStatistikBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.updateStatistikBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.delete(
   "/statistik-beasiswa-kpi/:id",
-  beasiswaKpiController.deleteStatistikBeasiswaKip.bind(beasiswaKpiController)
+  beasiswaKpiController.deleteStatistikBeasiswaKip.bind(beasiswaKpiController),
 );
 
 router.post(
@@ -5950,16 +5920,16 @@ router.post(
   (req: Request, res: Response) => {
     return prestasiMahasiswaNondiktiController.createPrestasiMahasiswaNonDikti(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/prestasi-mahasiswa-nondikti",
   prestasiMahasiswaNondiktiController.getAllPrestasiMahasiswaNonDikti.bind(
-    prestasiMahasiswaNondiktiController
-  )
+    prestasiMahasiswaNondiktiController,
+  ),
 );
 
 router.put(
@@ -5987,44 +5957,44 @@ router.put(
   (req: Request, res: Response) => {
     return prestasiMahasiswaNondiktiController.updatePrestasiMahasiswaNonDikti(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/prestasi-mahasiswa-nondikti/:id",
   prestasiMahasiswaNondiktiController.deletePrestasiMahasiswaNonDikti.bind(
-    prestasiMahasiswaNondiktiController
-  )
+    prestasiMahasiswaNondiktiController,
+  ),
 );
 
 router.post(
   "/statistik-prestasi-mahasiswa-nondikti",
   prestasiMahasiswaNondiktiController.createStatistikPrestasiMahasiswaNonDikti.bind(
-    prestasiMahasiswaNondiktiController
-  )
+    prestasiMahasiswaNondiktiController,
+  ),
 );
 
 router.get(
   "/statistik-prestasi-mahasiswa-nondikti",
   prestasiMahasiswaNondiktiController.getAllStatistikPrestasiMahasiswaNonDikti.bind(
-    prestasiMahasiswaNondiktiController
-  )
+    prestasiMahasiswaNondiktiController,
+  ),
 );
 
 router.put(
   "/statistik-prestasi-mahasiswa-nondikti/:id",
   prestasiMahasiswaNondiktiController.updateStatistikPrestasiMahasiswaNonDikti.bind(
-    prestasiMahasiswaNondiktiController
-  )
+    prestasiMahasiswaNondiktiController,
+  ),
 );
 
 router.delete(
   "/statistik-prestasi-mahasiswa-nondikti/:id",
   prestasiMahasiswaNondiktiController.deleteStatistikPrestasiMahasiswaNonDikti.bind(
-    prestasiMahasiswaNondiktiController
-  )
+    prestasiMahasiswaNondiktiController,
+  ),
 );
 
 router.post(
@@ -6052,14 +6022,14 @@ router.post(
   (req: Request, res: Response) => {
     return dataRekognisiController.createDataRekognisi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/data-rekognisi",
-  dataRekognisiController.getAllDataRekognisi.bind(dataRekognisiController)
+  dataRekognisiController.getAllDataRekognisi.bind(dataRekognisiController),
 );
 
 router.put(
@@ -6087,42 +6057,42 @@ router.put(
   (req: Request, res: Response) => {
     return dataRekognisiController.updateDataRekognisi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/data-rekognisi/:id",
-  dataRekognisiController.deleteDataRekognisi.bind(dataRekognisiController)
+  dataRekognisiController.deleteDataRekognisi.bind(dataRekognisiController),
 );
 
 router.post(
   "/statistik-data-rekognisi",
   dataRekognisiController.createStatistikDataRekognisi.bind(
-    dataRekognisiController
-  )
+    dataRekognisiController,
+  ),
 );
 
 router.get(
   "/statistik-data-rekognisi",
   dataRekognisiController.getAllStatistikDataRekognisi.bind(
-    dataRekognisiController
-  )
+    dataRekognisiController,
+  ),
 );
 
 router.put(
   "/statistik-data-rekognisi/:id",
   dataRekognisiController.updateStatistikDataRekognisi.bind(
-    dataRekognisiController
-  )
+    dataRekognisiController,
+  ),
 );
 
 router.delete(
   "/statistik-data-rekognisi/:id",
   dataRekognisiController.deleteStatistikDataRekognisi.bind(
-    dataRekognisiController
-  )
+    dataRekognisiController,
+  ),
 );
 
 router.post(
@@ -6150,16 +6120,16 @@ router.post(
   (req: Request, res: Response) => {
     return dataSeminarMahasiswaController.createDataSeminarMahasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/data-seminar-mahasiswa",
   dataSeminarMahasiswaController.getAllDataSeminarMahasiswa.bind(
-    dataSeminarMahasiswaController
-  )
+    dataSeminarMahasiswaController,
+  ),
 );
 
 router.put(
@@ -6187,44 +6157,44 @@ router.put(
   (req: Request, res: Response) => {
     return dataSeminarMahasiswaController.updateDataSeminarMahasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/data-seminar-mahasiswa/:id",
   dataSeminarMahasiswaController.deleteDataSeminarMahasiswa.bind(
-    dataSeminarMahasiswaController
-  )
+    dataSeminarMahasiswaController,
+  ),
 );
 
 router.post(
   "/statistik-data-seminar-mahasiswa",
   dataSeminarMahasiswaController.createStatistikDataSeminarMahasiswa.bind(
-    dataSeminarMahasiswaController
-  )
+    dataSeminarMahasiswaController,
+  ),
 );
 
 router.get(
   "/statistik-data-seminar-mahasiswa",
   dataSeminarMahasiswaController.getAllStatistikDataSeminarMahasiswa.bind(
-    dataSeminarMahasiswaController
-  )
+    dataSeminarMahasiswaController,
+  ),
 );
 
 router.put(
   "/statistik-data-seminar-mahasiswa/:id",
   dataSeminarMahasiswaController.updateStatistikDataSeminarMahasiswa.bind(
-    dataSeminarMahasiswaController
-  )
+    dataSeminarMahasiswaController,
+  ),
 );
 
 router.delete(
   "/statistik-data-seminar-mahasiswa/:id",
   dataSeminarMahasiswaController.deleteStatistikDataSeminarMahasiswa.bind(
-    dataSeminarMahasiswaController
-  )
+    dataSeminarMahasiswaController,
+  ),
 );
 
 router.post(
@@ -6252,16 +6222,16 @@ router.post(
   (req: Request, res: Response) => {
     return dataMagangMahasiswaController.createDataMagangMahasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/data-magang-mahasiswa",
   dataMagangMahasiswaController.getAllDataMagangMahasiswa.bind(
-    dataMagangMahasiswaController
-  )
+    dataMagangMahasiswaController,
+  ),
 );
 router.put(
   "/data-magang-mahasiswa/:id",
@@ -6288,44 +6258,44 @@ router.put(
   (req: Request, res: Response) => {
     return dataMagangMahasiswaController.updateDataMagangMahasiswa(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/data-magang-mahasiswa/:id",
   dataMagangMahasiswaController.deleteDataMagangMahasiswa.bind(
-    dataMagangMahasiswaController
-  )
+    dataMagangMahasiswaController,
+  ),
 );
 
 router.post(
   "/statistik-data-magang-mahasiswa",
   dataMagangMahasiswaController.createStatistikDataMagangMahasiswa.bind(
-    dataMagangMahasiswaController
-  )
+    dataMagangMahasiswaController,
+  ),
 );
 
 router.get(
   "/statistik-data-magang-mahasiswa",
   dataMagangMahasiswaController.getAllStatistikDataMagangMahasiswa.bind(
-    dataMagangMahasiswaController
-  )
+    dataMagangMahasiswaController,
+  ),
 );
 
 router.put(
   "/statistik-data-magang-mahasiswa/:id",
   dataMagangMahasiswaController.updateStatistikDataMagangMahasiswa.bind(
-    dataMagangMahasiswaController
-  )
+    dataMagangMahasiswaController,
+  ),
 );
 
 router.delete(
   "/statistik-data-magang-mahasiswa/:id",
   dataMagangMahasiswaController.deleteStatistikDataMagangMahasiswa.bind(
-    dataMagangMahasiswaController
-  )
+    dataMagangMahasiswaController,
+  ),
 );
 
 router.post(
@@ -6353,16 +6323,16 @@ router.post(
   (req: Request, res: Response) => {
     return dataMahasiswaBerwirausahaController.createDataMahasiswaBerwirausaha(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/data-mahasiswa-berwirausaha",
   dataMahasiswaBerwirausahaController.getAllDataMahasiswaBerwirausaha.bind(
-    dataMahasiswaBerwirausahaController
-  )
+    dataMahasiswaBerwirausahaController,
+  ),
 );
 
 router.put(
@@ -6390,44 +6360,44 @@ router.put(
   (req: Request, res: Response) => {
     return dataMahasiswaBerwirausahaController.updateDataMahasiswaBerwirausaha(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/data-mahasiswa-berwirausaha/:id",
   dataMahasiswaBerwirausahaController.deleteDataMahasiswaBerwirausaha.bind(
-    dataMahasiswaBerwirausahaController
-  )
+    dataMahasiswaBerwirausahaController,
+  ),
 );
 
 router.post(
   "/statistik-data-mahasiswa-berwirausaha",
   dataMahasiswaBerwirausahaController.createStatistikDataMahasiswaBerwirausaha.bind(
-    dataMahasiswaBerwirausahaController
-  )
+    dataMahasiswaBerwirausahaController,
+  ),
 );
 
 router.get(
   "/statistik-data-mahasiswa-berwirausaha",
   dataMahasiswaBerwirausahaController.getAllStatistikDataMahasiswaBerwirausaha.bind(
-    dataMahasiswaBerwirausahaController
-  )
+    dataMahasiswaBerwirausahaController,
+  ),
 );
 
 router.put(
   "/statistik-data-mahasiswa-berwirausaha/:id",
   dataMahasiswaBerwirausahaController.updateStatistikDataMahasiswaBerwirausaha.bind(
-    dataMahasiswaBerwirausahaController
-  )
+    dataMahasiswaBerwirausahaController,
+  ),
 );
 
 router.delete(
   "/statistik-data-mahasiswa-berwirausaha/:id",
   dataMahasiswaBerwirausahaController.deleteStatistikDataMahasiswaBerwirausaha.bind(
-    dataMahasiswaBerwirausahaController
-  )
+    dataMahasiswaBerwirausahaController,
+  ),
 );
 
 router.post(
@@ -6455,14 +6425,14 @@ router.post(
   (req: Request, res: Response) => {
     return lowonganKerjaController.createLowonganKerja(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/lowongan-kerja",
-  lowonganKerjaController.getAllLowonganKerja.bind(lowonganKerjaController)
+  lowonganKerjaController.getAllLowonganKerja.bind(lowonganKerjaController),
 );
 
 router.put(
@@ -6490,42 +6460,42 @@ router.put(
   (req: Request, res: Response) => {
     return lowonganKerjaController.updateLowonganKerja(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/lowongan-kerja/:id",
-  lowonganKerjaController.deleteLowonganKerja.bind(lowonganKerjaController)
+  lowonganKerjaController.deleteLowonganKerja.bind(lowonganKerjaController),
 );
 
 router.post(
   "/statistik-lowongan-kerja",
   lowonganKerjaController.createStatistikLowonganKerja.bind(
-    lowonganKerjaController
-  )
+    lowonganKerjaController,
+  ),
 );
 
 router.get(
   "/statistik-lowongan-kerja",
   lowonganKerjaController.getAllStatistikLowonganKerja.bind(
-    lowonganKerjaController
-  )
+    lowonganKerjaController,
+  ),
 );
 
 router.put(
   "/statistik-lowongan-kerja/:id",
   lowonganKerjaController.updateStatistikLowonganKerja.bind(
-    lowonganKerjaController
-  )
+    lowonganKerjaController,
+  ),
 );
 
 router.delete(
   "/statistik-lowongan-kerja/:id",
   lowonganKerjaController.deleteStatistikLowonganKerja.bind(
-    lowonganKerjaController
-  )
+    lowonganKerjaController,
+  ),
 );
 
 router.post(
@@ -6553,16 +6523,16 @@ router.post(
   (req: Request, res: Response) => {
     return alumniBerprestasiController.createAlumniBerprestasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/alumni-berprestasi",
   alumniBerprestasiController.getAllAlumniBerprestasi.bind(
-    alumniBerprestasiController
-  )
+    alumniBerprestasiController,
+  ),
 );
 
 router.put(
@@ -6590,33 +6560,33 @@ router.put(
   (req: Request, res: Response) => {
     return alumniBerprestasiController.updateAlumniBerprestasi(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/alumni-berprestasi/:id",
   alumniBerprestasiController.deleteAlumniBerprestasi.bind(
-    alumniBerprestasiController
-  )
+    alumniBerprestasiController,
+  ),
 );
 
 router.post(
   "/statistik-alumni-berprestasi",
-  alumniBerprestasiController.createStatistik.bind(alumniBerprestasiController)
+  alumniBerprestasiController.createStatistik.bind(alumniBerprestasiController),
 );
 router.get(
   "/statistik-alumni-berprestasi",
-  alumniBerprestasiController.getAllStatistik.bind(alumniBerprestasiController)
+  alumniBerprestasiController.getAllStatistik.bind(alumniBerprestasiController),
 );
 router.put(
   "/statistik-alumni-berprestasi/:id",
-  alumniBerprestasiController.updateStatistik.bind(alumniBerprestasiController)
+  alumniBerprestasiController.updateStatistik.bind(alumniBerprestasiController),
 );
 router.delete(
   "/statistik-alumni-berprestasi/:id",
-  alumniBerprestasiController.deleteStatistik.bind(alumniBerprestasiController)
+  alumniBerprestasiController.deleteStatistik.bind(alumniBerprestasiController),
 );
 
 router.post(
@@ -6644,16 +6614,16 @@ router.post(
   (req: Request, res: Response) => {
     return dataMahasiswaAktifController.createDataMahasiswaAktif(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/data-mahasiswa-aktif",
   dataMahasiswaAktifController.getDataMahasiswaAktif.bind(
-    dataMahasiswaAktifController
-  )
+    dataMahasiswaAktifController,
+  ),
 );
 
 router.put(
@@ -6681,41 +6651,41 @@ router.put(
   (req: Request, res: Response) => {
     return dataMahasiswaAktifController.updateDataMahasiswaAktif(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/data-mahasiswa-aktif/:id",
   dataMahasiswaAktifController.deleteDataMahasiswaAktif.bind(
-    dataMahasiswaAktifController
-  )
+    dataMahasiswaAktifController,
+  ),
 );
 
 router.post(
   "/statistik-data-mahasiswa-aktif",
   dataMahasiswaAktifController.createStatistikMahasiswaAktif.bind(
-    dataMahasiswaAktifController
-  )
+    dataMahasiswaAktifController,
+  ),
 );
 router.get(
   "/statistik-data-mahasiswa-aktif",
   dataMahasiswaAktifController.getStatistikMahasiswaAktif.bind(
-    dataMahasiswaAktifController
-  )
+    dataMahasiswaAktifController,
+  ),
 );
 router.put(
   "/statistik-data-mahasiswa-aktif/:id",
   dataMahasiswaAktifController.updateStatistikMahasiswaAktif.bind(
-    dataMahasiswaAktifController
-  )
+    dataMahasiswaAktifController,
+  ),
 );
 router.delete(
   "/statistik-data-mahasiswa-aktif/:id",
   dataMahasiswaAktifController.deleteStatistikMahasiswaAktif.bind(
-    dataMahasiswaAktifController
-  )
+    dataMahasiswaAktifController,
+  ),
 );
 
 router.post(
@@ -6743,16 +6713,16 @@ router.post(
   (req: Request, res: Response) => {
     return dataMahasiswaNonaktifController.createDataMahasiswaNonAktif(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/data-mahasiswa-nonaktif",
   dataMahasiswaNonaktifController.getDataMahasiswaNonAktif.bind(
-    dataMahasiswaNonaktifController
-  )
+    dataMahasiswaNonaktifController,
+  ),
 );
 
 router.put(
@@ -6780,41 +6750,41 @@ router.put(
   (req: Request, res: Response) => {
     return dataMahasiswaNonaktifController.updateDataMahasiswaNonAktif(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/data-mahasiswa-nonaktif/:id",
   dataMahasiswaNonaktifController.deleteDataMahasiswaNonAktif.bind(
-    dataMahasiswaNonaktifController
-  )
+    dataMahasiswaNonaktifController,
+  ),
 );
 
 router.post(
   "/statistik-data-mahasiswa-nonaktif",
   dataMahasiswaNonaktifController.createStatistikMahasiswaNonAktif.bind(
-    dataMahasiswaNonaktifController
-  )
+    dataMahasiswaNonaktifController,
+  ),
 );
 router.get(
   "/statistik-data-mahasiswa-nonaktif",
   dataMahasiswaNonaktifController.getStatistikMahasiswaNonAktif.bind(
-    dataMahasiswaNonaktifController
-  )
+    dataMahasiswaNonaktifController,
+  ),
 );
 router.put(
   "/statistik-data-mahasiswa-nonaktif/:id",
   dataMahasiswaNonaktifController.updateStatistikMahasiswaNonAktif.bind(
-    dataMahasiswaNonaktifController
-  )
+    dataMahasiswaNonaktifController,
+  ),
 );
 router.delete(
   "/statistik-data-mahasiswa-nonaktif/:id",
   dataMahasiswaNonaktifController.deleteStatistikMahasiswaNonAktif.bind(
-    dataMahasiswaNonaktifController
-  )
+    dataMahasiswaNonaktifController,
+  ),
 );
 
 router.post(
@@ -6842,16 +6812,16 @@ router.post(
   (req: Request, res: Response) => {
     return dataLulusanPertahunController.createDataLulusanPertahun(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.get(
   "/data-lulusan-pertahun",
   dataLulusanPertahunController.getDataLulusanPertahun.bind(
-    dataLulusanPertahunController
-  )
+    dataLulusanPertahunController,
+  ),
 );
 
 router.put(
@@ -6879,41 +6849,41 @@ router.put(
   (req: Request, res: Response) => {
     return dataLulusanPertahunController.updateDataLulusanPertahun(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 
 router.delete(
   "/data-lulusan-pertahun/:id",
   dataLulusanPertahunController.deleteDataLulusanPertahun.bind(
-    dataLulusanPertahunController
-  )
+    dataLulusanPertahunController,
+  ),
 );
 
 router.post(
   "/statistik-data-lulusan-pertahun",
   dataLulusanPertahunController.createStatistikLulusanPertahun.bind(
-    dataLulusanPertahunController
-  )
+    dataLulusanPertahunController,
+  ),
 );
 router.get(
   "/statistik-data-lulusan-pertahun",
   dataLulusanPertahunController.getStatistikLulusanPertahun.bind(
-    dataLulusanPertahunController
-  )
+    dataLulusanPertahunController,
+  ),
 );
 router.put(
   "/statistik-data-lulusan-pertahun/:id",
   dataLulusanPertahunController.updateStatistikLulusanPertahun.bind(
-    dataLulusanPertahunController
-  )
+    dataLulusanPertahunController,
+  ),
 );
 router.delete(
   "/statistik-data-lulusan-pertahun/:id",
   dataLulusanPertahunController.deleteStatistikLulusanPertahun.bind(
-    dataLulusanPertahunController
-  )
+    dataLulusanPertahunController,
+  ),
 );
 
 router.post("/mou", mouController.createMOU.bind(mouController));
@@ -6923,16 +6893,16 @@ router.delete("/mou/:id", mouController.deleteMOU.bind(mouController));
 
 router.post(
   "/statistik-mou",
-  mouController.createStatistikMoU.bind(mouController)
+  mouController.createStatistikMoU.bind(mouController),
 );
 router.get("/statistik-mou", mouController.getStatistikMoU.bind(mouController));
 router.put(
   "/statistik-mou/:id",
-  mouController.updateStatistikMoU.bind(mouController)
+  mouController.updateStatistikMoU.bind(mouController),
 );
 router.delete(
   "/statistik-mou/:id",
-  mouController.deleteStatistikMoU.bind(mouController)
+  mouController.deleteStatistikMoU.bind(mouController),
 );
 
 router.post("/moa", moaController.createMOA.bind(moaController));
@@ -6942,16 +6912,16 @@ router.delete("/moa/:id", moaController.deleteMOA.bind(moaController));
 
 router.post(
   "/statistik-moa",
-  moaController.createStatistikMoA.bind(moaController)
+  moaController.createStatistikMoA.bind(moaController),
 );
 router.get("/statistik-moa", moaController.getStatistikMoA.bind(moaController));
 router.put(
   "/statistik-moa/:id",
-  moaController.updateStatistikMoA.bind(moaController)
+  moaController.updateStatistikMoA.bind(moaController),
 );
 router.delete(
   "/statistik-moa/:id",
-  moaController.deleteStatistikMoA.bind(moaController)
+  moaController.deleteStatistikMoA.bind(moaController),
 );
 
 router.post(
@@ -6979,9 +6949,9 @@ router.post(
   (req: Request, res: Response) => {
     return dataPkpaController.createDataPKPA(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 router.get("/pkpa", dataPkpaController.getDataPKPA.bind(dataPkpaController));
 router.put(
@@ -7009,30 +6979,30 @@ router.put(
   (req: Request, res: Response) => {
     return dataPkpaController.updateDataPKPA(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 router.delete(
   "/pkpa/:id",
-  dataPkpaController.deleteDataPKPA.bind(dataPkpaController)
+  dataPkpaController.deleteDataPKPA.bind(dataPkpaController),
 );
 
 router.post(
   "/statistik-pkpa",
-  dataPkpaController.createStatistikPKPA.bind(dataPkpaController)
+  dataPkpaController.createStatistikPKPA.bind(dataPkpaController),
 );
 router.get(
   "/statistik-pkpa",
-  dataPkpaController.getStatistikPKPA.bind(dataPkpaController)
+  dataPkpaController.getStatistikPKPA.bind(dataPkpaController),
 );
 router.put(
   "/statistik-pkpa/:id",
-  dataPkpaController.updateStatistikPKPA.bind(dataPkpaController)
+  dataPkpaController.updateStatistikPKPA.bind(dataPkpaController),
 );
 router.delete(
   "/statistik-pkpa/:id",
-  dataPkpaController.deleteStatistikPKPA.bind(dataPkpaController)
+  dataPkpaController.deleteStatistikPKPA.bind(dataPkpaController),
 );
 
 router.post(
@@ -7060,15 +7030,15 @@ router.post(
   (req: Request, res: Response) => {
     return dataPeradilanSemuController.createDataPeradilanSemu(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 router.get(
   "/peradilan-semu",
   dataPeradilanSemuController.getDataPeradilanSemu.bind(
-    dataPeradilanSemuController
-  )
+    dataPeradilanSemuController,
+  ),
 );
 router.put(
   "/peradilan-semu/:id",
@@ -7095,40 +7065,108 @@ router.put(
   (req: Request, res: Response) => {
     return dataPeradilanSemuController.updateDataPeradilanSemu(
       req as unknown as MulterRequest,
-      res
+      res,
     );
-  }
+  },
 );
 router.delete(
   "/peradilan-semu/:id",
   dataPeradilanSemuController.deleteDataPeradilanSemu.bind(
-    dataPeradilanSemuController
-  )
+    dataPeradilanSemuController,
+  ),
 );
 
 router.post(
   "/statistik-peradilan-semu",
   dataPeradilanSemuController.createStatistikPeradilanSemu.bind(
-    dataPeradilanSemuController
-  )
+    dataPeradilanSemuController,
+  ),
 );
 router.get(
   "/statistik-peradilan-semu",
   dataPeradilanSemuController.getStatistikPeradilanSemu.bind(
-    dataPeradilanSemuController
-  )
+    dataPeradilanSemuController,
+  ),
 );
 router.put(
   "/statistik-peradilan-semu/:id",
   dataPeradilanSemuController.updateStatistikPeradilanSemu.bind(
-    dataPeradilanSemuController
-  )
+    dataPeradilanSemuController,
+  ),
 );
 router.delete(
   "/statistik-peradilan-semu/:id",
   dataPeradilanSemuController.deleteStatistikPeradilanSemu.bind(
-    dataPeradilanSemuController
-  )
+    dataPeradilanSemuController,
+  ),
+);
+
+router.post(
+  "/akreditasi",
+  upload.fields([{ name: "document", maxCount: 10 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return akreditasiController.createDataAkreditasi(
+      req as unknown as MulterRequest,
+      res,
+    );
+  },
+);
+
+router.get(
+  "/akreditasi",
+  akreditasiController.getAllAkreditasii.bind(akreditasiController),
+);
+router.put(
+  "/akreditasi/:id",
+  upload.fields([{ name: "document", maxCount: 10 }]),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err.message || "File upload error",
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response, next: Function) => {
+    const multerReq = req as unknown as MulterRequest;
+    if (multerReq.fileValidationError) {
+      return res.status(400).json({
+        success: false,
+        message: multerReq.fileValidationError,
+      });
+    }
+    next();
+  },
+  (req: Request, res: Response) => {
+    return akreditasiController.updateAkreditasi(
+      req as unknown as MulterRequest,
+      res,
+    );
+  },
+);
+router.delete(
+  "/akreditasi/:id",
+  akreditasiController.deleteAkreditasi.bind(akreditasiController),
 );
 
 export default router;

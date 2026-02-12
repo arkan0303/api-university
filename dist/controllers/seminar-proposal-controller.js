@@ -8,17 +8,11 @@ class SeminarProposalController {
     async createSeminarProposal(req, res) {
         try {
             const { title, kategori } = req.body;
-            if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Foto harus diupload",
-                });
-            }
             const kategoriJson = JSON.parse(kategori);
             const seminarProposal = await seminar_proposal_service_1.default.createSeminarProposal({
                 title,
                 kategori: kategoriJson,
-                foto: req.files?.["foto"][0],
+                foto: req.files?.["foto"]?.[0],
             });
             return res.status(201).json({
                 success: true,
@@ -98,19 +92,10 @@ class SeminarProposalController {
     }
     async createProsedurPelaksanaan(req, res) {
         try {
-            const { title, tahapan, waktu, deskripsi } = req.body;
-            if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Foto harus diupload",
-                });
-            }
+            const { tahapan, deskripsi } = req.body;
             const prosedurPelaksanaan = await seminar_proposal_service_1.default.createProsedurPelaksanaan({
-                title,
                 tahapan,
-                waktu,
                 deskripsi,
-                foto: req.files?.["foto"][0],
             });
             return res.status(201).json({
                 success: true,
@@ -136,26 +121,22 @@ class SeminarProposalController {
             });
         }
         catch (error) {
-            console.error("Error in getAllProsedurPelaksanaan:", error);
+            console.error("ERROR PROSEDUR:", error);
             return res.status(500).json({
                 success: false,
                 message: "Gagal mengambil prosedur pelaksanaan",
+                error: error.message, // sementara buat debug
             });
         }
     }
     async updateProsedurPelaksanaan(req, res) {
         try {
-            const { title, tahapan, waktu, deskripsi } = req.body;
+            const { tahapan, deskripsi } = req.body;
             const id = req.params.id;
             const updateData = {
-                title,
                 tahapan,
-                waktu,
                 deskripsi,
             };
-            if (req.files?.["foto"]?.[0]) {
-                updateData.foto = req.files["foto"][0];
-            }
             const updatedProsedurPelaksanaan = await seminar_proposal_service_1.default.updateProsedurPelaksanaan(Number(id), updateData);
             return res.status(200).json({
                 success: true,

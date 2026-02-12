@@ -6,7 +6,7 @@ import { uploadToCloudinary } from "../utils/cloudinary";
 interface SidangSkripsi {
   title: string;
   kategori: Prisma.JsonValue[];
-  foto: Express.Multer.File;
+  foto?: Express.Multer.File;
 }
 
 interface ProsedurSidangSkripsi {
@@ -14,7 +14,7 @@ interface ProsedurSidangSkripsi {
   tahapan: string;
   waktu: string;
   deskripsi: string;
-  foto: Express.Multer.File;
+  foto?: Express.Multer.File;
 }
 
 interface StatistikSidangSkripsi {
@@ -35,7 +35,9 @@ interface KriteriaSidangSkripsi {
 class SidangSkripsiService {
   async createSidangSkripsi(sidangSkripsi: SidangSkripsi) {
     try {
-      const fotoUrl = await uploadToCloudinary(sidangSkripsi.foto.buffer);
+      const fotoUrl = sidangSkripsi.foto
+        ? await uploadToCloudinary(sidangSkripsi.foto.buffer)
+        : null;
       const createdSidangSkripsi = await prisma.sidangSkripsi.create({
         data: {
           title: sidangSkripsi.title,
@@ -95,19 +97,20 @@ class SidangSkripsiService {
   }
 
   async createProsedurSidangSkripsi(
-    prosedurSidangSkripsi: ProsedurSidangSkripsi
+    prosedurSidangSkripsi: ProsedurSidangSkripsi,
   ) {
     try {
-      const fotoUrl = await uploadToCloudinary(
-        prosedurSidangSkripsi.foto.buffer
-      );
+      let fotoUrl;
+      if (prosedurSidangSkripsi.foto) {
+        fotoUrl = await uploadToCloudinary(prosedurSidangSkripsi.foto.buffer);
+      }
       const createdProsedurSidangSkripsi =
         await prisma.prosedurSidangSkripsi.create({
           data: {
             title: prosedurSidangSkripsi.title,
             tahapan: prosedurSidangSkripsi.tahapan,
             deskripsi: prosedurSidangSkripsi.deskripsi,
-            foto: fotoUrl,
+            foto: fotoUrl || undefined,
           },
         });
       return createdProsedurSidangSkripsi;
@@ -166,7 +169,7 @@ class SidangSkripsiService {
   }
 
   async createStatistikSidangSkripsi(
-    statistikSidangSkripsi: StatistikSidangSkripsi
+    statistikSidangSkripsi: StatistikSidangSkripsi,
   ) {
     try {
       const createdStatistikSidangSkripsi =
@@ -234,7 +237,7 @@ class SidangSkripsiService {
   }
 
   async createKriteriaSidangSkripsi(
-    kriteriaSidangSkripsi: KriteriaSidangSkripsi
+    kriteriaSidangSkripsi: KriteriaSidangSkripsi,
   ) {
     try {
       const createdKriteriaSidangSkripsi =

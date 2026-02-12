@@ -6,15 +6,12 @@ import { uploadToCloudinary } from "../utils/cloudinary";
 interface SeminarProposal {
   title: string;
   kategori: Prisma.JsonValue[];
-  foto: Express.Multer.File;
+  foto?: Express.Multer.File;
 }
 
-interface ProsedurPelaksanaan {
-  title: string;
+interface SopPendaftaran {
   tahapan: string;
-  waktu: string;
   deskripsi: string;
-  foto: Express.Multer.File;
 }
 
 interface StatistikSeminarProposal {
@@ -29,7 +26,10 @@ interface StatistikSeminarProposal {
 class SeminarProposalService {
   async createSeminarProposal(seminarProposal: SeminarProposal) {
     try {
-      const fotoUrl = await uploadToCloudinary(seminarProposal.foto.buffer);
+      let fotoUrl = null;
+      if (seminarProposal.foto) {
+        fotoUrl = await uploadToCloudinary(seminarProposal.foto.buffer);
+      }
       const createdSeminarProposal = await prisma.seminarProposal.create({
         data: {
           title: seminarProposal.title,
@@ -88,19 +88,16 @@ class SeminarProposalService {
     }
   }
 
-  async createProsedurPelaksanaan(prosedurPelaksanaan: ProsedurPelaksanaan) {
+  async createProsedurPelaksanaan(sopPendaftaran: SopPendaftaran) {
     try {
-      const fotoUrl = await uploadToCloudinary(prosedurPelaksanaan.foto.buffer);
-      const createdProsedurPelaksanaan =
-        await prisma.prosedurPelaksanaan.create({
-          data: {
-            title: prosedurPelaksanaan.title,
-            tahapan: prosedurPelaksanaan.tahapan,
-            waktu: prosedurPelaksanaan.waktu,
-            deskripsi: prosedurPelaksanaan.deskripsi,
-            foto: fotoUrl,
-          },
-        });
+      const createdProsedurPelaksanaan = await prisma.soppendaftaran.create({
+        data: {
+          tahapan: sopPendaftaran.tahapan,
+          deskripsi: sopPendaftaran.deskripsi,
+          updatedAt: new Date(),
+          createdAt: new Date(),
+        },
+      });
       return createdProsedurPelaksanaan;
     } catch (error) {
       console.error("Error in createProsedurPelaksanaan:", error);
@@ -110,7 +107,7 @@ class SeminarProposalService {
 
   async getAllProsedurPelaksanaan() {
     try {
-      const prosedurPelaksanaan = await prisma.prosedurPelaksanaan.findMany();
+      const prosedurPelaksanaan = await prisma.soppendaftaran.findMany();
       return prosedurPelaksanaan;
     } catch (error) {
       console.error("Error in getAllProsedurPelaksanaan:", error);
@@ -118,24 +115,16 @@ class SeminarProposalService {
     }
   }
 
-  async updateProsedurPelaksanaan(id: number, data: ProsedurPelaksanaan) {
+  async updateProsedurPelaksanaan(id: number, data: SopPendaftaran) {
     try {
       const updateData: any = {
-        title: data.title,
         tahapan: data.tahapan,
-        waktu: data.waktu,
         deskripsi: data.deskripsi,
-        foto: data.foto,
       };
-      if (data.foto) {
-        const fotoUrl = await uploadToCloudinary(data.foto.buffer);
-        updateData.foto = fotoUrl;
-      }
-      const updatedProsedurPelaksanaan =
-        await prisma.prosedurPelaksanaan.update({
-          where: { id },
-          data: updateData,
-        });
+      const updatedProsedurPelaksanaan = await prisma.soppendaftaran.update({
+        where: { id },
+        data: updateData,
+      });
       return updatedProsedurPelaksanaan;
     } catch (error) {
       console.error("Error in updateProsedurPelaksanaan:", error);
@@ -145,10 +134,9 @@ class SeminarProposalService {
 
   async deleteProsedurPelaksanaan(id: number) {
     try {
-      const deletedProsedurPelaksanaan =
-        await prisma.prosedurPelaksanaan.delete({
-          where: { id },
-        });
+      const deletedProsedurPelaksanaan = await prisma.soppendaftaran.delete({
+        where: { id },
+      });
       return deletedProsedurPelaksanaan;
     } catch (error) {
       console.error("Error in deleteProsedurPelaksanaan:", error);
@@ -157,7 +145,7 @@ class SeminarProposalService {
   }
 
   async createStatistikSeminarProposal(
-    statistikSeminarProposal: StatistikSeminarProposal
+    statistikSeminarProposal: StatistikSeminarProposal,
   ) {
     try {
       const createdStatistikSeminarProposal =
@@ -191,7 +179,7 @@ class SeminarProposalService {
 
   async updateStatistikSeminarProposal(
     id: number,
-    data: StatistikSeminarProposal
+    data: StatistikSeminarProposal,
   ) {
     try {
       const updateData: any = {
