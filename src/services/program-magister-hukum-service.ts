@@ -3,11 +3,12 @@ import prisma from "../db/prisma";
 import { uploadToCloudinary } from "../utils/cloudinary";
 
 interface ProgramMagisterHukum {
-  image: Express.Multer.File[];
+  mata_kuliah: string;
   semester: string;
-  judul: string;
-  deskripsi: string;
-  kategori: Prisma.JsonValue[];
+  kode_matkul: string;
+  bobot: string;
+  dokumen_rps: Express.Multer.File;
+  penyelenggara: string;
 }
 
 interface StatistikProgramMagisterHukum {
@@ -28,22 +29,18 @@ interface ProspekKarirMagisterHukum {
 class ProgramMagisterHukumService {
   async createProgramMagisterHukum(data: ProgramMagisterHukum) {
     try {
-      let galeriData: Prisma.JsonArray = [];
-
-      if (data.image && data.image.length > 0) {
-        const uploadedUrls = await Promise.all(
-          data.image.map((file) => uploadToCloudinary(file.buffer))
-        );
-        galeriData = uploadedUrls as Prisma.JsonArray;
+      let dokumenRpsUrl = null;
+      if (data.dokumen_rps) {
+        dokumenRpsUrl = await uploadToCloudinary(data.dokumen_rps.buffer);
       }
-
       const result = await prisma.programMagisterHukum.create({
         data: {
-          image: galeriData,
+          mata_kuliah: data.mata_kuliah,
           semester: data.semester,
-          judul: data.judul,
-          deskripsi: data.deskripsi,
-          kategori: data.kategori,
+          kode_matkul: data.kode_matkul,
+          bobot: data.bobot,
+          penyelenggara: data.penyelenggara,
+          dokumen_rps: dokumenRpsUrl,
         },
       });
       return result;
@@ -65,23 +62,23 @@ class ProgramMagisterHukumService {
 
   async updateProgramMagisterHukum(
     id: number,
-    data: ProgramMagisterHukum & { image?: Express.Multer.File[] }
+    data: ProgramMagisterHukum & { image?: Express.Multer.File[] },
   ) {
     try {
       const updateData: any = {
+        mata_kuliah: data.mata_kuliah,
         semester: data.semester,
-        judul: data.judul,
-        kategori: data.kategori,
-        deskripsi: data.deskripsi,
-        image: data.image,
+        kode_matkul: data.kode_matkul,
+        bobot: data.bobot,
+        penyelenggara: data.penyelenggara,
+        dokumen_rps: data.dokumen_rps,
       };
 
       // Hanya upload foto baru jika ada file yang diunggah
-      if (data.image) {
-        const fotoUrl = await uploadToCloudinary(data.image[0].buffer);
-        updateData.image = fotoUrl;
+      if (data.dokumen_rps) {
+        const dokumenRpsUrl = await uploadToCloudinary(data.dokumen_rps.buffer);
+        updateData.dokumen_rps = dokumenRpsUrl;
       }
-
       const updatedStrategis = await prisma.programMagisterHukum.update({
         where: { id },
         data: updateData,
@@ -107,7 +104,7 @@ class ProgramMagisterHukumService {
   }
 
   async createStatistikProgramMagisterHukum(
-    data: StatistikProgramMagisterHukum
+    data: StatistikProgramMagisterHukum,
   ) {
     try {
       const result = await prisma.statistikProgramMagisterHukum.create({
@@ -140,7 +137,7 @@ class ProgramMagisterHukumService {
 
   async updateStatistikProgramMagisterHukum(
     id: number,
-    data: StatistikProgramMagisterHukum
+    data: StatistikProgramMagisterHukum,
   ) {
     try {
       const updatedData = await prisma.statistikProgramMagisterHukum.update({
@@ -196,7 +193,7 @@ class ProgramMagisterHukumService {
 
   async updateProspekKarirMagisterHukum(
     id: number,
-    data: ProspekKarirMagisterHukum & { image?: Express.Multer.File }
+    data: ProspekKarirMagisterHukum & { image?: Express.Multer.File },
   ) {
     try {
       const updateData: any = {

@@ -440,12 +440,12 @@ model prospekKarirSarjanaHukum {
 
 model ProgramMagisterHukum {
   id        Int     @id @default(autoincrement())
-  image     Json?
-  semester  String?
-  judul     String?
-  deskripsi String?
-  kategori  Json?
-
+  mata_kuliah   String?
+  semester      String?
+  kode_matkul   String?
+  bobot         String?
+  dokumen_rps   String?
+  penyelenggara String?
   @@map("programmagisterhukum")
 }
 

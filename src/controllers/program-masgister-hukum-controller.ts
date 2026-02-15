@@ -11,19 +11,19 @@ interface MulterRequest extends Request {
 class ProgramMagisterHukumController {
   async createProgramMagisterHukum(req: MulterRequest, res: Response) {
     try {
-      const { semester, judul, kategori, deskripsi } = req.body;
+      const { mata_kuliah, semester, kode_matkul, bobot, penyelenggara } =
+        req.body;
       console.log(req.body);
 
-      const galeriFiles = req.files?.["image"] || [];
-      const katagoriJSON = JSON.parse(kategori);
-      console.log(katagoriJSON);
+      const dokumenRps = req.files?.["dokumen_rps"] || [];
       const strategis =
         await ProgramMagisterHukumService.createProgramMagisterHukum({
           semester,
-          judul,
-          kategori: katagoriJSON,
-          deskripsi,
-          image: galeriFiles,
+          mata_kuliah,
+          kode_matkul,
+          bobot,
+          penyelenggara,
+          dokumen_rps: dokumenRps[0],
         });
       res.status(201).json({
         success: true,
@@ -54,22 +54,23 @@ class ProgramMagisterHukumController {
   async updateProgramMagisterHukum(req: MulterRequest, res: Response) {
     try {
       const { id } = req.params;
-      const { semester, judul, kategori, deskripsi } = req.body;
-      const katagoriJSON = JSON.parse(kategori);
+      const { mata_kuliah, semester, kode_matkul, bobot, penyelenggara } =
+        req.body;
       const updateData: any = {
+        mata_kuliah,
         semester,
-        judul,
-        kategori: katagoriJSON,
-        deskripsi,
+        kode_matkul,
+        bobot,
+        penyelenggara,
       };
-      if (req.files?.["image"]?.[0]) {
-        const image = req.files["image"][0];
-        updateData.image = image;
+      if (req.files?.["dokumen_rps"]?.[0]) {
+        const dokumenRps = req.files["dokumen_rps"][0];
+        updateData.dokumen_rps = dokumenRps;
       }
       const updatedProgramMagisterHukum =
         await ProgramMagisterHukumService.updateProgramMagisterHukum(
           Number(id),
-          updateData
+          updateData,
         );
       res.status(200).json({
         success: true,
@@ -87,7 +88,7 @@ class ProgramMagisterHukumController {
       const { id } = req.params;
       const deletedData =
         await ProgramMagisterHukumService.deleteProgramMagisterHukum(
-          Number(id)
+          Number(id),
         );
       res.status(200).json({
         success: true,
@@ -154,7 +155,7 @@ class ProgramMagisterHukumController {
             alumni,
             slogan,
             deskripsi,
-          }
+          },
         );
       res.status(200).json({
         success: true,
@@ -172,7 +173,7 @@ class ProgramMagisterHukumController {
       const { id } = req.params;
       const deletedData =
         await ProgramMagisterHukumService.deleteStatistikProgramMagisterHukum(
-          Number(id)
+          Number(id),
         );
       res.status(200).json({
         success: true,
@@ -238,7 +239,7 @@ class ProgramMagisterHukumController {
             judul,
             deskripsi,
             image,
-          }
+          },
         );
       res.status(200).json({
         success: true,
@@ -256,7 +257,7 @@ class ProgramMagisterHukumController {
       const { id } = req.params;
       const deletedData =
         await ProgramMagisterHukumService.deleteProspekKarirMagisterHukum(
-          Number(id)
+          Number(id),
         );
       res.status(200).json({
         success: true,
