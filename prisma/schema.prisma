@@ -2153,3 +2153,13 @@ model Testimoni {
 
   @@map("testimoni")
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  role      String   @default("Adm")
+  status    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -68,6 +68,9 @@ import dataPkpaController from "../controllers/data-pkpa-controller";
 import dataPeradilanSemuController from "../controllers/data-peradilan-semu-service";
 import akreditasiController from "../controllers/akreditasi-controller";
 import testingController from "../controllers/Testing";
+import { login } from "../controllers/authController";
+import { verifyToken } from "../middleware/authMiddleware";
+import { loginLimiter } from "../middleware/loginLimiter";
 
 type MulterRequest = Request & {
   file?: Express.Multer.File;
@@ -80,9 +83,14 @@ type MulterRequest = Request & {
 const router = express.Router();
 const heroSectionController = new HeroSectionController();
 
+router.post("/login", loginLimiter, login);
+
 // Apply the upload middleware to the route
+
+// HERO SECTION
 router.post(
   "/hero-section",
+  verifyToken,
   HeroSectionController.uploadImage(),
   heroSectionController.createHeroSection.bind(heroSectionController),
 );
@@ -93,15 +101,19 @@ router.get(
 );
 router.delete(
   "/hero-section/:id",
+  verifyToken,
   heroSectionController.delete.bind(heroSectionController),
 );
 
 router.put(
   "/hero-section/:id",
+  verifyToken,
   HeroSectionController.uploadImage(),
   heroSectionController.update.bind(heroSectionController),
 );
+// END HERO SECTION
 
+// BERITA
 router.post(
   "/berita",
   upload.fields([
@@ -168,6 +180,7 @@ router.delete(
   "/berita/:id",
   BeritaController.deleteDataBerita.bind(BeritaController),
 );
+// END BERITA
 
 router.post(
   "/testimoni",

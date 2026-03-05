@@ -2,11 +2,17 @@ import express from "express";
 import userRoutes from "./routes/api";
 import prisma from "./db/prisma";
 import cors from "cors";
+import dotenv from "dotenv";
+import helmet from "helmet";
+
+dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 
 const corsOptions = {
   origin: [
