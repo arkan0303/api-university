@@ -9,7 +9,7 @@ interface ArsipSuratMasuk {
   nomorSurat: string;
   tanggalDiterima: string;
   file: Express.Multer.File[];
-  foto: Express.Multer.File;
+  foto: Express.Multer.File | undefined;
   fileMetadata: any[];
   status: string;
   penerima: string;
@@ -27,14 +27,18 @@ interface StatistikArsipSuratMasuk {
 class SuratMasukService {
   async createArsipSuratMasuk(arsipSuratMasuk: ArsipSuratMasuk) {
     try {
-      const fotoUrl = await uploadToCloudinary(arsipSuratMasuk.foto.buffer);
+      let fotoUrl: string | undefined;
+
+      if (arsipSuratMasuk.foto) {
+        fotoUrl = await uploadToCloudinary(arsipSuratMasuk.foto.buffer);
+      }
 
       let galeriData: Prisma.JsonArray = [];
 
       if (arsipSuratMasuk.file && arsipSuratMasuk.file.length > 0) {
         // Upload all files to Cloudinary
         const uploadedUrls = await Promise.all(
-          arsipSuratMasuk.file.map((file) => uploadToCloudinary(file.buffer))
+          arsipSuratMasuk.file.map((file) => uploadToCloudinary(file.buffer)),
         );
 
         galeriData = uploadedUrls.map((url, index) => {
@@ -50,14 +54,14 @@ class SuratMasukService {
       const arsipSuratMasukk = await prisma.arsipSuratMasuk.create({
         data: {
           title: arsipSuratMasuk.title,
-          deskripsi: arsipSuratMasuk.deskripsi,
+          deskripsi: arsipSuratMasuk?.deskripsi || "",
           pengirim: arsipSuratMasuk.pengirim,
           nomorSurat: arsipSuratMasuk.nomorSurat,
           tanggalDiterima: arsipSuratMasuk.tanggalDiterima,
           status: arsipSuratMasuk.status,
           penerima: arsipSuratMasuk.penerima,
           foto: fotoUrl,
-          file: galeriData, // Now saves as JSON array of objects
+          file: galeriData,
         },
       });
 
@@ -83,7 +87,7 @@ class SuratMasukService {
     arsipSuratMasuk: ArsipSuratMasuk & {
       file?: Express.Multer.File[];
       foto?: Express.Multer.File;
-    }
+    },
   ) {
     try {
       const updateData: any = {
@@ -109,7 +113,7 @@ class SuratMasukService {
 
       if (arsipSuratMasuk.file && arsipSuratMasuk.file.length > 0) {
         const uploadedUrls = await Promise.all(
-          arsipSuratMasuk.file.map((file) => uploadToCloudinary(file.buffer))
+          arsipSuratMasuk.file.map((file) => uploadToCloudinary(file.buffer)),
         );
         galeriData = uploadedUrls as Prisma.JsonArray;
       }
@@ -140,7 +144,7 @@ class SuratMasukService {
   }
 
   async createStatistikArsipSuratMasuk(
-    statistikArsipSuratMasuk: StatistikArsipSuratMasuk
+    statistikArsipSuratMasuk: StatistikArsipSuratMasuk,
   ) {
     try {
       const statistikArsipSuratMasukk =
@@ -167,7 +171,7 @@ class SuratMasukService {
 
   async updateStatistikArsipSuratMasuk(
     id: number,
-    statistikArsipSuratMasuk: StatistikArsipSuratMasuk
+    statistikArsipSuratMasuk: StatistikArsipSuratMasuk,
   ) {
     try {
       const updatedStatistikArsipSuratMasuk =

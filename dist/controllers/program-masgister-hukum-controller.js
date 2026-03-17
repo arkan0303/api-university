@@ -7,17 +7,16 @@ const program_magister_hukum_service_1 = __importDefault(require("../services/pr
 class ProgramMagisterHukumController {
     async createProgramMagisterHukum(req, res) {
         try {
-            const { semester, judul, kategori, deskripsi } = req.body;
+            const { mata_kuliah, semester, kode_matkul, bobot, penyelenggara } = req.body;
             console.log(req.body);
-            const galeriFiles = req.files?.["image"] || [];
-            const katagoriJSON = JSON.parse(kategori);
-            console.log(katagoriJSON);
+            const dokumenRps = req.files?.["dokumen_rps"] || [];
             const strategis = await program_magister_hukum_service_1.default.createProgramMagisterHukum({
                 semester,
-                judul,
-                kategori: katagoriJSON,
-                deskripsi,
-                image: galeriFiles,
+                mata_kuliah,
+                kode_matkul,
+                bobot,
+                penyelenggara,
+                dokumen_rps: dokumenRps[0],
             });
             res.status(201).json({
                 success: true,
@@ -47,17 +46,17 @@ class ProgramMagisterHukumController {
     async updateProgramMagisterHukum(req, res) {
         try {
             const { id } = req.params;
-            const { semester, judul, kategori, deskripsi } = req.body;
-            const katagoriJSON = JSON.parse(kategori);
+            const { mata_kuliah, semester, kode_matkul, bobot, penyelenggara } = req.body;
             const updateData = {
+                mata_kuliah,
                 semester,
-                judul,
-                kategori: katagoriJSON,
-                deskripsi,
+                kode_matkul,
+                bobot,
+                penyelenggara,
             };
-            if (req.files?.["image"]?.[0]) {
-                const image = req.files["image"][0];
-                updateData.image = image;
+            if (req.files?.["dokumen_rps"]?.[0]) {
+                const dokumenRps = req.files["dokumen_rps"][0];
+                updateData.dokumen_rps = dokumenRps;
             }
             const updatedProgramMagisterHukum = await program_magister_hukum_service_1.default.updateProgramMagisterHukum(Number(id), updateData);
             res.status(200).json({

@@ -23,13 +23,6 @@ class SuratMasukController {
 
       console.log(req.body);
 
-      if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Foto utama harus diupload",
-        });
-      }
-
       const galeriFiles = req.files?.["file"] || [];
 
       let parsedFileMetadata: Array<{ fileName: string; status_file: string }> =
@@ -42,20 +35,15 @@ class SuratMasukController {
         }
       }
 
-      console.log("Parsed file metadata:", parsedFileMetadata);
-      console.log(galeriFiles);
-      console.log(req.files?.["foto"]);
-      console.log(req.files?.["file"]);
-
       const suratMasuk = await SuratMasukService.createArsipSuratMasuk({
         title,
         deskripsi,
         pengirim,
         nomorSurat,
         tanggalDiterima,
-        foto: req.files?.["foto"][0],
+        foto: req.files?.["foto"]?.[0],
         file: galeriFiles,
-        fileMetadata: parsedFileMetadata, // Pass metadata to service
+        fileMetadata: parsedFileMetadata,
         status,
         penerima,
       });
@@ -138,7 +126,7 @@ class SuratMasukController {
 
       const suratMasuk = await SuratMasukService.updateArsipSuratMasuk(
         Number(id), // Konversi id ke number
-        updateData
+        updateData,
       );
 
       return res.status(200).json({
@@ -158,7 +146,7 @@ class SuratMasukController {
     try {
       const { id } = req.params;
       const deletedData = await SuratMasukService.deleteArsipSuratMasuk(
-        Number(id)
+        Number(id),
       );
       return res.status(200).json({
         success: true,

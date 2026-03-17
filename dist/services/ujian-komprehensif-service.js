@@ -14,7 +14,7 @@ class UjianKomprehensifService {
         return prisma_1.default.ujianKomprehensif.create({
             data: {
                 ...data,
-                foto: fotoUrl || null,
+                foto: fotoUrl || undefined,
             },
         });
     }

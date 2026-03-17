@@ -8,7 +8,10 @@ const cloudinary_1 = require("../utils/cloudinary");
 class SuratMasukService {
     async createArsipSuratMasuk(arsipSuratMasuk) {
         try {
-            const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(arsipSuratMasuk.foto.buffer);
+            let fotoUrl;
+            if (arsipSuratMasuk.foto) {
+                fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(arsipSuratMasuk.foto.buffer);
+            }
             let galeriData = [];
             if (arsipSuratMasuk.file && arsipSuratMasuk.file.length > 0) {
                 // Upload all files to Cloudinary
@@ -25,14 +28,14 @@ class SuratMasukService {
             const arsipSuratMasukk = await prisma_1.default.arsipSuratMasuk.create({
                 data: {
                     title: arsipSuratMasuk.title,
-                    deskripsi: arsipSuratMasuk.deskripsi,
+                    deskripsi: arsipSuratMasuk?.deskripsi || "",
                     pengirim: arsipSuratMasuk.pengirim,
                     nomorSurat: arsipSuratMasuk.nomorSurat,
                     tanggalDiterima: arsipSuratMasuk.tanggalDiterima,
                     status: arsipSuratMasuk.status,
                     penerima: arsipSuratMasuk.penerima,
                     foto: fotoUrl,
-                    file: galeriData, // Now saves as JSON array of objects
+                    file: galeriData,
                 },
             });
             return arsipSuratMasukk;

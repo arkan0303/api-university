@@ -8,7 +8,9 @@ const cloudinary_1 = require("../utils/cloudinary");
 class SidangSkripsiService {
     async createSidangSkripsi(sidangSkripsi) {
         try {
-            const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(sidangSkripsi.foto.buffer);
+            const fotoUrl = sidangSkripsi.foto
+                ? await (0, cloudinary_1.uploadToCloudinary)(sidangSkripsi.foto.buffer)
+                : null;
             const createdSidangSkripsi = await prisma_1.default.sidangSkripsi.create({
                 data: {
                     title: sidangSkripsi.title,
@@ -69,13 +71,16 @@ class SidangSkripsiService {
     }
     async createProsedurSidangSkripsi(prosedurSidangSkripsi) {
         try {
-            const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(prosedurSidangSkripsi.foto.buffer);
+            let fotoUrl;
+            if (prosedurSidangSkripsi.foto) {
+                fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(prosedurSidangSkripsi.foto.buffer);
+            }
             const createdProsedurSidangSkripsi = await prisma_1.default.prosedurSidangSkripsi.create({
                 data: {
                     title: prosedurSidangSkripsi.title,
                     tahapan: prosedurSidangSkripsi.tahapan,
                     deskripsi: prosedurSidangSkripsi.deskripsi,
-                    foto: fotoUrl,
+                    foto: fotoUrl || undefined,
                 },
             });
             return createdProsedurSidangSkripsi;

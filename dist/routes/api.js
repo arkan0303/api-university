@@ -72,13 +72,20 @@ const data_pkpa_controller_1 = __importDefault(require("../controllers/data-pkpa
 const data_peradilan_semu_service_1 = __importDefault(require("../controllers/data-peradilan-semu-service"));
 const akreditasi_controller_1 = __importDefault(require("../controllers/akreditasi-controller"));
 const Testing_1 = __importDefault(require("../controllers/Testing"));
+const authController_1 = require("../controllers/authController");
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const loginLimiter_1 = require("../middleware/loginLimiter");
 const router = express_1.default.Router();
 const heroSectionController = new heroSectionController_1.default();
+router.post("/login", loginLimiter_1.loginLimiter, authController_1.login);
 // Apply the upload middleware to the route
-router.post("/hero-section", heroSectionController_1.default.uploadImage(), heroSectionController.createHeroSection.bind(heroSectionController));
+// HERO SECTION
+router.post("/hero-section", authMiddleware_1.verifyToken, heroSectionController_1.default.uploadImage(), heroSectionController.createHeroSection.bind(heroSectionController));
 router.get("/hero-section", heroSectionController.getDataHeroSection.bind(heroSectionController));
-router.delete("/hero-section/:id", heroSectionController.delete.bind(heroSectionController));
-router.put("/hero-section/:id", heroSectionController_1.default.uploadImage(), heroSectionController.update.bind(heroSectionController));
+router.delete("/hero-section/:id", authMiddleware_1.verifyToken, heroSectionController.delete.bind(heroSectionController));
+router.put("/hero-section/:id", authMiddleware_1.verifyToken, heroSectionController_1.default.uploadImage(), heroSectionController.update.bind(heroSectionController));
+// END HERO SECTION
+// BERITA
 router.post("/berita", multer_1.default.fields([
     { name: "fotoUtama", maxCount: 1 },
     { name: "galeri", maxCount: 10 },
@@ -127,6 +134,7 @@ router.put("/berita/:id", multer_1.default.fields([
     return beritaController_1.default.updateBerita(req, res);
 });
 router.delete("/berita/:id", beritaController_1.default.deleteDataBerita.bind(beritaController_1.default));
+// END BERITA
 router.post("/testimoni", multer_1.default.fields([
     { name: "fotoUtama", maxCount: 1 },
     { name: "galeri", maxCount: 10 },
@@ -725,7 +733,7 @@ router.post("/program-sarjana-hukum/prospek-karir", program_sarjana_hukum_contro
 router.put("/program-sarjana-hukum/prospek-karir/:id", program_sarjana_hukum_controller_1.default.updateProspekKarirSarjanaHukum.bind(program_sarjana_hukum_controller_1.default));
 router.delete("/program-sarjana-hukum/prospek-karir/:id", program_sarjana_hukum_controller_1.default.deleteProspekKarirSarjanaHukum.bind(program_sarjana_hukum_controller_1.default));
 router.get("/program-sarjana-hukum/prospek-karir", program_sarjana_hukum_controller_1.default.getAllProspekKarirSarjanaHukum.bind(program_sarjana_hukum_controller_1.default));
-router.post("/program-magister-hukum", multer_1.default.fields([{ name: "image", maxCount: 5 }]), (err, req, res, next) => {
+router.post("/program-magister-hukum", multer_1.default.fields([{ name: "dokumen_rps", maxCount: 1 }]), (err, req, res, next) => {
     if (err) {
         return res.status(400).json({
             success: false,
@@ -746,7 +754,7 @@ router.post("/program-magister-hukum", multer_1.default.fields([{ name: "image",
     return program_masgister_hukum_controller_1.default.createProgramMagisterHukum(req, res);
 });
 router.get("/program-magister-hukum", program_masgister_hukum_controller_1.default.getAllProgramMagisterHukum.bind(program_masgister_hukum_controller_1.default));
-router.put("/program-magister-hukum/:id", multer_1.default.fields([{ name: "image", maxCount: 5 }]), (err, req, res, next) => {
+router.put("/program-magister-hukum/:id", multer_1.default.fields([{ name: "dokumen_rps", maxCount: 1 }]), (err, req, res, next) => {
     if (err) {
         return res.status(400).json({
             success: false,

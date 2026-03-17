@@ -9,10 +9,11 @@ class UjianKomprehensifController {
         try {
             const { title, kategori, type, waktu, deskripsi } = req.body;
             const kategoriJson = JSON.parse(kategori);
+            const foto = req.files?.["foto"]?.[0];
             const ujianKomprehensif = await ujian_komprehensif_service_1.default.createUjianKomprehensif({
                 title,
                 kategori: kategoriJson,
-                foto: req.files["foto"]?.[0] || null,
+                foto,
                 type,
                 waktu,
                 deskripsi,

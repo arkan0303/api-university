@@ -8,18 +8,18 @@ const cloudinary_1 = require("../utils/cloudinary");
 class ProgramMagisterHukumService {
     async createProgramMagisterHukum(data) {
         try {
-            let galeriData = [];
-            if (data.image && data.image.length > 0) {
-                const uploadedUrls = await Promise.all(data.image.map((file) => (0, cloudinary_1.uploadToCloudinary)(file.buffer)));
-                galeriData = uploadedUrls;
+            let dokumenRpsUrl = null;
+            if (data.dokumen_rps) {
+                dokumenRpsUrl = await (0, cloudinary_1.uploadToCloudinary)(data.dokumen_rps.buffer);
             }
             const result = await prisma_1.default.programMagisterHukum.create({
                 data: {
-                    image: galeriData,
+                    mata_kuliah: data.mata_kuliah,
                     semester: data.semester,
-                    judul: data.judul,
-                    deskripsi: data.deskripsi,
-                    kategori: data.kategori,
+                    kode_matkul: data.kode_matkul,
+                    bobot: data.bobot,
+                    penyelenggara: data.penyelenggara,
+                    dokumen_rps: dokumenRpsUrl,
                 },
             });
             return result;
@@ -42,16 +42,17 @@ class ProgramMagisterHukumService {
     async updateProgramMagisterHukum(id, data) {
         try {
             const updateData = {
+                mata_kuliah: data.mata_kuliah,
                 semester: data.semester,
-                judul: data.judul,
-                kategori: data.kategori,
-                deskripsi: data.deskripsi,
-                image: data.image,
+                kode_matkul: data.kode_matkul,
+                bobot: data.bobot,
+                penyelenggara: data.penyelenggara,
+                dokumen_rps: data.dokumen_rps,
             };
             // Hanya upload foto baru jika ada file yang diunggah
-            if (data.image) {
-                const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(data.image[0].buffer);
-                updateData.image = fotoUrl;
+            if (data.dokumen_rps) {
+                const dokumenRpsUrl = await (0, cloudinary_1.uploadToCloudinary)(data.dokumen_rps.buffer);
+                updateData.dokumen_rps = dokumenRpsUrl;
             }
             const updatedStrategis = await prisma_1.default.programMagisterHukum.update({
                 where: { id },

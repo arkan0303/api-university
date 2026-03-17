@@ -8,17 +8,12 @@ class SidangSkripsiController {
     async createSidangSkripsi(req, res) {
         try {
             const { title, kategori } = req.body;
-            if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Foto harus diupload",
-                });
-            }
+            const foto = req.files?.["foto"]?.[0];
             const kategoriJson = JSON.parse(kategori);
             const sidangSkripsi = await sidang_skripsi_service_1.default.createSidangSkripsi({
                 title,
                 kategori: kategoriJson,
-                foto: req.files?.["foto"][0],
+                foto,
             });
             return res.status(201).json({
                 success: true,
@@ -99,18 +94,13 @@ class SidangSkripsiController {
     async createProsedurSidangSkripsi(req, res) {
         try {
             const { title, tahapan, waktu, deskripsi } = req.body;
-            if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Foto harus diupload",
-                });
-            }
+            const foto = req.files?.["foto"]?.[0];
             const prosedurSidangSkripsi = await sidang_skripsi_service_1.default.createProsedurSidangSkripsi({
                 title,
                 tahapan,
                 waktu,
                 deskripsi,
-                foto: req.files?.["foto"][0],
+                foto,
             });
             return res.status(201).json({
                 success: true,

@@ -1,6 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
 
-// Configure Cloudinary
 cloudinary.config({
   cloud_name: "dzeqt1uj4",
   api_key: "491447296997452",
@@ -8,7 +7,7 @@ cloudinary.config({
 });
 
 export const uploadToCloudinary = async (
-  fileBuffer: Buffer
+  fileBuffer: Buffer,
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
@@ -22,14 +21,11 @@ export const uploadToCloudinary = async (
           return reject(new Error("No URL returned from Cloudinary"));
         }
         resolve(result.secure_url);
-      }
+      },
     );
 
-    // Create a buffer stream and pipe it to Cloudinary
     const { Readable } = require("stream");
     const stream = Readable.from(fileBuffer);
     stream.pipe(uploadStream);
   });
 };
-
-export default cloudinary;

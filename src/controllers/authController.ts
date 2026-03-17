@@ -27,7 +27,7 @@ export const login = async (req: Request, res: Response) => {
         role: user.role,
       },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
 
     res.json({
@@ -35,12 +35,11 @@ export const login = async (req: Request, res: Response) => {
       token,
       user: {
         id: user.id,
-        name: user.name,
+        // name: user.name,
         email: user.email,
         role: user.role,
       },
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

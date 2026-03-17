@@ -7,19 +7,16 @@ const keterangan_pendamping_ijazah_service_1 = __importDefault(require("../servi
 class KeteranganPendampingController {
     async createKeteranganPendampingIjazah(req, res) {
         try {
-            const { title, deskripsi, type, waktu } = req.body;
-            if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Foto harus diupload",
-                });
-            }
+            const { title, deskripsi, type, waktu, kategori } = req.body;
+            const foto = req.files?.["foto"]?.[0];
+            const kategoriJSON = JSON.parse(kategori);
             const keteranganPendampingIjazah = await keterangan_pendamping_ijazah_service_1.default.createKeteranganPendampingIjazah({
                 title,
                 deskripsi,
                 type,
                 waktu,
-                foto: req.files?.["foto"][0],
+                foto,
+                kategori: kategoriJSON,
             });
             return res.status(201).json({
                 success: true,

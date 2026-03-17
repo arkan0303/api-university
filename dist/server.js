@@ -7,15 +7,14 @@ const express_1 = __importDefault(require("express"));
 const api_1 = __importDefault(require("./routes/api"));
 const prisma_1 = __importDefault(require("./db/prisma"));
 const cors_1 = __importDefault(require("cors"));
-
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
-const bcrypt = require("bcryptjs");
-const cookieParser = require("cookie-parser");
-
+const dotenv_1 = __importDefault(require("dotenv"));
+const helmet_1 = __importDefault(require("helmet"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, helmet_1.default)());
 const corsOptions = {
     origin: [
         "http://localhost:3000",
@@ -33,8 +32,6 @@ const PORT = 5000;
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server berjalan di http://localhost:${PORT}`);
 });
-
-app.use(cookieParser());
 // Tutup Prisma saat server mati
 process.on("SIGINT", async () => {
     await prisma_1.default.$disconnect();

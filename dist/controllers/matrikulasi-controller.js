@@ -8,12 +8,7 @@ class MatrikulasiController {
     async createMatrikulasi(req, res) {
         try {
             const { title, kategori, deskripsi, type, waktu, sks } = req.body;
-            if (!req.files?.["foto"] || req.files["foto"].length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Foto harus diupload",
-                });
-            }
+            const foto = req.files?.["foto"]?.[0];
             const kategoriJSON = JSON.parse(kategori);
             const matrikulasi = await matrikulasi_service_1.default.create({
                 title,
@@ -22,7 +17,7 @@ class MatrikulasiController {
                 waktu,
                 sks,
                 kategori: kategoriJSON,
-                foto: req.files?.["foto"][0],
+                foto,
             });
             return res.status(201).json({
                 success: true,

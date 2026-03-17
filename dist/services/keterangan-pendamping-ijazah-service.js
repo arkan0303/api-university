@@ -8,14 +8,18 @@ const cloudinary_1 = require("../utils/cloudinary");
 class KeteranganPendampingIjazahService {
     async createKeteranganPendampingIjazah(data) {
         try {
-            const fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(data.foto.buffer);
+            let fotoUrl;
+            if (data.foto) {
+                fotoUrl = await (0, cloudinary_1.uploadToCloudinary)(data.foto.buffer);
+            }
             const keteranganPendampingIjazah = await prisma_1.default.keteranganPendampingIjazah.create({
                 data: {
-                    foto: fotoUrl,
+                    foto: fotoUrl || null,
                     title: data.title,
                     deskripsi: data.deskripsi,
                     type: data.type,
                     waktu: data.waktu,
+                    kategori: data.kategori,
                 },
             });
             return keteranganPendampingIjazah;
