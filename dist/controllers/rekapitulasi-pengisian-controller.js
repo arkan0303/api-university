@@ -4,13 +4,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const rekapitulasi_pengisian_service_1 = __importDefault(require("../services/rekapitulasi-pengisian-service"));
+
 class RekapitulasiPengisianController {
     async createRekapitulasiPengisian(req, res) {
         try {
-            const { programNama, angkatan, totalMahasiswa, jumlahResponden, kategori, persentasi, } = req.body;
+            // 1. Tambahkan isi_content dari req.body
+            const { 
+                programNama, 
+                angkatan, 
+                totalMahasiswa, 
+                jumlahResponden, 
+                kategori, 
+                persentasi,
+                isi_content // <-- Tambahkan di sini
+            } = req.body;
+            
             console.log(req.body);
-            const katagoriJSON = JSON.parse(kategori);
+            const katagoriJSON = typeof kategori === "string" ? JSON.parse(kategori) : kategori;
             console.log(katagoriJSON);
+
             const strategis = await rekapitulasi_pengisian_service_1.default.createRekapitulasiPengisian({
                 programNama,
                 angkatan,
@@ -18,7 +30,9 @@ class RekapitulasiPengisianController {
                 jumlahResponden,
                 kategori: katagoriJSON,
                 persentasi,
+                isi_content // <-- Teruskan ke service
             });
+
             res.status(201).json({
                 success: true,
                 message: "Rekapitulasi pengisian berhasil ditambahkan",
@@ -26,10 +40,11 @@ class RekapitulasiPengisianController {
             });
         }
         catch (error) {
-            console.error("Error in createProgramSarjanaHukum:", error);
+            console.error("Error in createRekapitulasiPengisian:", error);
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async getAllRekapitulasiPengisian(req, res) {
         try {
             const rekapitulasiPengisian = await rekapitulasi_pengisian_service_1.default.getAllRekapitulasiPengisian();
@@ -44,11 +59,23 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async updateRekapitulasiPengisian(req, res) {
         try {
             const { id } = req.params;
-            const { programNama, angkatan, totalMahasiswa, jumlahResponden, kategori, persentasi, } = req.body;
-            const katagoriJSON = JSON.parse(kategori);
+            // 2. Tambahkan isi_content dari req.body
+            const { 
+                programNama, 
+                angkatan, 
+                totalMahasiswa, 
+                jumlahResponden, 
+                kategori, 
+                persentasi,
+                isi_content // <-- Tambahkan di sini
+            } = req.body;
+
+            const katagoriJSON = typeof kategori === "string" ? JSON.parse(kategori) : kategori;
+
             const updateData = {
                 programNama,
                 angkatan,
@@ -56,8 +83,11 @@ class RekapitulasiPengisianController {
                 jumlahResponden,
                 kategori: katagoriJSON,
                 persentasi,
+                isi_content // <-- Masukkan ke objek updateData
             };
+
             const updatedRekapitulasiPengisian = await rekapitulasi_pengisian_service_1.default.updateRekapitulasiPengisian(Number(id), updateData);
+            
             res.status(200).json({
                 success: true,
                 message: "Rekapitulasi pengisian berhasil diupdate",
@@ -69,6 +99,7 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async deleteRekapitulasiPengisian(req, res) {
         try {
             const { id } = req.params;
@@ -84,6 +115,8 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
+    // Method rekapitulasiPerKategori dan statistik tetap sama...
     async createRekapitulasiPerKategori(req, res) {
         try {
             const { programNama, totalMahasiswa, jumlahResponden, persentasi } = req.body;
@@ -101,10 +134,11 @@ class RekapitulasiPengisianController {
             });
         }
         catch (error) {
-            console.error("Error in createProgramSarjanaHukum:", error);
+            console.error("Error in createRekapitulasiPerKategori:", error);
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async getAllRekapitulasiPerKategori(req, res) {
         try {
             const rekapitulasiPerKategori = await rekapitulasi_pengisian_service_1.default.getAllRekapitulasiPerKategori();
@@ -119,6 +153,7 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async updateRekapitulasiPerKategori(req, res) {
         try {
             const { id } = req.params;
@@ -141,6 +176,7 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async deleteRekapitulasiPerKategori(req, res) {
         try {
             const { id } = req.params;
@@ -156,9 +192,10 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async createStatistikRekapitulasiPerKategori(req, res) {
         try {
-            const { totalResponden, tingkatPartisipasi, formulirLengkap, dalamProses, slogan, deskripsi, } = req.body;
+            const { totalResponden, tingkatPartisipasi, formulirLengkap, dalamProses, slogan, deskripsi } = req.body;
             console.log(req.body);
             const strategis = await rekapitulasi_pengisian_service_1.default.createStatistikRekapitulasiPerKategori({
                 totalResponden,
@@ -175,10 +212,11 @@ class RekapitulasiPengisianController {
             });
         }
         catch (error) {
-            console.error("Error in createProgramSarjanaHukum:", error);
+            console.error("Error in createStatistikRekapitulasiPerKategori:", error);
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async getAllStatistikRekapitulasiPerKategori(req, res) {
         try {
             const statistikRekapitulasiPerKategori = await rekapitulasi_pengisian_service_1.default.getAllStatistikRekapitulasiPerKategori();
@@ -193,10 +231,11 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async updateStatistikRekapitulasiPerKategori(req, res) {
         try {
             const { id } = req.params;
-            const { totalResponden, tingkatPartisipasi, formulirLengkap, dalamProses, slogan, deskripsi, } = req.body;
+            const { totalResponden, tingkatPartisipasi, formulirLengkap, dalamProses, slogan, deskripsi } = req.body;
             const updateData = {
                 totalResponden,
                 tingkatPartisipasi,
@@ -217,6 +256,7 @@ class RekapitulasiPengisianController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
     async deleteStatistikRekapitulasiPerKategori(req, res) {
         try {
             const { id } = req.params;
@@ -233,4 +273,5 @@ class RekapitulasiPengisianController {
         }
     }
 }
+
 exports.default = new RekapitulasiPengisianController();

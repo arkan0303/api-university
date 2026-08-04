@@ -1585,6 +1585,7 @@ model RekapitulasiPengisian {
   jumlahResponden String?
   kategori        Json?
   persentasi      String?
+  isi_content     String?  @db.LongText
 
   @@map("rekapitulasipengisian")
 }
