@@ -8,6 +8,7 @@ interface RekapitulasiPengisian {
   jumlahResponden: string;
   kategori: Prisma.JsonValue[];
   persentasi: string; //(otomatis: jumlah_responden / total_mahasiswa * 100)
+  isi_content?: string; // Optional field for isi_content
 }
 
 interface RekapitulasiPerKategori {
@@ -37,6 +38,7 @@ class RekapitulasiPengisianService {
           jumlahResponden: data.jumlahResponden,
           kategori: data.kategori,
           persentasi: data.persentasi,
+          isi_content: data.isi_content, // Optional field for isi_content
         },
       });
       return result;

@@ -16,8 +16,9 @@ class RekapitulasiPengisianController {
         jumlahResponden,
         kategori,
         persentasi,
+        isi_content, // Optional field for isi_content
       } = req.body;
-      console.log(req.body);
+      // console.log(req.body);
 
       const katagoriJSON = JSON.parse(kategori);
       console.log(katagoriJSON);
@@ -29,6 +30,7 @@ class RekapitulasiPengisianController {
           jumlahResponden,
           kategori: katagoriJSON,
           persentasi,
+          isi_content, // Optional field for isi_content
         });
       res.status(201).json({
         success: true,
@@ -66,6 +68,7 @@ class RekapitulasiPengisianController {
         jumlahResponden,
         kategori,
         persentasi,
+        isi_content, // Optional field for isi_content
       } = req.body;
       const katagoriJSON = JSON.parse(kategori);
       const updateData: any = {
@@ -75,6 +78,7 @@ class RekapitulasiPengisianController {
         jumlahResponden,
         kategori: katagoriJSON,
         persentasi,
+        isi_content, // Optional field for isi_content
       };
       const updatedRekapitulasiPengisian =
         await rekapitulasiPengisianService.updateRekapitulasiPengisian(
