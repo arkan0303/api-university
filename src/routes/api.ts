@@ -1548,15 +1548,32 @@ router.post(
     { name: "foto", maxCount: 1 },
     { name: "file", maxCount: 5 },
   ]),
+
   (err: any, req: Request, res: Response, next: Function) => {
     if (err) {
+      console.error("MULTER ERROR DETAIL:", err);
+
       return res.status(400).json({
         success: false,
         message: err.message || "File upload error",
+        error: err,
       });
     }
     next();
   },
+
+  // 🔥 TAMBAHAN INI
+  (req: Request, res: Response, next: Function) => {
+    if (req.files && "foto" in req.files) {
+      const fotoFiles = (req.files as any)["foto"];
+
+      if (!fotoFiles || fotoFiles.length === 0 || !fotoFiles[0]) {
+        delete (req.files as any)["foto"];
+      }
+    }
+    next();
+  },
+
   (req: Request, res: Response, next: Function) => {
     const multerReq = req as unknown as MulterRequest;
     if (multerReq.fileValidationError) {
@@ -1567,6 +1584,7 @@ router.post(
     }
     next();
   },
+
   (req: Request, res: Response) => {
     return SuratMasukController.createSuratMasuk(
       req as unknown as MulterRequest,

@@ -34,6 +34,13 @@ class SuratMasukController {
           console.error("Error parsing fileMetadata:", e);
         }
       }
+      const fotoFile =
+        req.files &&
+        "foto" in req.files &&
+        Array.isArray(req.files["foto"]) &&
+        req.files["foto"].length > 0
+          ? req.files["foto"][0]
+          : undefined;
 
       const suratMasuk = await SuratMasukService.createArsipSuratMasuk({
         title,
@@ -41,7 +48,7 @@ class SuratMasukController {
         pengirim,
         nomorSurat,
         tanggalDiterima,
-        foto: req.files?.["foto"]?.[0],
+        foto: fotoFile,
         file: galeriFiles,
         fileMetadata: parsedFileMetadata,
         status,
